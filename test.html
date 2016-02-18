@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <script>
+         var exampleSocket = new WebSocket("ws://127.0.0.1:9000")
+         exampleSocket.onmessage = function(event) {
+                  console.log(event.data)
+         }
+
+         exampleSocket.send("DUDE!")
+
+      </script>
+   </body>
+</html>
