@@ -1,5 +1,6 @@
-from autobahn.asyncio.websocket import WebSocketServerFactory
+from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
 import asyncio
+import webbrowser
 
 class Test(WebSocketServerProtocol):
 
@@ -28,6 +29,7 @@ coro = loop.create_server(factory, '0.0.0.0', 9000)
 server = loop.run_until_complete(coro)
 
 try:
+   webbrowser.open('file:///Users/cabkarian/apps/sofi/test.html')
    loop.run_forever()
 
 except KeyboardInterrupt:

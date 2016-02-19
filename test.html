@@ -7,8 +7,9 @@
                   console.log(event.data)
          }
 
-         exampleSocket.send("DUDE!")
-
+         exampleSocket.onopen = function(event) {
+                  exampleSocket.send("DUDE!")
+         }
       </script>
    </body>
 </html>
