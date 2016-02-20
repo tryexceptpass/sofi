@@ -10,8 +10,7 @@ class View(object):
 
 
     def __str__(self):
-        output = [ "<!DOCTYPE html><html>",
-                   "<head><link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\"></head><body>"
+        output = [ "<head><link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\"></head><body>"
                  ]
 
         for child in self.children:
@@ -19,7 +18,7 @@ class View(object):
 
         output.append("<script src=\"")
         output.append(self.bootstrapjs)
-        output.append("\"></script></body></html>")
+        output.append("\"></script></body>")
 
         return "".join(output)
 

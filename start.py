@@ -1,6 +1,10 @@
 from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
 import asyncio
+
+import json
 import webbrowser
+
+from sofi import Container, Paragraph, Heading, View
 
 class Test(WebSocketServerProtocol):
 
@@ -15,10 +19,27 @@ class Test(WebSocketServerProtocol):
          print("Binary message received: {} bytes".format(len(payload)))
       else:
          print("Text message received: {}".format(payload.decode('utf8')))
-         self.sendMessage(payload, isBinary)
+         body = json.loads(payload.decode('utf8'))
+
+         if 'event' in body:
+            processevent(self, body)
 
    def onClose(self, wasClean, code, reason):
       print("WebSocket connection closed: {}".format(reason))
+
+
+def processevent(socket, event):
+   if event['event'] == 'load_complete':
+      v = View()
+
+      c = Container()
+      c.additem(Heading(2, "Dude!"))
+      c.additem(Paragraph("Where's My Car?"))
+
+      v.additem(c)
+
+      socket.sendMessage(bytes(json.dumps({'html': str(v)}), 'utf-8'), False)
+
 
 factory = WebSocketServerFactory(u"ws://127.0.0.1:9000", debug=True)
 factory.protocol = Test

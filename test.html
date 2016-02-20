@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
+   <div id="content"></div>
    <body>
+      <script src="http://d3js.org/d3.v3.min.js"></script>
       <script>
-         var exampleSocket = new WebSocket("ws://127.0.0.1:9000")
-         exampleSocket.onmessage = function(event) {
-                  console.log(event.data)
+         var SOCKET_URL = "ws://127.0.0.1:9000"
+         var socket
+
+         function init() {
+                  socket = new WebSocket(SOCKET_URL)
+                  socket.onopen = function(event) {
+                           console.log("Connected to websocket server at " + SOCKET_URL)
+                           socket.send(JSON.stringify({"event": "load_complete"}))
+                  }
+                  socket.onmessage = function(event) {
+                           console.log("Received: " + event.data)
+
+                           command = JSON.parse(event.data)
+
+                           if (command.html) {
+                                    d3.select("html").html(command.html)
+                           }
+                  }
          }
 
-         exampleSocket.onopen = function(event) {
-                  exampleSocket.send("DUDE!")
+         window.onload = function(event) {
+                  init()
          }
       </script>
    </body>
