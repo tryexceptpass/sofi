@@ -14,7 +14,7 @@ handling is done.
 Following basic practices from bootstrap, the widgets should be within a `Container`. The main page is represented with
 the `View` class.
 
-```
+```python
 from sofi.app import SofiEventServer, SofiEventProcessor
 
 from sofi import Container, Paragraph, Heading, View
