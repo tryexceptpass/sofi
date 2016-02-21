@@ -1,61 +1,24 @@
-from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
-import asyncio
-
-import json
-import webbrowser
+from sofi.app import SofiEventServer, SofiEventProcessor
 
 from sofi import Container, Paragraph, Heading, View
 
-class Test(WebSocketServerProtocol):
+import json
 
-   def onConnect(self, request):
-      print("Client connecting: %s" + request.peer)
+def initialize(socket):
+   v = View()
 
-   def onOpen(self):
-      print("WebSocket connection open")
+   c = Container()
+   c.additem(Heading(2, "Dude!"))
+   c.additem(Paragraph("Where's My Car?"))
 
-   def onMessage(self, payload, isBinary):
-      if isBinary:
-         print("Binary message received: {} bytes".format(len(payload)))
-      else:
-         print("Text message received: {}".format(payload.decode('utf8')))
-         body = json.loads(payload.decode('utf8'))
+   v.additem(c)
 
-         if 'event' in body:
-            processevent(self, body)
-
-   def onClose(self, wasClean, code, reason):
-      print("WebSocket connection closed: {}".format(reason))
+   socket.sendMessage(bytes(json.dumps({'html': str(v)}), 'utf-8'), False)
 
 
-def processevent(socket, event):
-   if event['event'] == 'load_complete':
-      v = View()
 
-      c = Container()
-      c.additem(Heading(2, "Dude!"))
-      c.additem(Paragraph("Where's My Car?"))
+sep = SofiEventProcessor()
+sep.oninit = initialize
 
-      v.additem(c)
-
-      socket.sendMessage(bytes(json.dumps({'html': str(v)}), 'utf-8'), False)
-
-
-factory = WebSocketServerFactory(u"ws://127.0.0.1:9000", debug=True)
-factory.protocol = Test
-
-loop = asyncio.get_event_loop()
-coro = loop.create_server(factory, '0.0.0.0', 9000)
-
-server = loop.run_until_complete(coro)
-
-try:
-   webbrowser.open('file:///Users/cabkarian/apps/sofi/test.html')
-   loop.run_forever()
-
-except KeyboardInterrupt:
-   pass
-
-finally:
-   server.close()
-   loop.close()
+app = SofiEventServer(processor=sep)
+app.start()

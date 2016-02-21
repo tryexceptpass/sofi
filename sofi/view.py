@@ -10,8 +10,7 @@ class View(object):
 
 
     def __str__(self):
-        output = [ "<head><link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\"></head><body>"
-                 ]
+        output = [ "<head><link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\"></head><body>" ]
 
         for child in self.children:
             output.append(str(child))

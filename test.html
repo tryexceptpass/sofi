@@ -11,7 +11,7 @@
                   socket = new WebSocket(SOCKET_URL)
                   socket.onopen = function(event) {
                            console.log("Connected to websocket server at " + SOCKET_URL)
-                           socket.send(JSON.stringify({"event": "load_complete"}))
+                           socket.send(JSON.stringify({"event": "init"}))
                   }
                   socket.onmessage = function(event) {
                            console.log("Received: " + event.data)
