@@ -6,12 +6,31 @@ import webbrowser
 
 
 class SofiEventProcessor(object):
+   def __init__(self):
+      self.oninit = None
+      self.onload = None
 
    def process(self, socket, event):
-      if event['event'] == 'init':
-         if self.oninit:
-            self.oninit(socket)
+      eventtype = event['event']
 
+      if eventtype == 'init':
+         reply = { 'event': 'init' }
+
+         if callable(self.oninit):
+            inithtml = self.oninit(socket)
+
+            if inithtml:
+               reply['html'] = str(inithtml)
+
+         socket.sendMessage(bytes(json.dumps(reply), 'utf-8'), False)
+
+      elif eventtype == 'load':
+         reply = { 'event': 'load' }
+
+         if callable(self.onload):
+            self.onload(socket)
+
+         socket.sendMessage(bytes(json.dumps(reply), 'utf-8'), False)
 
 class SofiEventProtocol(WebSocketServerProtocol):
    processor = SofiEventProcessor()
@@ -55,7 +74,7 @@ class SofiEventServer(object):
       self.loop.run_until_complete(self.server)
 
       try:
-         webbrowser.open('file:///Users/cabkarian/apps/sofi/test.html')
+         webbrowser.open('file:///Users/cabkarian/apps/sofi/main.html')
          self.loop.run_forever()
 
       except KeyboardInterrupt:

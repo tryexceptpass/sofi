@@ -17,7 +17,9 @@ class View(object):
 
         output.append("<script src=\"")
         output.append(self.bootstrapjs)
-        output.append("\"></script></body>")
+        output.append("\"></script>")
+
+        #output.append("<script src=\"sofi.js\"></script></body>")
 
         return "".join(output)
 
