@@ -1,10 +1,10 @@
 from sofi.app import SofiEventServer, SofiEventProcessor
-
 from sofi import Container, Paragraph, Heading, View
 
 import json
 
-def main(socket):
+def main():
+   print("MAIN")
    v = View()
 
    c = Container()
@@ -13,13 +13,15 @@ def main(socket):
 
    v.additem(c)
 
-   return str(v)
+   return { 'name': 'init', 'html': str(v) }
 
+def load():
+   print("LOADED")
 
 
 sep = SofiEventProcessor()
-sep.oninit = main
-
+sep.register('init', main)
+sep.register('load', load)
 
 app = SofiEventServer(processor=sep)
 app.start()

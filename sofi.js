@@ -15,7 +15,7 @@ function init() {
 
         command = JSON.parse(event.data)
 
-        if (command.event == "init") {
+        if (command.name == "init") {
             if (command.html)
                 d3.select("html").html(command.html)
 

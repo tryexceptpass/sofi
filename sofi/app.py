@@ -6,31 +6,42 @@ import webbrowser
 
 
 class SofiEventProcessor(object):
-   def __init__(self):
-      self.oninit = None
-      self.onload = None
+   handlers = { 'init': { '_': [] },
+                'load': { '_': [] },
+                'click': { '_': [] },
+                'mousedown': { '_': [] },
+                'mouseup': { '_': [] },
+                'keydown': { '_': [] },
+                'keyup': { '_': [] },
+                'keypress': { '_': [] }
+              }
+
+   def register(self, event, callback, element='_'):
+      if event in self.handlers:
+         self.handlers[event][element].append(callback)
 
    def process(self, socket, event):
       eventtype = event['event']
 
-      if eventtype == 'init':
-         reply = { 'event': 'init' }
+      if eventtype in self.handlers:
+         for handler in self.handlers[eventtype]['_']:
+            if callable(handler):
+               command = handler()
 
-         if callable(self.oninit):
-            inithtml = self.oninit(socket)
+               if command:
+                  socket.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
 
-            if inithtml:
-               reply['html'] = str(inithtml)
 
-         socket.sendMessage(bytes(json.dumps(reply), 'utf-8'), False)
+         if 'element' in event:
+            element = event['element']
 
-      elif eventtype == 'load':
-         reply = { 'event': 'load' }
+            if element in self.handlers[eventtype]:
+               for handler in self.handlers[eventtype][element]:
+                  if callable(handler):
+                     command = handler()
 
-         if callable(self.onload):
-            self.onload(socket)
-
-         socket.sendMessage(bytes(json.dumps(reply), 'utf-8'), False)
+                     if command:
+                        socket.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
 
 class SofiEventProtocol(WebSocketServerProtocol):
    processor = SofiEventProcessor()
