@@ -20,16 +20,20 @@ class SofiEventProcessor(object):
       if event in self.handlers:
          self.handlers[event][element].append(callback)
 
-   def process(self, socket, event):
+   def dispatch(self, command):
+      self.protocol.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
+
+   def process(self, protocol, event):
+      self.protocol = protocol
       eventtype = event['event']
 
       if eventtype in self.handlers:
          for handler in self.handlers[eventtype]['_']:
             if callable(handler):
-               command = handler()
+               command = handler(self)
 
                if command:
-                  socket.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
+                  self.dispatch(command)
 
 
          if 'element' in event:
@@ -38,13 +42,12 @@ class SofiEventProcessor(object):
             if element in self.handlers[eventtype]:
                for handler in self.handlers[eventtype][element]:
                   if callable(handler):
-                     command = handler()
+                     command = handler(self)
 
                      if command:
-                        socket.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
+                        self.dispatch(command)
 
 class SofiEventProtocol(WebSocketServerProtocol):
-   processor = SofiEventProcessor()
 
    def onConnect(self, request):
       print("Client connecting: %s" % request.peer)
@@ -56,8 +59,8 @@ class SofiEventProtocol(WebSocketServerProtocol):
       if isBinary:
          print("Binary message received: {} bytes".format(len(payload)))
       else:
-         print("Text message received: {}".format(payload.decode('utf8')))
-         body = json.loads(payload.decode('utf8'))
+         print("Text message received: {}".format(payload.decode('utf-8')))
+         body = json.loads(payload.decode('utf-8'))
 
          if 'event' in body:
             self.processor.process(self, body)
@@ -75,6 +78,7 @@ class SofiEventServer(object):
       factory = WebSocketServerFactory(u"ws://" + hostname + u":" + str(port))
       protocol = SofiEventProtocol
       protocol.processor = processor
+      protocol.app = self
 
       factory.protocol = protocol
 

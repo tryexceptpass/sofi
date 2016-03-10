@@ -3,7 +3,7 @@ from sofi import Container, Paragraph, Heading, View
 
 import json
 
-def main():
+def main(protocol):
    print("MAIN")
    v = View()
 
@@ -15,8 +15,12 @@ def main():
 
    return { 'name': 'init', 'html': str(v) }
 
-def load():
+def load(protocol):
    print("LOADED")
+
+   protocol.dispatch({'name': 'style', 'selector': 'p', 'style': 'font-size', 'value': '10em', 'priority': 'important'})
+
+   return { 'name': 'text', 'selector': 'h2', 'text': 'SWEET!!!'}
 
 
 sep = SofiEventProcessor()
