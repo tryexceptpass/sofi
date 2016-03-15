@@ -6,8 +6,10 @@ import webbrowser
 
 
 class SofiEventProcessor(object):
+
    handlers = { 'init': { '_': [] },
                 'load': { '_': [] },
+                'close': { '_': [] },
                 'click': { '_': [] },
                 'mousedown': { '_': [] },
                 'mouseup': { '_': [] },
@@ -23,6 +25,7 @@ class SofiEventProcessor(object):
    def dispatch(self, command):
       self.protocol.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
 
+   @asyncio.coroutine
    def process(self, protocol, event):
       self.protocol = protocol
       eventtype = event['event']
@@ -30,7 +33,7 @@ class SofiEventProcessor(object):
       if eventtype in self.handlers:
          for handler in self.handlers[eventtype]['_']:
             if callable(handler):
-               command = handler(self)
+               command = yield from handler(self)
 
                if command:
                   self.dispatch(command)
@@ -42,7 +45,7 @@ class SofiEventProcessor(object):
             if element in self.handlers[eventtype]:
                for handler in self.handlers[eventtype][element]:
                   if callable(handler):
-                     command = handler(self)
+                     command = yield from handler(self)
 
                      if command:
                         self.dispatch(command)
@@ -55,6 +58,7 @@ class SofiEventProtocol(WebSocketServerProtocol):
    def onOpen(self):
       print("WebSocket connection open")
 
+   @asyncio.coroutine
    def onMessage(self, payload, isBinary):
       if isBinary:
          print("Binary message received: {} bytes".format(len(payload)))
@@ -63,13 +67,15 @@ class SofiEventProtocol(WebSocketServerProtocol):
          body = json.loads(payload.decode('utf-8'))
 
          if 'event' in body:
-            self.processor.process(self, body)
+            yield from self.processor.process(self, body)
 
    def onClose(self, wasClean, code, reason):
       print("WebSocket connection closed: {}".format(reason))
+      exit(0)
 
 
 class SofiEventServer(object):
+
    def __init__(self, hostname=u"127.0.0.1", port=9000, processor=None):
       self.hostname = hostname
       self.port = port
