@@ -1,5 +1,5 @@
 from sofi.app import SofiEventServer, SofiEventProcessor
-from sofi import Container, Paragraph, Heading, View
+from sofi import Container, Paragraph, Heading, View, Navbar
 
 import asyncio
 import json
@@ -11,8 +11,13 @@ def main(protocol):
    v = View()
 
    c = Container()
-   c.additem(Heading(2, "Dude!"))
-   c.additem(Paragraph("Where's My Car?"))
+   n = Navbar(brand="SOFI", fixed='top')
+   n.addlink("LINK 1")
+   n.addlink("LINK 2")
+   n.addlink("LINK 2", active=True)
+   c.additem(n)
+   #c.additem(Heading(2, "Dude!"))
+   #c.additem(Paragraph("Where's My Car?"))
 
    v.additem(c)
 
