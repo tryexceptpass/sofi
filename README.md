@@ -14,6 +14,8 @@ handling is done.
 Following basic practices from bootstrap, the widgets should be within a `Container`. The main page is represented with
 the `View` class.
 
+Below is a quick idea of how to get things going, but check out `sample.py` for a more complicated hello world which instantiates a navbar item, adds a few links to it and performs some timed updates.
+
 ```python
 from sofi.app import SofiEventServer, SofiEventProcessor
 
