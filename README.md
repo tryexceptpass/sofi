@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/tryexceptpass/sofi.png?label=ready&title=Ready)](https://waffle.io/tryexceptpass/sofi)
 ## Overview
 `sofi` is an OS agnostic UI module for Python.
 
