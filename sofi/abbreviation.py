@@ -13,7 +13,7 @@ class Abbreviation(Element):
             self.children.append(text)
             
     def __repr__(self):
-        return "Abbreviation<title='" + self.title + "',initialism=" + str(self.initialism) + ">"
+        return "<Abbreviation(title='" + self.title + "',initialism=" + str(self.initialism) + ")>"
 
     def __str__(self):
         output = [ "<abbr title=\"", self.title, "\"" ]

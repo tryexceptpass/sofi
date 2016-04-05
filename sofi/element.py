@@ -16,7 +16,7 @@ class Element(object):
         return str(self)
 
     def __str__(self):
-        return "Element<cl='" + self.cl + "',ident='" + self.ident + "',children=" + str(len(self.chidren)) + ">"
+        return "<Element(cl='" + self.cl + "',ident='" + self.ident + "',children=" + str(len(self.chidren)) + ")>"
 
     def addelement(self, item):
         """Add a child element to this tag"""
