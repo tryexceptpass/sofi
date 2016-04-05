@@ -1,18 +1,19 @@
-class Abbreviation(object):
+from .element import Element
+
+class Abbreviation(Element):
     """Implementation of the <abbr> tag"""
 
     def __init__(self, title="", text=None, initialism=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
-
+        super().__init__(cl=cl, ident=ident, style=style)
+        
         self.title = title
         self.initialism = initialism
 
         if text:
             self.children.append(text)
+            
+    def __repr__(self):
+        return "Abbreviation<title='" + self.title + "',initialism=" + str(self.initialism) + ">"
 
     def __str__(self):
         output = [ "<abbr title=\"", self.title, "\"" ]
@@ -45,8 +46,3 @@ class Abbreviation(object):
         output.append("</abbr>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

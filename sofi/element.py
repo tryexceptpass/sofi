@@ -18,6 +18,8 @@ class Element(object):
     def __str__(self):
         return "Element<cl='" + self.cl + "',ident='" + self.ident + "',children=" + str(len(self.chidren)) + ">"
 
-    def additem(self, item):
+    def addelement(self, item):
+        """Add a child element to this tag"""
+        
         if item is not None:
             self.children.append(item)
