@@ -36,3 +36,4 @@ from .table_row import TableRow
 from .table_cell import TableCell
 from .form import Form
 from .navbar import Navbar
+from .anchor import Anchor

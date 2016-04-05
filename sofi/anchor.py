@@ -1,19 +1,20 @@
-class Anchor(object):
+from .element import Element
+
+class Anchor(Element):
     """Implements the <a> tag"""
 
 
     def __init__(self, text=None, href="#", cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.href = href
 
         if text:
             self.children.append(text)
 
+    def __repr__(self):
+        return "<Anchor(href='" + self.href + "')>"
+            
     def __str__(self):
         output = [ "<a" ]
 
@@ -42,8 +43,3 @@ class Anchor(object):
         output.append("</a>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)
