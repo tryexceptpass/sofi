@@ -4,17 +4,16 @@ class Table(Element):
     """Implements the <table> tag"""
 
     def __init__(self, striped=False, bordered=False, hover=False, condensed=False, responsive=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.striped = striped
         self.bordered = bordered
         self.hover = hover
         self.condensed = condensed
         self.responsive = responsive
+
+    def __repr__(self):
+        return "<Table(striped=" + str(self.striped) + ",bordered=" + str(self.bordered) + ",hover=" + str(self.hover) + ",condensed=" + str(self.condensed) + ",responsive=" + str(self.responsive) + ")>"
 
     def __str__(self):
         output = [ "<table" ]
@@ -64,8 +63,3 @@ class Table(Element):
             return "<div class=\"table-responsive\">" + "".join(output) + "</div>"
         else:
             return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

@@ -4,11 +4,10 @@ class TableBody(Element):
     """Implements the <tbody> tag"""
 
     def __init__(self, cl=None, ident=None, style=None):
-        self.children = list()
+        super().__init__(cl=cl, ident=ident, style=style)
 
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+    def __repr__(self):
+        return "<TableBody>"
 
     def __str__(self):
         output = [ "<tbody" ]
@@ -36,8 +35,3 @@ class TableBody(Element):
         output.append("</tbody>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

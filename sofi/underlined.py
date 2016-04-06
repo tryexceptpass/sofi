@@ -4,14 +4,13 @@ class Underlined(Element):
     """Implements <u> tag"""
 
     def __init__(self, text=None, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         if text:
             self.children.append(text)
+
+    def __repr__(self):
+        return "<Underlined>"
 
     def __str__(self):
         output = [ "<u" ]
@@ -39,8 +38,3 @@ class Underlined(Element):
         output.append("</u>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

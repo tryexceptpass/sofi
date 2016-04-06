@@ -1,5 +1,4 @@
 from .element import Element
-
 from .abbreviation import Abbreviation
 from .address import Address
 from .blockquote import Blockquote
@@ -33,7 +32,7 @@ from .sample import Sample
 from .table import Table
 from .table_head import TableHead
 from .table_body import TableBody
-from .table_foot import TableFoot
+from .table_footer import TableFooter
 from .table_row import TableRow
 from .table_cell import TableCell
 from .form import Form

@@ -5,17 +5,16 @@ class UnorderedList(Element):
 
 
     def __init__(self, text=None, unstyled=False, inline=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.unstyled = unstyled
         self.inline = inline
 
         if text:
             self.children.append(text)
+
+    def __repr__(self):
+        return "<UnorderedList(unstyled=" + str(self.unstyled) + ",inline=" + str(self.inline) + ")>"
 
     def __str__(self):
         output = [ "<ul" ]
@@ -52,8 +51,3 @@ class UnorderedList(Element):
         output.append("</ul>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

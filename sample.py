@@ -12,14 +12,14 @@ def main(protocol):
 
    c = Container()
    n = Navbar(brand="SOFI", fixed='top')
-   n.addlink("LINK 1")
-   n.addlink("LINK 2")
-   n.addlink("LINK 2", active=True)
-   c.additem(n)
-   #c.additem(Heading(2, "Dude!"))
-   #c.additem(Paragraph("Where's My Car?"))
+   n.addnavlink("LINK 1")
+   n.addnavlink("LINK 2")
+   n.addnavlink("LINK 2", active=True)
+   c.addelement(n)
+   #c.addelement(Heading(2, "Dude!"))
+   #c.addelement(Paragraph("Where's My Car?"))
 
-   v.additem(c)
+   v.addelement(c)
 
    return { 'name': 'init', 'html': str(v) }
 

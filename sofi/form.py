@@ -4,14 +4,13 @@ class Form(Element):
     """Implements the <form> tag"""
 
     def __init__(self, inline=False, horizontal=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.inline = inline
         self.horizontal = horizontal
+
+    def __repr__(self):
+        return "<Form(inline=" + self.inline + ",horizontal=" + self.horizontal + ")>"
 
     def __str__(self):
         output = [ "<form" ]
@@ -49,8 +48,3 @@ class Form(Element):
         output.append("</form>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

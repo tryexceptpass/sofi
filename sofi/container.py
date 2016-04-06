@@ -5,13 +5,12 @@ class Container(Element):
     <div class=\"container-fluid\">"""
 
     def __init__(self, fluid=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.fluid = fluid
+
+    def __repr__(self):
+        return "<Container(fluid=" + str(self.fluid) + ")>"
 
     def __str__(self):
         output = [ "<div " ]
@@ -45,8 +44,3 @@ class Container(Element):
         output.append("</div>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

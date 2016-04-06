@@ -5,16 +5,15 @@ class Description(Element):
 
 
     def __init__(self, text=None, horizontal=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.horizontal = horizontal
 
         if text:
             self.children.append(text)
+
+    def __repr__(self):
+        return "<Description(horizontal=" + self.horizontal + ")>"
 
     def __str__(self):
         output = [ "<dl" ]
@@ -47,8 +46,3 @@ class Description(Element):
         output.append("</dl>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

@@ -5,14 +5,13 @@ class DescriptionTerm(Element):
 
 
     def __init__(self, text=None, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         if text:
             self.children.append(text)
+
+    def __repr__(self):
+        return "<DescriptionTerm>"
 
     def __str__(self):
         output = [ "<dt" ]
@@ -40,8 +39,3 @@ class DescriptionTerm(Element):
         output.append("</dt>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

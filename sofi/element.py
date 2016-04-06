@@ -1,4 +1,4 @@
-class Element(Element):
+class Element(object):
     """Base HTML tag element"""
 
     def __init__(self, cl=None, ident=None, style=None):

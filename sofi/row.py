@@ -4,11 +4,10 @@ class Row(Element):
     """Implements row layout with format <div class=\"row\">"""
 
     def __init__(self, cl=None, ident=None, style=None):
-        self.children = list()
+        super().__init__(cl=cl, ident=ident, style=style)
 
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+    def __repr__(self):
+        return "<Row>"
 
     def __str__(self):
         output = [ "<div " ]
@@ -40,7 +39,3 @@ class Row(Element):
 
         return "".join(output)
 
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

@@ -1,14 +1,11 @@
 from .element import Element
+from .anchor import Anchor
 
 class Navbar(Element):
     """Implements the navbar component"""
 
     def __init__(self, brand="Brand", inverse=False, fixed=None, static=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.brand = brand
         self.inverse = inverse
@@ -17,7 +14,7 @@ class Navbar(Element):
 
         self.links = []
 
-    def addnavlink(self, a, active=False, align='left', separator=False, cl=None, ident=None, style=None):
+    def addnavlink(self, text, active=False, align='left', separator=False, cl=None, ident=None, style=None):
         link = ["<li"]
         classes = []
 
@@ -51,10 +48,13 @@ class Navbar(Element):
 
         link.append('>')
 
-        link.append(str(a))
+        link.append(str(Anchor(text)))
         link.append('</li>')
 
         self.links.append("".join(link))
+
+    def __repr__(self):
+        return "<Navbar(inverse=" + str(self.inverse) + ",fixed=" + str(self.fixed) + ",static=" + str(self.static) + ")>"
 
     def __str__(self):
         output = ['<nav class="' ]

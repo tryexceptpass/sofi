@@ -4,16 +4,15 @@ class Heading(Element):
     """Implements heading tags using size attribute: <h1>, <h2>, etc."""
 
     def __init__(self, size=1, text=None, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.size = size
 
         if text:
             self.children.append(text)
+
+    def __repr__(self):
+        return "<Heading(size=" + str(self.size) + ")>"
 
     def __str__(self):
         output = [ "<h", str(self.size) ]
@@ -43,8 +42,3 @@ class Heading(Element):
         output.append(">")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

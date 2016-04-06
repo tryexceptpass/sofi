@@ -12,6 +12,8 @@ class View(Element):
         self.bootstrapjs = bsjs
         self.jquery = jquery
 
+    def __repr__(self):
+        return "<View>"
 
     def __str__(self):
         output = [ "<head><link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\"></head><body>" ]
@@ -27,10 +29,7 @@ class View(Element):
         #output.append(self.bootstrapjs)
         #output.append("\"></script>")
 
-        #output.append("<script src=\"sofi.js\"></script></body>")
+        #output.append("<script src=\"sofi.js\"></script>")
+        output.append("</body>")
 
         return "".join(output)
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)
