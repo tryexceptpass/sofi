@@ -1,4 +1,6 @@
-class DescriptionTerm(object):
+from .element import Element
+
+class DescriptionTerm(Element):
     """Implements <dt> tag"""
 
 

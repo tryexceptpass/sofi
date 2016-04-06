@@ -1,4 +1,6 @@
-class Heading(object):
+from .element import Element
+
+class Heading(Element):
     """Implements heading tags using size attribute: <h1>, <h2>, etc."""
 
     def __init__(self, size=1, text=None, cl=None, ident=None, style=None):

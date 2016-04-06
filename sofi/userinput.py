@@ -1,4 +1,6 @@
-class UserInput(object):
+from .element import Element
+
+class UserInput(Element):
     """Implements <kbd> tag"""
 
 

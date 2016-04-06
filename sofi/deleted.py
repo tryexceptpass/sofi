@@ -1,4 +1,6 @@
-class Deleted(object):
+from .element import Element
+
+class Deleted(Element):
     """Implements <del> tag"""
 
 

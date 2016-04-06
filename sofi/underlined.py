@@ -1,4 +1,6 @@
-class Underlined(object):
+from .element import Element
+
+class Underlined(Element):
     """Implements <u> tag"""
 
     def __init__(self, text=None, cl=None, ident=None, style=None):

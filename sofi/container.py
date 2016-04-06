@@ -1,4 +1,6 @@
-class Container(object):
+from .element import Element
+
+class Container(Element):
     """Implements a container tag of form <div class=\"container\"> or
     <div class=\"container-fluid\">"""
 

@@ -1,4 +1,6 @@
-class TableFoot(object):
+from .element import Element
+
+class TableFoot(Element):
     """Implements the <tfoot> tag"""
 
     def __init__(self, cl=None, ident=None, style=None):

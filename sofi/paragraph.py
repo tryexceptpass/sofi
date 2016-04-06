@@ -1,4 +1,6 @@
-class Paragraph(object):
+from .element import Element
+
+class Paragraph(Element):
     """Implements <p> tag"""
 
     def __init__(self, text=None, cl=None, ident=None, style=None):

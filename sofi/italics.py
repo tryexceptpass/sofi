@@ -1,4 +1,6 @@
-class Italics(object):
+from .element import Element
+
+class Italics(Element):
     """Implements <em> tag"""
 
 

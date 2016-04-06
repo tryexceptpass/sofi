@@ -1,4 +1,6 @@
-class ListItem(object):
+from .element import Element
+
+class ListItem(Element):
     """Implements <li> tag"""
 
 

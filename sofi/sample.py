@@ -1,4 +1,6 @@
-class Sample(object):
+from .element import Element
+
+class Sample(Element):
     """Implements <samp> tag"""
 
 

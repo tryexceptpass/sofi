@@ -1,4 +1,6 @@
-class Form(object):
+from .element import Element
+
+class Form(Element):
     """Implements the <form> tag"""
 
     def __init__(self, inline=False, horizontal=False, cl=None, ident=None, style=None):

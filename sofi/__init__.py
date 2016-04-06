@@ -1,3 +1,5 @@
+from .element import Element
+
 from .abbreviation import Abbreviation
 from .address import Address
 from .blockquote import Blockquote

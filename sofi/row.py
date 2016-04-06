@@ -1,4 +1,6 @@
-class Row(object):
+from .element import Element
+
+class Row(Element):
     """Implements row layout with format <div class=\"row\">"""
 
     def __init__(self, cl=None, ident=None, style=None):

@@ -1,17 +1,18 @@
-class Blockquote(object):
+from .element import Element
+
+class Blockquote(Element):
     """Implements the <blockquote> tag"""
 
     def __init__(self, text=None, reverse=False, cl=None, ident=None, style=None):
-        self.children = list()
-
-        self.cl = cl
-        self.ident = ident
-        self.style = style
+        super().__init__(cl=cl, ident=ident, style=style)
 
         self.reverse = reverse
 
         if text:
             self.children.append(text)
+
+    def __repr__(self):
+        return "<Blockquote(reverse=" + str(self.reverse) + ")>"
 
     def __str__(self):
         output = [ "<blockquote" ]
@@ -44,8 +45,3 @@ class Blockquote(object):
         output.append("</blockquote>")
 
         return "".join(output)
-
-
-    def additem(self, item):
-        if item is not None:
-            self.children.append(item)

@@ -14,7 +14,7 @@ class Anchor(Element):
 
     def __repr__(self):
         return "<Anchor(href='" + self.href + "')>"
-            
+
     def __str__(self):
         output = [ "<a" ]
 

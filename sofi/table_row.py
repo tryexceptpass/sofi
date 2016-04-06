@@ -1,4 +1,6 @@
-class TableRow(object):
+from .element import Element
+
+class TableRow(Element):
     """Implements <tr> tag"""
 
 

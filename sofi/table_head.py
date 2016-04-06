@@ -1,4 +1,6 @@
-class TableHead(object):
+from .element import Element
+
+class TableHead(Element):
     """Implements the <thead> tag"""
 
     def __init__(self, cl=None, ident=None, style=None):

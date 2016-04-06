@@ -5,13 +5,13 @@ class Abbreviation(Element):
 
     def __init__(self, title="", text=None, initialism=False, cl=None, ident=None, style=None):
         super().__init__(cl=cl, ident=ident, style=style)
-        
+
         self.title = title
         self.initialism = initialism
 
         if text:
             self.children.append(text)
-            
+
     def __repr__(self):
         return "<Abbreviation(title='" + self.title + "',initialism=" + str(self.initialism) + ")>"
 

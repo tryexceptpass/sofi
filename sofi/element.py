@@ -1,4 +1,4 @@
-class Element(object):
+class Element(Element):
     """Base HTML tag element"""
 
     def __init__(self, cl=None, ident=None, style=None):
@@ -20,6 +20,6 @@ class Element(object):
 
     def addelement(self, item):
         """Add a child element to this tag"""
-        
+
         if item is not None:
             self.children.append(item)

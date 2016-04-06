@@ -1,4 +1,6 @@
-class Footer(object):
+from .element import Element
+
+class Footer(Element):
     """Implements <footer> tag"""
 
 

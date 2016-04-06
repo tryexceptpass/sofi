@@ -1,4 +1,6 @@
-class Small(object):
+from .element import Element
+
+class Small(Element):
     """Implements <small> tag"""
 
     def __init__(self, text=None, cl=None, ident=None, style=None):

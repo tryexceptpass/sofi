@@ -1,4 +1,6 @@
-class OrderedList(object):
+from .element import Element
+
+class OrderedList(Element):
     """Implements <ol> tag"""
 
 

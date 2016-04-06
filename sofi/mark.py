@@ -1,4 +1,6 @@
-class Mark(object):
+from .element import Element
+
+class Mark(Element):
     """Implements <mark> tag"""
 
 

@@ -1,4 +1,6 @@
-class Variable(object):
+from .element import Element
+
+class Variable(Element):
     """Implements <var> tag"""
 
 

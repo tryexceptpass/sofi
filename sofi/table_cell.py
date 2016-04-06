@@ -1,4 +1,6 @@
-class TableCell(object):
+from .element import Element
+
+class TableCell(Element):
     """Implements <td> tag"""
 
 

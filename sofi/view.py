@@ -1,4 +1,6 @@
-class View(object):
+from .element import Element
+
+class View(Element):
     """Main object representing a webpage"""
 
     def __init__(self, bscss="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",

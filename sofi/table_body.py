@@ -1,4 +1,6 @@
-class TableBody(object):
+from .element import Element
+
+class TableBody(Element):
     """Implements the <tbody> tag"""
 
     def __init__(self, cl=None, ident=None, style=None):

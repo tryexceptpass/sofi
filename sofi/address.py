@@ -12,7 +12,7 @@ class Address(Element):
 
     def __repr__(self):
         return "<Address()>"
-            
+
     def __str__(self):
         output = [ "<address" ]
 

@@ -1,4 +1,6 @@
-class Navbar(object):
+from .element import Element
+
+class Navbar(Element):
     """Implements the navbar component"""
 
     def __init__(self, brand="Brand", inverse=False, fixed=None, static=False, cl=None, ident=None, style=None):

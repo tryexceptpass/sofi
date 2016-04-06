@@ -1,4 +1,6 @@
-class Strikethrough(object):
+from .element import Element
+
+class Strikethrough(Element):
     """Implements <s> tag"""
 
 

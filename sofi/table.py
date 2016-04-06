@@ -1,4 +1,6 @@
-class Table(object):
+from .element import Element
+
+class Table(Element):
     """Implements the <table> tag"""
 
     def __init__(self, striped=False, bordered=False, hover=False, condensed=False, responsive=False, cl=None, ident=None, style=None):

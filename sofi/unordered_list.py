@@ -1,4 +1,6 @@
-class UnorderedList(object):
+from .element import Element
+
+class UnorderedList(Element):
     """Implements <ul> tag"""
 
 

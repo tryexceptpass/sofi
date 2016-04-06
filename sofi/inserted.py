@@ -1,4 +1,6 @@
-class Inserted(object):
+from .element import Element
+
+class Inserted(Element):
     """Implements <ins> tag"""
 
 
