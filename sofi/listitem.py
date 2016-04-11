@@ -7,8 +7,7 @@ class ListItem(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None):
         super().__init__(cl=cl, ident=ident, style=style)
 
-        if text:
-            self.children.append(text)
+        self.text = text
 
     def __repr__(self):
         return "<ListItem>"
@@ -33,6 +32,8 @@ class ListItem(Element):
 
         output.append(">")
 
+        output.append(self.text)
+        
         for child in self.children:
             output.append(str(child))
 
