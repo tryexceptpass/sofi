@@ -1,5 +1,5 @@
 from sofi.app import SofiEventServer, SofiEventProcessor
-from sofi import Container, Paragraph, Heading, View, Navbar, Dropdown
+from sofi import Container, Paragraph, Heading, View, Navbar, Dropdown, DropdownItem
 
 import asyncio
 import json
@@ -16,8 +16,12 @@ def main(protocol):
     n.addnavlink("LINK 2")
     n.addnavlink("LINK 2", active=True)
     
-    b = Dropdown("Dropdown")
-    b.addelement('<li><a href="#">Item 1</a></li>')
+    b = Dropdown("Dropdown", align='right')
+    b.addelement(DropdownItem('Item Header', header=True))
+    b.addelement(DropdownItem('Item 1'))
+    b.addelement(DropdownItem('Item 2', disabled=True))
+    b.addelement(DropdownItem('', divider=True))
+    b.addelement(DropdownItem('Item 3'))
     
     c.addelement(n)
      

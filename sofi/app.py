@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 import json
 import webbrowser
@@ -100,7 +101,8 @@ class SofiEventServer(object):
         self.loop.run_until_complete(self.server)
 
         try:
-            webbrowser.open('file:///Users/cabkarian/apps/sofi/main.html')
+            path = os.path.dirname(os.path.realpath(__file__))
+            webbrowser.open('file:///' + os.path.join(path, 'main.html'))
             self.loop.run_forever()
 
         except KeyboardInterrupt:

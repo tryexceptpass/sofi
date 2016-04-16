@@ -42,7 +42,8 @@ class DropdownItem(Element):
         if self.style:
             output.append(' style="')
             output.append(self.style)
-            output.append('">')
+            output.append('"')
+        output.append('>')
             
         if self.text:
             output.append(str(Anchor(self.text)))
