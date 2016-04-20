@@ -55,7 +55,6 @@ def load(protocol):
    
     return
 
-
 sep = SofiEventProcessor()
 sep.register('init', main)
 sep.register('load', load)
