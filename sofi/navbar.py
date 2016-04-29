@@ -1,5 +1,7 @@
 from .element import Element
 from .anchor import Anchor
+from .unordered_list import UnorderedList
+from .navbaritem import NavbarItem
 
 class Navbar(Element):
     """Implements the navbar component"""
@@ -12,46 +14,27 @@ class Navbar(Element):
         self.fixed = fixed
         self.static = static
 
-        self.links = []
+        #self.links = []
+        self.children = []
 
-    def addnavlink(self, text, active=False, align='left', separator=False, cl=None, ident=None, style=None):
-        link = ["<li"]
-        classes = []
+    def addlink(self, text, href="#", active=False):
+        if len(self.children) == 0:
+            self.children.append(UnorderedList(cl="nav navbar-nav"))
 
-        if ident:
-            link.append(' id="')
-            link.append(ident)
-            link.append('"')
-
-        if separator:
-            link.append(' role="separator" ')
-            classes.append("separator")
+        if type(self.children[-1]) != UnorderedList:
+            self.children.append(UnorderedList(cl="nav navbar-nav"))
 
         if active:
-            classes.append("active")
+            self.children[-1].addelement(NavbarItem(text, href, cl='active'))
+        else:
+            self.children[-1].addelement(NavbarItem(text, href))
 
-        if align == 'right':
-            classes.append("navbar-right")
+        return self.children[-1]
 
-        if cl:
-            classes.append(cl)
+    def addtext(self, text):
+        self.children.append(NavbarItem(text))
 
-        if len(classes) > 0:
-            link.append(' class="')
-            link.append(" ".join(classes))
-            link.append('"')
-
-        if style:
-            link.append(' style="')
-            link.append(style)
-            link.append('"')
-
-        link.append('>')
-
-        link.append(str(Anchor(text)))
-        link.append('</li>')
-
-        self.links.append("".join(link))
+        return self.children[-1]
 
     def __repr__(self):
         return "<Navbar(inverse=" + str(self.inverse) + ",fixed=" + str(self.fixed) + ",static=" + str(self.static) + ")>"
@@ -92,12 +75,9 @@ class Navbar(Element):
         output.append('</div>')
 
         output.append('<div class="collapse navbar-collapse" id="sofi-navbar-collapse" aria-expanded="false">')
-        output.append('<ul class="nav navbar-nav">')
-                        #<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        for link in self.links:
-            output.append(link)
 
-        output.append('</ul>')
+        for child in self.children:
+            output.append(str(child))
 
         output.append('</div>')
         output.append('</div>')
