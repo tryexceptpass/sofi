@@ -36,6 +36,16 @@ class Navbar(Element):
 
         return self.children[-1]
 
+    def adddropdown(self, dropdown):
+        if len(self.children) == 0:
+            self.children.append(UnorderedList(cl="nav navbar-nav"))
+
+        if type(self.children[-1]) != UnorderedList:
+            self.children.append(UnorderedList(cl="nav navbar-nav"))
+
+        dropdown.isnavbaritem(True)
+        self.children[-1].addelement(dropdown)
+
     def __repr__(self):
         return "<Navbar(inverse=" + str(self.inverse) + ",fixed=" + str(self.fixed) + ",static=" + str(self.static) + ")>"
 

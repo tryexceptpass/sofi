@@ -24,12 +24,14 @@ def main(protocol):
     b.addelement(DropdownItem('', divider=True))
     b.addelement(DropdownItem('Item 3'))
 
+    n.adddropdown(b)
+
     c.addelement(n)
 
     c.addelement(Heading(2, "Dude!"))
     c.addelement(Paragraph("Where's My Car?", ident="fiddle"))
 
-    c.addelement(b)
+    # c.addelement(b)
 
     v.addelement(c)
 

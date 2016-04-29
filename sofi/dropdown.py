@@ -9,12 +9,21 @@ class Dropdown(Element):
         self.text = text
         self.dropup = dropup
         self.align = align
+        self.navbaritem = False
+
+    def isnavbaritem(self, navbaritem):
+        self.navbaritem = navbaritem
 
     def __repr__(self):
         return '<Dropdown(text="' + self.text + ',dropup=' + str(self.dropup) + ')>'
 
     def __str__(self):
-        output = [ "<div" ]
+        output = []
+
+        if self.navbaritem:
+            output.append("<li")
+        else:
+            output.append("<div")
 
         if self.ident:
             output.append(' id="')
@@ -26,7 +35,7 @@ class Dropdown(Element):
             output.append('dropup')
         else:
             output.append('dropdown')
-        
+
         if self.cl:
             output.append(' ')
             output.append(self.cl)
@@ -38,34 +47,46 @@ class Dropdown(Element):
             output.append("\"")
 
         output.append('>')
-        
-        
-        output.append('<button ')
-        
+
+        if self.navbaritem:
+            output.append('<a href="#" ')
+        else:
+            output.append('<button ')
+
         if self.ident:
             output.append('id="')
             output.append(self.ident)
             output.append('"')
-        
-        output.append('class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">')
+
+        if self.navbaritem:
+            output.append('class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">')
+        else:
+            output.append('class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">')
+
         output.append(self.text)
         output.append(' <span class="caret"></span>')
-        output.append('</button>')
-        
-        
+
+        if self.navbaritem:
+            output.append('</a>')
+        else:
+            output.append('</button>')
+
+
         output.append('<ul class="dropdown-menu')
-        
+
         if self.align == 'right':
             output.append(' dropdown-menu-right')
-        
+
         output.append('">')
-        
+
         for child in self.children:
             output.append(str(child))
-            
+
         output.append("</ul>")
-        
-        
-        output.append("</div>")
+
+        if self.navbaritem:
+            output.append("</li>")
+        else:
+            output.append("</div>")
 
         return "".join(output)
