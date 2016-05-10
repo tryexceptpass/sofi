@@ -71,7 +71,6 @@ class Dropdown(Element):
         else:
             output.append('</button>')
 
-
         output.append('<ul class="dropdown-menu')
 
         if self.align == 'right':

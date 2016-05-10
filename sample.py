@@ -1,5 +1,5 @@
 from sofi.app import SofiEventServer, SofiEventProcessor
-from sofi import Container, Paragraph, Heading, View, Navbar, Dropdown, DropdownItem, Anchor
+from sofi import Container, Paragraph, Heading, View, Navbar, Dropdown, DropdownItem, Anchor, Button, Row
 
 import asyncio
 import json
@@ -10,12 +10,11 @@ def main(protocol):
     print("MAIN")
     v = View()
 
-    c = Container()
     n = Navbar(brand="SOFI", fixed='top')
     n.addlink("LINK 1")
     n.addlink("LINK 2")
     n.addtext("Just some Text with a " + str(Anchor("link", cl='navbar-link')))
-    n.addlink("LINK 3", active=True)
+    n.addlink("LINK 2", active=True)
 
     b = Dropdown("Dropdown", align='right')
     b.addelement(DropdownItem('Item Header', header=True))
@@ -26,12 +25,28 @@ def main(protocol):
 
     n.adddropdown(b)
 
-    c.addelement(n)
+    v.addelement(n)
 
-    c.addelement(Heading(2, "Dude!"))
-    c.addelement(Paragraph("Where's My Car?", ident="fiddle"))
+    c = Container()
 
-    # c.addelement(b)
+    btnDe = Button("Default")
+    btnP = Button("Primary", "primary")
+    btnI = Button("Info", "info")
+    btnS = Button("Success", "success")
+    btnW = Button("Warning", "warning")
+    btnDa = Button("Danger", "danger")
+
+    r = Row()
+    r.addelement(btnDe)
+    r.addelement(btnP)
+    r.addelement(btnI)
+    r.addelement(btnS)
+    r.addelement(btnW)
+    r.addelement(btnDa)
+    c.addelement(r)
+
+    c.newrow(Heading(2, "Dude!"))
+    c.newrow(Paragraph("Where's My Car?", ident="fiddle"))
 
     v.addelement(c)
 

@@ -1,4 +1,5 @@
 from .element import Element
+from .navbar import Navbar
 
 class View(Element):
     """Main object representing a webpage"""
@@ -16,20 +17,22 @@ class View(Element):
         return "<View>"
 
     def __str__(self):
-        output = [ "<head><link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\"></head><body>" ]
+        head = [ "<link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\">" ]
+        body = []
 
         for child in self.children:
-            output.append(str(child))
+            print(type(child))
+            if type(child) == Navbar:
+                if child.fixed == "top":
+                    head.append('<style>/* Added to make room for the navbar at top */\nbody { padding-top: 70px; }\n</style>')
 
-        #output.append('<script src="')
-        #output.append(self.jquery)
-        #output.append('"></script>')
+            body.append(str(child))
 
-        #output.append("<script src=\"")
-        #output.append(self.bootstrapjs)
-        #output.append("\"></script>")
-
-        #output.append("<script src=\"sofi.js\"></script>")
+        output = []
+        output.append('<head>')
+        output.extend(head)
+        output.append('</head><body>')
+        output.extend(body)
         output.append("</body>")
 
         return "".join(output)

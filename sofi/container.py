@@ -1,4 +1,5 @@
 from .element import Element
+from .row import Row
 
 class Container(Element):
     """Implements a container tag of form <div class=\"container\"> or
@@ -8,6 +9,11 @@ class Container(Element):
         super().__init__(cl=cl, ident=ident, style=style)
 
         self.fluid = fluid
+
+    def newrow(self, element):
+        r = Row()
+        r.addelement(element)
+        self.addelement(r)
 
     def __repr__(self):
         return "<Container(fluid=" + str(self.fluid) + ")>"

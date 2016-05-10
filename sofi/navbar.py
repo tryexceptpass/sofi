@@ -70,7 +70,7 @@ class Navbar(Element):
         output.append(" ".join(classes))
         output.append('">')
 
-        output.append('<div class="container-fluid">')
+        output.append('<div class="container">')
 
         output.append('<div class="navbar-header">')
         output.append('<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sofi-navbar-collapse" aria-expanded="false">')
