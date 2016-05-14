@@ -1,5 +1,5 @@
 from sofi.app import SofiEventServer, SofiEventProcessor
-from sofi import Container, Paragraph, Heading, View, Navbar, Dropdown, DropdownItem, Anchor, Button, Row
+from sofi import Container, Paragraph, Heading, View, Navbar, Dropdown, DropdownItem, Anchor, Button, Row, ButtonGroup
 
 import asyncio
 import json
@@ -28,7 +28,7 @@ def main(protocol):
     v.addelement(n)
 
     c = Container()
-
+    bgrp = ButtonGroup()
     btnDe = Button("Default")
     btnP = Button("Primary", "primary")
     btnI = Button("Info", "info")
@@ -37,12 +37,13 @@ def main(protocol):
     btnDa = Button("Danger", "danger")
 
     r = Row()
-    r.addelement(btnDe)
-    r.addelement(btnP)
-    r.addelement(btnI)
-    r.addelement(btnS)
-    r.addelement(btnW)
-    r.addelement(btnDa)
+    bgrp.addelement(btnDe)
+    bgrp.addelement(btnP)
+    bgrp.addelement(btnI)
+    bgrp.addelement(btnS)
+    bgrp.addelement(btnW)
+    bgrp.addelement(btnDa)
+    r.addelement(bgrp)
     c.addelement(r)
 
     c.newrow(Heading(2, "Dude!"))
