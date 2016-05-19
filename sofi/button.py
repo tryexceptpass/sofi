@@ -3,19 +3,20 @@ from .element import Element
 class Button(Element):
     """Implements the <button> tag"""
 
-    STYLES = { 'danger':  'btn-danger',
-               'success': 'btn-success',
-               'info':    'btn-info',
-               'warning': 'btn-warning',
-               'primary': 'btn-primary',
-               'default': 'btn-default'
-             }
+    SEVERITIES = { 'danger':  'btn-danger',
+                   'success': 'btn-success',
+                   'info':    'btn-info',
+                   'warning': 'btn-warning',
+                   'primary': 'btn-primary',
+                   'default': 'btn-default'
+                 }
 
-    def __init__(self, text=None, buttontype=None, href="#", cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, text=None, severity=None, href="#", size=None, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
-        self.buttontype = buttontype
+        self.severity = severity
+        self.size = size
 
     def __repr__(self):
         return "<Button(text='" + self.text + "')>"
@@ -28,20 +29,32 @@ class Button(Element):
             output.append(self.ident)
             output.append('"')
 
-        output.append(' class=\"btn ')
-        if self.buttontype:
-            output.append(Button.STYLES[self.buttontype])
+        classes = [ "btn" ]
+        output.append(' class="')
+        if self.severity:
+            classes.append(Button.SEVERITIES[self.severity])
         else:
-            output.append(Button.STYLES['default'])
+            classes.append(Button.SEVERITIES['default'])
+        if self.size:
+            if self.size == "large" or self.size == "lg":
+                classes.append("btn-lg")
+            elif self.size == "small" or self.size == "sm":
+                classes.append("btn-sm")
+            elif self.size == "xsmall" or self.size == "xs":
+                classes.append("btn-xs")
         if self.cl:
-            output.append(' ')
-            output.append(self.cl)
+            classes.append(self.cl)
+        output.append(" ".join(classes))
         output.append('"')
 
         if self.style:
             output.append(' style="')
             output.append(self.style)
             output.append('"')
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(k + '="' + self.attrs[k] + '"')
 
         output.append('>')
         output.append(self.text)

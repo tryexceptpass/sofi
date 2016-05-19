@@ -7,7 +7,7 @@ class ButtonToolbar(Element):
         super().__init__(cl=cl, ident=ident, style=style)
 
     def __repr__(self):
-        return "<ButtonGroup(size=" + self.size + ")>"
+        return "<ButtonToolbar()>"
 
     def __str__(self):
         output = [ "<div " ]

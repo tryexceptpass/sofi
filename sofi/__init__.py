@@ -44,3 +44,4 @@ from .navbaritem import NavbarItem
 from .button import Button
 from .buttongroup import ButtonGroup
 from .buttontoolbar import ButtonToolbar
+from .buttondropdown import ButtonDropdown

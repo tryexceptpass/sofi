@@ -1,13 +1,14 @@
 class Element(object):
     """Base HTML tag element"""
 
-    def __init__(self, cl=None, ident=None, style=None):
+    def __init__(self, cl=None, ident=None, style=None, attrs=None):
         """Create a base element where cl is a space separated class attribute,
            ident is the element id and style is a CSS style string"""
 
         self.cl = cl
         self.ident = ident
         self.style = style
+        self.attrs = attrs
 
         self.children = list()
 

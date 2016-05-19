@@ -2,7 +2,7 @@ from sofi.app import Sofi
 from sofi import Container, View, Row
 from sofi import Paragraph, Heading, Anchor
 from sofi import Navbar, Dropdown, DropdownItem
-from sofi import Button, ButtonGroup, ButtonToolbar
+from sofi import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
 
 import asyncio
 import json
@@ -55,6 +55,14 @@ def main(protocol):
 
     c.newrow(Heading(2, "Dude!"))
     c.newrow(Paragraph("Where's My Car?", ident="fiddle"))
+
+    bd = ButtonDropdown('A Dropdown', size='lg', dropup=True)
+    bd.addelement(DropdownItem('Item Header', header=True))
+    bd.addelement(DropdownItem('Item 1'))
+    bd.addelement(DropdownItem('Item 2', disabled=True))
+    bd.addelement(DropdownItem('', divider=True))
+    bd.addelement(DropdownItem('Item 3'))
+    c.newrow(bd)
 
     v.addelement(c)
 
