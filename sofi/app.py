@@ -6,6 +6,21 @@ import webbrowser
 
 from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
+class Sofi(object):
+    def __init__(self):
+        self.processor = SofiEventProcessor()
+        self.server = SofiEventServer(processor=self.processor)
+
+    def start(self):
+        ### Start the application
+
+        self.server.start()
+
+    def register(self, event, callback, element='_'):
+        ### Register event callback
+
+        self.processor.register(event, callback, element)
+
 class SofiEventProcessor(object):
     """Event handler providing hooks for callback functions"""
 

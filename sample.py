@@ -1,4 +1,4 @@
-from sofi.app import SofiEventServer, SofiEventProcessor
+from sofi.app import Sofi
 from sofi import Container, View, Row
 from sofi import Paragraph, Heading, Anchor
 from sofi import Navbar, Dropdown, DropdownItem
@@ -81,9 +81,8 @@ def load(protocol):
 
     return
 
-sep = SofiEventProcessor()
-sep.register('init', main)
-sep.register('load', load)
+app = Sofi()
+app.register('init', main)
+app.register('load', load)
 
-app = SofiEventServer(processor=sep)
 app.start()
