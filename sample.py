@@ -1,5 +1,5 @@
 from sofi.app import Sofi
-from sofi import Container, View, Row
+from sofi import Container, View, Row, Panel, Column
 from sofi import Paragraph, Heading, Anchor
 from sofi import Navbar, Dropdown, DropdownItem
 from sofi import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
@@ -9,7 +9,7 @@ import json
 import time
 
 @asyncio.coroutine
-def main(protocol):
+def main(interface):
     print("MAIN")
     v = View()
 
@@ -64,27 +64,41 @@ def main(protocol):
     bd.addelement(DropdownItem('Item 3'))
     c.newrow(bd)
 
+    r = Row()
+    col = Column(count=6)
+    p = Panel("Panel 1")
+    col.addelement(p)
+    r.addelement(col)
+
+    col = Column(count=6)
+    p = Panel("Panel 2", 'danger')
+    col.addelement(p)
+    r.addelement(col)
+
+    c.newrow(Paragraph())
+    c.addelement(r)
+
     v.addelement(c)
 
     return { 'name': 'init', 'html': str(v) }
 
 @asyncio.coroutine
-def load(protocol):
+def load(interface):
     print("LOADED")
 
     yield from asyncio.sleep(5)
 
     for i in range(1, 5):
-        protocol.dispatch({'name': 'style', 'selector': '#fiddle', 'style': 'font-size', 'value': str(i*2) + 'em', 'priority': 'important'})
+        interface.dispatch({'name': 'style', 'selector': '#fiddle', 'style': 'font-size', 'value': str(i*2) + 'em', 'priority': 'important'})
         yield from asyncio.sleep(1)
 
     yield from asyncio.sleep(5)
 
-    protocol.dispatch({'name': 'remove', 'selector': '#fiddle'})
+    interface.dispatch({'name': 'remove', 'selector': '#fiddle'})
 
     msg = 'SWEET!!!'
     for i in range(8):
-        protocol.dispatch({ 'name': 'text', 'selector': 'h2', 'text': msg[:i]})
+        interface.dispatch({ 'name': 'text', 'selector': 'h2', 'text': msg[:i]})
         yield from asyncio.sleep(1)
 
     return
