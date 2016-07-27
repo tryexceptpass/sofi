@@ -4,8 +4,8 @@ from .button import Button
 class ButtonGroup(Element):
     """Implements a button group <div class=\"btn-group\">"""
 
-    def __init__(self, size=None, vertical=False, justified=False, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, size=None, vertical=False, justified=False, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.size = size
         self.vertical = vertical
@@ -47,6 +47,10 @@ class ButtonGroup(Element):
             output.append(' style="')
             output.append(self.style)
             output.append('"')
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append(">")
 

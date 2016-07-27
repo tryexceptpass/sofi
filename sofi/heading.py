@@ -3,8 +3,8 @@ from .element import Element
 class Heading(Element):
     """Implements heading tags using size attribute: <h1>, <h2>, etc."""
 
-    def __init__(self, size=1, text=None, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, size=1, text=None, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.size = size
 
@@ -31,6 +31,10 @@ class Heading(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append(">")
 

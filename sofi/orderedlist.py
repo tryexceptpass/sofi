@@ -1,16 +1,20 @@
 from .element import Element
 
-class TableBody(Element):
-    """Implements the <tbody> tag"""
+class OrderedList(Element):
+    """Implements <ol> tag"""
 
-    def __init__(self, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+
+    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+        if text:
+            self.children.append(text)
 
     def __repr__(self):
-        return "<TableBody>"
+        return "<OrderedList>"
 
     def __str__(self):
-        output = [ "<tbody" ]
+        output = [ "<ol" ]
 
         if self.ident:
             output.append(" id=\"")
@@ -27,11 +31,15 @@ class TableBody(Element):
             output.append(self.style)
             output.append("\"")
 
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
         output.append(">")
 
         for child in self.children:
             output.append(str(child))
 
-        output.append("</tbody>")
+        output.append("</ol>")
 
         return "".join(output)

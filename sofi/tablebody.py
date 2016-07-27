@@ -1,20 +1,16 @@
 from .element import Element
 
-class DescriptionTerm(Element):
-    """Implements <dt> tag"""
+class TableBody(Element):
+    """Implements the <tbody> tag"""
 
-
-    def __init__(self, text=None, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
-
-        if text:
-            self.children.append(text)
+    def __init__(self, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
     def __repr__(self):
-        return "<DescriptionTerm>"
+        return "<TableBody>"
 
     def __str__(self):
-        output = [ "<dt" ]
+        output = [ "<tbody" ]
 
         if self.ident:
             output.append(" id=\"")
@@ -31,11 +27,15 @@ class DescriptionTerm(Element):
             output.append(self.style)
             output.append("\"")
 
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
         output.append(">")
 
         for child in self.children:
             output.append(str(child))
 
-        output.append("</dt>")
+        output.append("</tbody>")
 
         return "".join(output)

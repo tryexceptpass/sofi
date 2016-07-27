@@ -4,8 +4,8 @@ class Column(Element):
     """Implements the column layout <div class=\"col-\"> where size, count and offset
     attributes are used to create the class name, i.e.: col-md-4 or col-offset-md-4"""
 
-    def __init__(self, size='md', count=4, offset=0, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, size='md', count=4, offset=0, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.size = size
         self.count = count
@@ -43,6 +43,10 @@ class Column(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append(">")
 

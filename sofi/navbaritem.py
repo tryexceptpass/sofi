@@ -4,8 +4,8 @@ from .anchor import Anchor
 class NavbarItem(Element):
     """Implements an item for a Navbar"""
 
-    def __init__(self, text='', href=None, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, text='', href=None, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
         self.href = href
@@ -46,6 +46,11 @@ class NavbarItem(Element):
             output.append(' style="')
             output.append(self.style)
             output.append('"')
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+                
         output.append('>')
 
         if self.href is None:

@@ -5,8 +5,8 @@ class Container(Element):
     """Implements a container tag of form <div class=\"container\"> or
     <div class=\"container-fluid\">"""
 
-    def __init__(self, fluid=False, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, fluid=False, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.fluid = fluid
 
@@ -41,6 +41,10 @@ class Container(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append(">")
 

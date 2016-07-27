@@ -3,7 +3,7 @@ from .element import Element
 class Abbreviation(Element):
     """Implementation of the <abbr> tag"""
 
-    def __init__(self, title="", text=None, initialism=False, cl=None, ident=None, style=None):
+    def __init__(self, title="", text=None, initialism=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style)
 
         self.title = title
@@ -37,6 +37,10 @@ class Abbreviation(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append(">")
 

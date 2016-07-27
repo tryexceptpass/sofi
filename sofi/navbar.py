@@ -6,16 +6,13 @@ from .navbaritem import NavbarItem
 class Navbar(Element):
     """Implements the navbar component"""
 
-    def __init__(self, brand="Brand", inverse=False, fixed=None, static=False, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, brand="Brand", inverse=False, fixed=None, static=False, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.brand = brand
         self.inverse = inverse
         self.fixed = fixed
         self.static = static
-
-        #self.links = []
-        self.children = []
 
     def addlink(self, text, href="#", active=False):
         if len(self.children) == 0:
@@ -68,7 +65,18 @@ class Navbar(Element):
         if self.cl:
             classes.append(self.cl)
         output.append(" ".join(classes))
-        output.append('">')
+        output.append('"')
+
+        if self.style:
+            output.append(" style=\"")
+            output.append(self.style)
+            output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
+        output.append('>')
 
         output.append('<div class="container">')
 

@@ -3,8 +3,8 @@ from .element import Element
 class Table(Element):
     """Implements the <table> tag"""
 
-    def __init__(self, striped=False, bordered=False, hover=False, condensed=False, responsive=False, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, striped=False, bordered=False, hover=False, condensed=False, responsive=False, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.striped = striped
         self.bordered = bordered
@@ -51,6 +51,10 @@ class Table(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append(">")
 

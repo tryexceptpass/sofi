@@ -4,8 +4,8 @@ class UnorderedList(Element):
     """Implements <ul> tag"""
 
 
-    def __init__(self, text=None, unstyled=False, inline=False, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, text=None, unstyled=False, inline=False, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.unstyled = unstyled
         self.inline = inline
@@ -42,6 +42,10 @@ class UnorderedList(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append(">")
 

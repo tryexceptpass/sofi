@@ -61,7 +61,7 @@ class Panel(Element):
 
         if self.attrs:
             for k in self.attrs.keys():
-                output.append(k + '="' + self.attrs[k] + '"')
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append('>')
 

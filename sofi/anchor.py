@@ -4,8 +4,8 @@ class Anchor(Element):
     """Implements the <a> tag"""
 
 
-    def __init__(self, text=None, href="#", cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, text=None, href="#", cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.href = href
 
@@ -28,14 +28,20 @@ class Anchor(Element):
             output.append(self.cl)
             output.append("\"")
 
+        output.append(' href="')
+        output.append(self.href)
+        output.append('"')
+
         if self.style:
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
 
-        output.append(' href="')
-        output.append(self.href)
-        output.append('">')
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
+        output.append(">")
 
         for child in self.children:
             output.append(str(child))

@@ -7,8 +7,8 @@ from .unordered_list import UnorderedList
 class ButtonDropdown(Element):
     """Implements a button dropdown <div class=\"btn-toolbar\">"""
 
-    def __init__(self, text=None, split=False, severity=None, dropup=False, size=None, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, text=None, split=False, severity=None, dropup=False, size=None, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
         self.split = split
@@ -28,7 +28,7 @@ class ButtonDropdown(Element):
         if self.dropup:
             classes = "dropup"
 
-        grp = ButtonGroup(cl=classes, ident=grpid)
+        grp = ButtonGroup(cl=classes, ident=grpid, style=style, attrs=attrs)
 
         classes = []
         if not self.split:
@@ -41,12 +41,12 @@ class ButtonDropdown(Element):
         if self.text:
             btntxt = self.text
 
-        attrs = None
+        btnattrs = None
         if not self.split:
-            attrs = { 'data-toggle': 'dropdown' }
+            btnattrs = { 'data-toggle': 'dropdown' }
             btntxt += ' <span class="caret"></span>'
 
-        btn = Button(text=btntxt, severity=self.severity, size=self.size, cl=" ".join(classes), ident=self.ident, style=self.style, attrs=attrs)
+        btn = Button(text=btntxt, severity=self.severity, size=self.size, cl=" ".join(classes), ident=self.ident, style=self.style, attrs=btnattrs)
         grp.addelement(btn)
 
         if self.split:

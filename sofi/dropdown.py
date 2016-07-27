@@ -3,8 +3,8 @@ from .element import Element
 class Dropdown(Element):
     """Implements a Bootstrap dropdown tag"""
 
-    def __init__(self, text, dropup=False, align='left', cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, text, dropup=False, align='left', cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
         self.dropup = dropup
@@ -45,6 +45,10 @@ class Dropdown(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append('>')
 

@@ -3,8 +3,8 @@ from .element import Element
 class Row(Element):
     """Implements row layout with format <div class=\"row\">"""
 
-    def __init__(self, cl=None, ident=None, style=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+    def __init__(self, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
     def __repr__(self):
         return "<Row>"
@@ -30,6 +30,10 @@ class Row(Element):
             output.append(self.style)
             output.append("\"")
 
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
         output.append(">")
 
         for child in self.children:
@@ -38,4 +42,3 @@ class Row(Element):
         output.append("</div>")
 
         return "".join(output)
-
