@@ -48,7 +48,61 @@ function init() {
         else if (command.name == "property") {
             d3.selectAll(command.selector).property(command.property, command.value)
         }
+        else if (command.name == "subscribe") {
+            d3.selectAll(command.selector).on(command.event, eventListener, command.capture)
+        }
+        else if (command.name == "unsubscribe") {
+            d3.selectAll(command.selector).on(command.event, null)
+        }
     }
+}
+
+
+function getAllPropertyNames(obj) {
+    var props = [];
+
+    do {
+        props = props.concat(Object.getOwnPropertyNames(obj))
+    } while (obj = Object.getPrototypeOf(obj))
+
+    return props
+}
+
+function getProperties(obj) {
+    newObj = {}
+    props = getAllPropertyNames(obj)
+    console.log(obj)
+    props.forEach(function(p) {
+        propType = typeof obj[p]
+         if (propType == "object") {
+             if (obj[p] instanceof HTMLElement) {
+                 newObj[p] = { }
+
+                 for (var i = 0; i < obj[p].attributes.length; i++) {
+                     newObj[p][obj[p].attributes[i].name] = obj[p].attributes[i].value
+                 }
+             }
+
+         }
+         else if (propType != "function") {
+            if (obj[p] != null)
+                newObj[p] = obj[p].toString()
+            else {
+                newObj[p] = null
+            }
+        }
+    })
+
+    return newObj
+}
+
+function eventListener(d, i) {
+    socket.send(JSON.stringify({ "event": d3.event.type,
+                                 "element": d3.event.srcElement.id,
+                                 "event_object": getProperties(d3.event),
+                                 "d": d,
+                                 "i": i
+                               }))
 }
 
 function load() {

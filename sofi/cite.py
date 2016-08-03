@@ -4,7 +4,7 @@ class Cite(Element):
     """Implementation of the <cite> tag"""
 
 
-    def __init__(self, text=None, cl=None, ident=None, style=None attrs=None):
+    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text:

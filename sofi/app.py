@@ -16,10 +16,10 @@ class Sofi(object):
 
         self.server.start()
 
-    def register(self, event, callback, element='_'):
+    def register(self, event, callback, element='_', selector=None):
         ### Register event callback
 
-        self.processor.register(event, callback, element)
+        self.processor.register(event, callback, element, selector)
 
 class SofiEventProcessor(object):
     """Event handler providing hooks for callback functions"""
@@ -35,9 +35,24 @@ class SofiEventProcessor(object):
                  'keypress': { '_': [] }
                }
 
-    def register(self, event, callback, element='_'):
+    def register(self, event, callback, element='_', selector=None):
         if event in self.handlers:
+            if element not in self.handlers[event]:
+                self.handlers[event][element] = list()
+
             self.handlers[event][element].append(callback)
+
+            if event not in ('init', 'load', 'close') and len(self.handlers[event].keys()) > 1:
+                if selector is None:
+                    selector = element
+
+                capture = False
+                if element == '_':
+                    selector = 'html'
+                    capture = True
+
+                self.dispatch({ 'name': 'subscribe', 'event': event, 'selector': selector, 'capture': capture })
+
 
     def dispatch(self, command):
         self.protocol.sendMessage(bytes(json.dumps(command), 'utf-8'), False)

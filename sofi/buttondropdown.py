@@ -2,7 +2,7 @@ from .element import Element
 from .button import Button
 from .buttongroup import ButtonGroup
 from .dropdownitem import DropdownItem
-from .unordered_list import UnorderedList
+from .unorderedlist import UnorderedList
 
 class ButtonDropdown(Element):
     """Implements a button dropdown <div class=\"btn-toolbar\">"""
@@ -28,7 +28,7 @@ class ButtonDropdown(Element):
         if self.dropup:
             classes = "dropup"
 
-        grp = ButtonGroup(cl=classes, ident=grpid, style=style, attrs=attrs)
+        grp = ButtonGroup(cl=classes, ident=grpid, style=self.style, attrs=self.attrs)
 
         classes = []
         if not self.split:

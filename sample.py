@@ -34,7 +34,7 @@ def main(interface):
     tb = ButtonToolbar()
     bgrp = ButtonGroup()
     btnDe = Button("Default")
-    btnP = Button("Primary", "primary")
+    btnP = Button("Primary", "primary", ident='clickme')
     btnI = Button("Info", "info")
     bgrp2 = ButtonGroup()
     btnS = Button("Success", "success")
@@ -86,6 +86,8 @@ def main(interface):
 def load(interface):
     print("LOADED")
 
+    app.register('click', clicked, element='clickme', selector='#clickme')
+
     yield from asyncio.sleep(5)
 
     for i in range(1, 5):
@@ -102,6 +104,10 @@ def load(interface):
         yield from asyncio.sleep(1)
 
     return
+
+@asyncio.coroutine
+def clicked(interface):
+    print("CLICKED!")
 
 app = Sofi()
 app.register('init', main)
