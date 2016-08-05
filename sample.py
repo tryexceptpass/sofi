@@ -103,6 +103,7 @@ def load(event, interface):
         interface.dispatch({ 'name': 'text', 'selector': 'h2', 'text': msg[:i]})
         yield from asyncio.sleep(1)
 
+    app.unregister('click', buttonclicked, selector='button')
     return
 
 @asyncio.coroutine

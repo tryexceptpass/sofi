@@ -21,6 +21,11 @@ class Sofi(object):
 
         self.processor.register(event, callback, selector)
 
+    def unregister(self, event, callback, selector=None):
+        ### Register event callback
+
+        self.processor.unregister(event, callback, selector)
+
 class SofiEventProcessor(object):
     """Event handler providing hooks for callback functions"""
 
@@ -57,6 +62,17 @@ class SofiEventProcessor(object):
 
             self.dispatch({ 'name': 'subscribe', 'event': event, 'selector': selector, 'capture': capture, 'key': str(id(callback)) })
 
+    def unregister(self, event, callback, selector=None):
+        if event not in self.handlers:
+            return
+
+        if selector is None:
+            self.handlers[event]['_'].remove(callback)
+        else:
+            self.handlers[event].pop(str(id(callback)))
+
+        if event not in ('init', 'load', 'close'):
+            self.dispatch({ 'name': 'unsubscribe', 'event': event, 'selector': selector, 'key': str(id(callback)) })
 
     def dispatch(self, command):
         self.protocol.sendMessage(bytes(json.dumps(command), 'utf-8'), False)

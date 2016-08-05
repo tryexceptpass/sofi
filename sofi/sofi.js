@@ -50,7 +50,7 @@ function init() {
         }
         else if (command.name == "subscribe") {
             var key = command.key
-            d3.selectAll(command.selector).on(command.event, function(d,i) {
+            d3.selectAll(command.selector).on(command.event + "." + key, function(d,i) {
                 socket.send(JSON.stringify({ "event": d3.event.type,
                                              "element": d3.event.srcElement.id,
                                              "event_object": getProperties(d3.event),
@@ -61,7 +61,7 @@ function init() {
             }, command.capture)
         }
         else if (command.name == "unsubscribe") {
-            d3.selectAll(command.selector).on(command.event, null)
+            d3.selectAll(command.selector).on(command.event + "." + command.key, null)
         }
     }
 }
