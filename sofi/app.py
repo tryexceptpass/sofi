@@ -16,10 +16,10 @@ class Sofi(object):
 
         self.server.start()
 
-    def register(self, event, callback, element='_', selector=None):
+    def register(self, event, callback, selector=None):
         ### Register event callback
 
-        self.processor.register(event, callback, element, selector)
+        self.processor.register(event, callback, selector)
 
 class SofiEventProcessor(object):
     """Event handler providing hooks for callback functions"""
@@ -35,23 +35,27 @@ class SofiEventProcessor(object):
                  'keypress': { '_': [] }
                }
 
-    def register(self, event, callback, element='_', selector=None):
-        if event in self.handlers:
-            if element not in self.handlers[event]:
-                self.handlers[event][element] = list()
+    def register(self, event, callback, selector=None):
+        if event not in self.handlers:
+            self.handlers[event] = { '_': [] }
 
-            self.handlers[event][element].append(callback)
+        if selector:
+            key = str(id(callback))
+        else:
+            key = '_'
 
-            if event not in ('init', 'load', 'close') and len(self.handlers[event].keys()) > 1:
-                if selector is None:
-                    selector = element
+        if key not in self.handlers[event]:
+            self.handlers[event][key] = list()
 
-                capture = False
-                if element == '_':
-                    selector = 'html'
-                    capture = True
+        self.handlers[event][key].append(callback)
 
-                self.dispatch({ 'name': 'subscribe', 'event': event, 'selector': selector, 'capture': capture })
+        if event not in ('init', 'load', 'close') and len(self.handlers[event].keys()) > 1:
+            capture = False
+            if selector is None:
+                selector = 'html'
+                capture = True
+
+            self.dispatch({ 'name': 'subscribe', 'event': event, 'selector': selector, 'capture': capture, 'key': str(id(callback)) })
 
 
     def dispatch(self, command):
@@ -63,24 +67,25 @@ class SofiEventProcessor(object):
         eventtype = event['event']
 
         if eventtype in self.handlers:
-            for handler in self.handlers[eventtype]['_']:
-                if callable(handler):
-                    command = yield from handler(self)
+            # Check for local handler
+            if 'key' in event:
+                key = event['key']
 
-                    if command:
-                        self.dispatch(command)
-
-
-            if 'element' in event:
-                element = event['element']
-
-                if element in self.handlers[eventtype]:
-                    for handler in self.handlers[eventtype][element]:
+                if key in self.handlers[eventtype]:
+                    for handler in self.handlers[eventtype][key]:
                         if callable(handler):
-                            command = yield from handler(self)
+                            command = yield from handler(event, self)
 
                             if command:
                                 self.dispatch(command)
+
+            # Check for global handler
+            for handler in self.handlers[eventtype]['_']:
+                if callable(handler):
+                    command = yield from handler(event, self)
+
+                    if command:
+                        self.dispatch(command)
 
 
 class SofiEventProtocol(WebSocketServerProtocol):

@@ -49,7 +49,16 @@ function init() {
             d3.selectAll(command.selector).property(command.property, command.value)
         }
         else if (command.name == "subscribe") {
-            d3.selectAll(command.selector).on(command.event, eventListener, command.capture)
+            var key = command.key
+            d3.selectAll(command.selector).on(command.event, function(d,i) {
+                socket.send(JSON.stringify({ "event": d3.event.type,
+                                             "element": d3.event.srcElement.id,
+                                             "event_object": getProperties(d3.event),
+                                             "d": d,
+                                             "i": i,
+                                             "key": key
+                                           }))
+            }, command.capture)
         }
         else if (command.name == "unsubscribe") {
             d3.selectAll(command.selector).on(command.event, null)
@@ -74,17 +83,22 @@ function getProperties(obj) {
     console.log(obj)
     props.forEach(function(p) {
         propType = typeof obj[p]
-         if (propType == "object") {
-             if (obj[p] instanceof HTMLElement) {
-                 newObj[p] = { }
+        if (propType == "object") {
+            if (obj[p] instanceof HTMLElement) {
+                newObj[p] = { }
+                newObj[p]['innerText'] = obj[p].innerText
+                newObj[p]['outterText'] = obj[p].outterText
+                newObj[p]['innerHTML'] = obj[p].innerHTML
+                newObj[p]['outterHTML'] = obj[p].outterHTML
+                newObj[p]['textContent'] = obj[p].textContent
+                newObj[p]['value'] = obj[p].value
 
-                 for (var i = 0; i < obj[p].attributes.length; i++) {
-                     newObj[p][obj[p].attributes[i].name] = obj[p].attributes[i].value
-                 }
-             }
-
-         }
-         else if (propType != "function") {
+                for (var i = 0; i < obj[p].attributes.length; i++) {
+                    newObj[p][obj[p].attributes[i].name] = obj[p].attributes[i].value
+                }
+            }
+        }
+        else if (propType != "function") {
             if (obj[p] != null)
                 newObj[p] = obj[p].toString()
             else {
@@ -94,15 +108,6 @@ function getProperties(obj) {
     })
 
     return newObj
-}
-
-function eventListener(d, i) {
-    socket.send(JSON.stringify({ "event": d3.event.type,
-                                 "element": d3.event.srcElement.id,
-                                 "event_object": getProperties(d3.event),
-                                 "d": d,
-                                 "i": i
-                               }))
 }
 
 function load() {

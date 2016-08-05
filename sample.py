@@ -9,7 +9,7 @@ import json
 import time
 
 @asyncio.coroutine
-def main(interface):
+def main(event, interface):
     print("MAIN")
     v = View()
 
@@ -83,10 +83,10 @@ def main(interface):
     return { 'name': 'init', 'html': str(v) }
 
 @asyncio.coroutine
-def load(interface):
+def load(event, interface):
     print("LOADED")
 
-    app.register('click', clicked, element='clickme', selector='#clickme')
+    app.register('click', buttonclicked, selector='button')
 
     yield from asyncio.sleep(5)
 
@@ -106,11 +106,19 @@ def load(interface):
     return
 
 @asyncio.coroutine
-def clicked(interface):
+def clicked(event, interface):
     print("CLICKED!")
+
+@asyncio.coroutine
+def buttonclicked(event, interface):
+    if ('id' in event['event_object']['target']):
+        print("BUTTON " + event['event_object']['target']['id'] + " CLICKED!")
+    else:
+        print("BUTTON " + event['event_object']['target']['innerText'] + " CLICKED!")
 
 app = Sofi()
 app.register('init', main)
 app.register('load', load)
+app.register('click', clicked)
 
 app.start()
