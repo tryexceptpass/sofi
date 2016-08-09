@@ -36,7 +36,8 @@ class ListItem(Element):
 
         output.append(">")
 
-        output.append(self.text)
+        if self.text:
+            output.append(self.text)
 
         for child in self.children:
             output.append(str(child))
