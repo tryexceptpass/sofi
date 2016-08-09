@@ -11,7 +11,7 @@ class Button(Element):
                    'default': 'btn-default'
                  }
 
-    def __init__(self, text=None, severity=None, href="#", size=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, severity=None, size=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
