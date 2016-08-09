@@ -1,10 +1,14 @@
+from hypothesis import given, settings, Verbosity
+from hypothesis.strategies import text, none
+
 from .. import Abbreviation
 
 def test_basic():
     assert(str(Abbreviation()) == "<abbr title=\"\"></abbr>")
 
-def test_text_and_title():
-    assert(str(Abbreviation("Title", "text")) == "<abbr title=\"Title\">text</abbr>")
+@given(text(), text())
+def test_text_and_title(title, text):
+    assert(str(Abbreviation(title, text)) == "<abbr title=\"" + title + "\">" + text + "</abbr>")
 
 def test_initialism():
     assert(str(Abbreviation("Title", "text", True)) == "<abbr title=\"Title\" class=\"initialism\">text</abbr>")
