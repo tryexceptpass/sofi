@@ -6,6 +6,6 @@ def test_basic():
 def test_text():
     assert(str(TableCell("text")) == "<td>text</td>")
 
-def test_custom_class_ident_and_style():
-    assert(str(TableCell("text", cl='abclass', ident='123', style="font-size:0.9em;"))
-           == "<td id=\"123\" class=\"abclass\" style=\"font-size:0.9em;\">text</td>")
+def test_custom_class_ident_style_and_attrs():
+    assert(str(TableCell("text", cl='abclass', ident='123', style="font-size:0.9em;", attrs={"data-test": 'abc'}))
+           == "<td id=\"123\" class=\"abclass\" style=\"font-size:0.9em;\" data-test=\"abc\">text</td>")

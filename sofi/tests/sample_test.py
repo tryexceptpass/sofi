@@ -6,6 +6,6 @@ def test_basic():
 def test_text():
     assert(str(Sample("text")) == "<samp>text</samp>")
 
-def test_custom_class_ident_and_style():
-    assert(str(Sample("text", cl='abclass', ident='123', style="font-size:0.9em;"))
-           == "<samp id=\"123\" class=\"abclass\" style=\"font-size:0.9em;\">text</samp>")
+def test_custom_class_ident_style_and_attrs():
+    assert(str(Sample("text", cl='abclass', ident='123', style="font-size:0.9em;", attrs={"data-test": 'abc'}))
+           == "<samp id=\"123\" class=\"abclass\" style=\"font-size:0.9em;\" data-test=\"abc\">text</samp>")

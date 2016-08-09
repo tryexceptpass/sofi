@@ -18,6 +18,6 @@ def test_hover():
 def test_responsive():
     assert(str(Table(striped=True, responsive=True)) == "<div class=\"table-responsive\"><table class=\"table table-striped\"></table></div>")
 
-def test_custom_class_ident_and_style():
-    assert(str(Table(striped=True, bordered=True, cl='abclass', ident='123', style="font-size:0.9em;"))
-           == "<table id=\"123\" class=\"table table-striped table-bordered abclass\" style=\"font-size:0.9em;\"></table>")
+def test_custom_class_ident_style_and_attrs():
+    assert(str(Table(striped=True, bordered=True, cl='abclass', ident='123', style="font-size:0.9em;", attrs={"data-test": 'abc'}))
+           == "<table id=\"123\" class=\"table table-striped table-bordered abclass\" style=\"font-size:0.9em;\" data-test=\"abc\"></table>")

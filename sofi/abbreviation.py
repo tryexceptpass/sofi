@@ -4,7 +4,7 @@ class Abbreviation(Element):
     """Implementation of the <abbr> tag"""
 
     def __init__(self, title="", text=None, initialism=False, cl=None, ident=None, style=None, attrs=None):
-        super().__init__(cl=cl, ident=ident, style=style)
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.title = title
         self.initialism = initialism
