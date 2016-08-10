@@ -56,7 +56,7 @@ def main(event, interface):
     c.newrow(Heading(2, "Dude!"))
     c.newrow(Paragraph("Where's My Car?", ident="fiddle"))
 
-    bd = ButtonDropdown('A Dropdown', size='lg', dropup=True)
+    bd = ButtonDropdown('A Dropdown', size='xs', dropup=True, split=True, severity="success")
     bd.addelement(DropdownItem('Item Header', header=True))
     bd.addelement(DropdownItem('Item 1'))
     bd.addelement(DropdownItem('Item 2', disabled=True))
