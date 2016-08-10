@@ -15,16 +15,19 @@ handling is done.
 Following basic practices from bootstrap, the widgets should be within a `Container`. The main page is represented with
 the `View` class.
 
-Below is a quick idea of how to get things going, but check out `sample.py` for a more complicated hello world which instantiates a navbar item, adds a few links to it and performs some timed updates.
+Below is a quick idea of how to get things going, but check out `sample.py` for a more complicated hello world which instantiates a navbar item, adds a few links, creates some buttons, registers events and performs some timed updates.
+
+**Note:** I understand that some of the return values from the event processors are not user friendly. I'll wrap those up into something pretty in the near future.
 
 ```python
-from sofi.app import SofiEventServer, SofiEventProcessor
-
+from sofi.app import Sofi
 from sofi import Container, Paragraph, Heading, View
 
 import json
+import asyncio
 
-def main(socket):
+@asyncio.coroutine
+def main(event, interface)):
    v = View()
 
    c = Container()
@@ -33,13 +36,15 @@ def main(socket):
 
    v.additem(c)
 
-   socket.sendMessage(bytes(json.dumps({'html': str(v)}), 'utf-8'), False)
+   return { 'name': 'init', 'html': str(v) }
 
 
+# Instantiate the application
+sep = Sofi()
 
-sep = SofiEventProcessor()
-sep.oninit = main
+# Register the main event handler
+app.register('init', main)
 
-app = SofiEventServer(processor=sep)
+# Start the app (opens the default browser) and listen for events
 app.start()
 ```
