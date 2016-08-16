@@ -38,7 +38,7 @@ def main(event, interface)):
 
 
 # Instantiate the application
-sep = Sofi()
+app = Sofi()
 
 # Register the main event handler
 app.register('init', main)
