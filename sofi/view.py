@@ -21,7 +21,6 @@ class View(Element):
         body = []
 
         for child in self.children:
-            print(type(child))
             if type(child) == Navbar:
                 if child.fixed == "top":
                     head.append('<style>/* Added to make room for the navbar at top */\nbody { padding-top: 70px; }\n</style>')

@@ -3,6 +3,7 @@ import os
 
 import json
 import webbrowser
+import logging
 
 from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
@@ -108,24 +109,24 @@ class SofiEventProtocol(WebSocketServerProtocol):
     """Websocket event handler which dispatches events to SofiEventProcessor"""
 
     def onConnect(self, request):
-        print("Client connecting: %s" % request.peer)
+        logging.info("Client connecting: %s" % request.peer)
 
     def onOpen(self):
-        print("WebSocket connection open")
+        logging.info("WebSocket connection open")
 
     @asyncio.coroutine
     def onMessage(self, payload, isBinary):
         if isBinary:
-            print("Binary message received: {} bytes".format(len(payload)))
+            logging.info("Binary message received: {} bytes".format(len(payload)))
         else:
-            print("Text message received: {}".format(payload.decode('utf-8')))
+            logging.info("Text message received: {}".format(payload.decode('utf-8')))
             body = json.loads(payload.decode('utf-8'))
 
             if 'event' in body:
                 yield from self.processor.process(self, body)
 
     def onClose(self, wasClean, code, reason):
-        print("WebSocket connection closed: {}".format(reason))
+        logging.info("WebSocket connection closed: {}".format(reason))
         exit(0)
 
 

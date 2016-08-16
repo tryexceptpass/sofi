@@ -8,9 +8,11 @@ import asyncio
 import json
 import time
 
+import logging
+
 @asyncio.coroutine
 def main(event, interface):
-    print("MAIN")
+    logging.info("MAIN")
     v = View()
 
     n = Navbar(brand="SOFI", fixed='top')
@@ -65,12 +67,12 @@ def main(event, interface):
     c.newrow(bd)
 
     r = Row()
-    col = Column(count=6)
+    col = Column(count=3)
     p = Panel("Panel 1")
     col.addelement(p)
     r.addelement(col)
 
-    col = Column(count=6)
+    col = Column(count=3)
     p = Panel("Panel 2", 'danger')
     col.addelement(p)
     r.addelement(col)
@@ -84,7 +86,7 @@ def main(event, interface):
 
 @asyncio.coroutine
 def load(event, interface):
-    print("LOADED")
+    logging.info("LOADED")
 
     app.register('click', buttonclicked, selector='button')
 
@@ -108,18 +110,20 @@ def load(event, interface):
 
 @asyncio.coroutine
 def clicked(event, interface):
-    print("CLICKED!")
+    logging.info("CLICKED!")
 
 @asyncio.coroutine
 def buttonclicked(event, interface):
     if ('id' in event['event_object']['target']):
-        print("BUTTON " + event['event_object']['target']['id'] + " CLICKED!")
+        logging.info("BUTTON " + event['event_object']['target']['id'] + " CLICKED!")
     else:
-        print("BUTTON " + event['event_object']['target']['innerText'] + " CLICKED!")
+        logging.info("BUTTON " + event['event_object']['target']['innerText'] + " CLICKED!")
+
+logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
 
 app = Sofi()
 app.register('init', main)
 app.register('load', load)
-app.register('click', clicked)
+#app.register('click', clicked)
 
 app.start()
