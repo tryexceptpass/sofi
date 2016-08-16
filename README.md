@@ -47,7 +47,7 @@ app.register('init', main)
 app.start()
 ```
 
-What do the widgets look like?
+## What do the widgets look like?
 
 ![sample.py](https://cdn-images-1.medium.com/max/800/1*euug6f885sjtRPOMt_Vc6g.png)
 
