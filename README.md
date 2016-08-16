@@ -46,3 +46,9 @@ app.register('init', main)
 # Start the app (opens the default browser) and listen for events
 app.start()
 ```
+
+What do the widgets look like?
+
+![sample.py](https://cdn-images-1.medium.com/max/800/1*euug6f885sjtRPOMt_Vc6g.png)
+
+![timeline.py](https://cdn-images-1.medium.com/max/800/1*AmbFclbXWFdIRYbpa0cyBw.png)
