@@ -9,11 +9,9 @@ other common HTML5 libraries and package them in such a way that all event proce
 We're in an **alpha** stage of development, still getting most of the main APIs in place.
 
 ## Usage
-The `SofiEventServer` runs the main event thread with `.start()` and the `SofiEventProcessor` is where all the event
-handling is done.
+The `sofi.app.Sofi` object runs the main event thread with `.start()` and provides the `register` function for adding event subscriptions.
 
-Following basic practices from bootstrap, the widgets should be within a `Container`. The main page is represented with
-the `View` class.
+Following basic practices from bootstrap, the widgets should be within a `Container`. The main page is represented with the `View` class.
 
 Below is a quick idea of how to get things going, but check out `sample.py` for a more complicated hello world which instantiates a navbar item, adds a few links, creates some buttons, registers events and performs some timed updates.
 
