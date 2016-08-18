@@ -6,7 +6,9 @@ The main idea is to allow rapid, pythonic GUI development using standard web-bas
 other common HTML5 libraries and package them in such a way that all event processing is done within python using
 `websockets`.
 
-We're in an **alpha** stage of development, still getting most of the main APIs in place.
+This was developed as an exercise in poking at the underlying technologies and to see what comes out of merging them together. For a better overview of why it came to be, feel free to take a look at this post: [A Python Ate My GUI - Part 3: Implementation](https://medium.com/@tryexceptpass/a-python-ate-my-gui-part-3-implementation-39fc105b6d81#.xzalmtnzs)
+
+We're in a **beta** stage for now, feedback appreciated.
 
 ## Usage
 The `sofi.app.Sofi` object runs the main event thread with `.start()` and provides the `register` function for adding event subscriptions.
