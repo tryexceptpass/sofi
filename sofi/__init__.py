@@ -46,3 +46,5 @@ from .buttongroup import ButtonGroup
 from .buttontoolbar import ButtonToolbar
 from .buttondropdown import ButtonDropdown
 from .panel import Panel
+from .div import Div
+from .span import Span

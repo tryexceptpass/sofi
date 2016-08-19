@@ -14,6 +14,7 @@ function init() {
         console.log("Received: " + event.data)
 
         command = JSON.parse(event.data)
+        console.log(command)
 
         if (command.name == "init") {
             if (command.html)
@@ -22,7 +23,7 @@ function init() {
             load()
         }
         else if (command.name == "append") {
-            d3.selectAll(command.selector).append(command.html)
+            $(command.selector).append(command.html)
         }
         else if (command.name == "remove") {
             d3.selectAll(command.selector).remove()
