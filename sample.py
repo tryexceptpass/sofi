@@ -1,8 +1,8 @@
 from sofi.app import Sofi
-from sofi import Container, View, Row, Panel, Column
-from sofi import Paragraph, Heading, Anchor
-from sofi import Navbar, Dropdown, DropdownItem
-from sofi import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
+from sofi.ui import Container, View, Row, Panel, Column
+from sofi.ui import Paragraph, Heading, Anchor
+from sofi.ui import Navbar, Dropdown, DropdownItem
+from sofi.ui import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
 
 import asyncio
 import json
