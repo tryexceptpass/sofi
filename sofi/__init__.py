@@ -35,6 +35,7 @@ from .tablebody import TableBody
 from .tablefooter import TableFooter
 from .tablerow import TableRow
 from .tablecell import TableCell
+from .tablecaption import TableCaption
 from .form import Form
 from .navbar import Navbar
 from .anchor import Anchor
