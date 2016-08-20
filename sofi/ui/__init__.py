@@ -3,6 +3,7 @@ from .abbreviation import Abbreviation
 from .address import Address
 from .blockquote import Blockquote
 from .bold import Bold
+from .button import Button
 from .cite import Cite
 from .column import Column
 from .container import Container
