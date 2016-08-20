@@ -27,14 +27,14 @@ import json
 import asyncio
 
 @asyncio.coroutine
-def main(event, interface)):
+def main(event, interface):
    v = View()
 
    c = Container()
-   c.additem(Heading(2, "Dude!"))
-   c.additem(Paragraph("Where's My Car?"))
+   c.addelement(Heading(2, "Dude!"))
+   c.addelement(Paragraph("Where's My Car?"))
 
-   v.additem(c)
+   v.addelement(c)
 
    return { 'name': 'init', 'html': str(v) }
 
