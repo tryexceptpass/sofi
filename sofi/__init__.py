@@ -2,6 +2,7 @@ from .element import Element
 from .abbreviation import Abbreviation
 from .address import Address
 from .blockquote import Blockquote
+from .button import Button
 from .bold import Bold
 from .cite import Cite
 from .column import Column
