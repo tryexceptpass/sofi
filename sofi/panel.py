@@ -66,11 +66,21 @@ class Panel(Element):
         output.append('>')
 
         if self.heading:
-            output.append('<div class="panel-heading">')
+            output.append('<div')
+            if self.ident:
+                output.append(' id="')
+                output.append(self.ident + "-" + "panel-heading")
+                output.append('"')
+            output.append(' class="panel-heading">')
             output.append(str(self._heading))
             output.append('</div>')
 
-        output.append('<div class="panel-body">')
+        output.append('<div')
+        if self.ident:
+            output.append(' id="')
+            output.append(self.ident + "-" + "panel-body")
+            output.append('"')
+        output.append(' class="panel-body">')
 
         for child in self.children:
             output.append(str(child))
