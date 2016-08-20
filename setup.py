@@ -13,6 +13,9 @@ setup(
     url = "https://github.com/tryexceptpass/sofi",
 
     packages = find_packages(),
+    package_data = {
+            'sofi': ['app/main.html', 'app/sofi.js']
+    },
 
     install_requires = [ 'autobahn' ],
     setup_requires=['pytest-runner'],
@@ -20,7 +23,7 @@ setup(
 
     license = "MIT",
     classifiers = [ 'License :: OSI Approved :: MIT License',
-
+                   # ADD MORE CLASSIFIERS!
                     'Development Status :: 4 - Beta',
                   ],
     keywords = [ 'websockets', 'javascript', 'bootstrap', 'gui' ]
