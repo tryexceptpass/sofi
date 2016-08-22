@@ -1,4 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/tryexceptpass/sofi.png?label=ready&title=Ready)](https://waffle.io/tryexceptpass/sofi)
+[![Build Status](https://travis-ci.org/tryexceptpass/sofi.svg?branch=master)](https://travis-ci.org/tryexceptpass/sofi) [![Stories in Ready](https://badge.waffle.io/tryexceptpass/sofi.png?label=ready&title=Tasks%20Ready)](https://waffle.io/tryexceptpass/sofi) 
 ## Overview
 `sofi` is an OS agnostic UI module for Python.
 
