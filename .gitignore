@@ -1,3 +1,13 @@
+# Python Cache
 .cache
 __pycache__/
 *.pyc
+
+# Test Files
+.hypothesis/
+
+# Builds
+.eggs/
+build/
+dist/
+sofi.egg-info/
