@@ -12,10 +12,10 @@ def test_info_severity_small():
 def test_primary_severity_xsmall():
     assert(str(Button("text", "primary", "xsmall")) == "<button class=\"btn btn-primary btn-xs\">text</button>")
 
-def test_success_severity_xsmall():
+def test_success_severity():
     assert(str(Button("text", "success")) == "<button class=\"btn btn-success\">text</button>")
 
-def test_warning_severity_xsmall():
+def test_warning_severity():
     assert(str(Button("text", "warning")) == "<button class=\"btn btn-warning\">text</button>")
 
 def test_custom_class_ident_and_style():

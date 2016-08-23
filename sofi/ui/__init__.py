@@ -3,6 +3,7 @@ from .abbreviation import Abbreviation
 from .address import Address
 from .blockquote import Blockquote
 from .bold import Bold
+from .badge import Badge
 from .cite import Cite
 from .column import Column
 from .container import Container
@@ -48,3 +49,4 @@ from .buttondropdown import ButtonDropdown
 from .panel import Panel
 from .div import Div
 from .span import Span
+from .label import Label

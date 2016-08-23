@@ -21,7 +21,7 @@ Below is a quick idea of how to get things going, but check out `sample.py` for 
 
 ```python
 from sofi.app import Sofi
-from sofi import Container, Paragraph, Heading, View
+from sofi.ui import Container, Paragraph, Heading, View
 
 import json
 import asyncio
