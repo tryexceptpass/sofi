@@ -12,10 +12,10 @@ class Sofi(object):
         self.processor = SofiEventProcessor()
         self.server = SofiEventServer(processor=self.processor)
 
-    def start(self):
+    def start(self, autobrowse=True):
         ### Start the application
 
-        self.server.start()
+        self.server.start(autobrowse)
 
     def register(self, event, callback, selector=None):
         ### Register event callback
@@ -149,12 +149,13 @@ class SofiEventServer(object):
         self.loop = asyncio.get_event_loop()
         self.server = self.loop.create_server(factory, '0.0.0.0', port)
 
-    def start(self):
+    def start(self, autobrowse=True):
         self.loop.run_until_complete(self.server)
 
         try:
             path = os.path.dirname(os.path.realpath(__file__))
-            webbrowser.open('file:///' + os.path.join(path, 'main.html'))
+            if autobrowse:
+                webbrowser.open('file:///' + os.path.join(path, 'main.html'))
             self.loop.run_forever()
 
         except KeyboardInterrupt:
