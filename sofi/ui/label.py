@@ -1,7 +1,7 @@
 from .element import Element
 from .span import Span
 
-class Label(Element):
+class Label(Span):
     """Implements the <label> tag"""
 
     SEVERITIES = { 'danger':  'label-danger',
@@ -17,10 +17,6 @@ class Label(Element):
 
         self.text = text
         self.severity = severity
-        self.ident = ident
-        self.style = style
-        self.attrs = attrs
-        self.cl = cl
 
     def __repr__(self):
         return "<Label(text='" + self.text + "')>"

@@ -1,17 +1,13 @@
 from .element import Element
 from .span import Span
 
-class Badge(Element):
+class Badge(Span):
     """Implement Badges"""
 
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
-        self.ident = ident
-        self.style = style
-        self.attrs = attrs
-        self.cl = cl
 
     def __repr__(self):
         return "<Badge text='" + self.text + "'>"
