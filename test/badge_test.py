@@ -7,5 +7,5 @@ def test_text():
     assert(str(Badge("2")) == "<span class=\"badge\">2</span>")
 
 def test_custom_class_ident_style_and_attrs():
-    assert(str(Badge("2", ident='123', style="font-size:0.9em;", attrs={"data-test": 'abc'}))
-           == "<span class=\"badge\" id=\"123\" style=\"font-size:0.9em;\" data-test=\"abc\">2</span>")
+    assert(str(Badge("2", ident='123', cl="testing" style="font-size:0.9em;", attrs={"data-test": 'abc'}))
+           == "<span id=\"123\" class=\"badge testing\" style=\"font-size:0.9em;\" data-test=\"abc\">2</span>")
