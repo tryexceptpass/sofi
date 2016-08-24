@@ -50,3 +50,4 @@ from .panel import Panel
 from .div import Div
 from .span import Span
 from .label import Label
+from .textarea import Textarea
