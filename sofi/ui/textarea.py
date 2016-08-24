@@ -11,7 +11,7 @@ class Textarea(Element):
             self.children.append(text)
 
     def __repr__(self):
-        return "<Code>"
+        return "<Textarea>"
 
     def __str__(self):
         output = [ "<textarea" ]
