@@ -4,11 +4,13 @@ class Textarea(Element):
     """Implements <textarea> tag"""
 
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, rows=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text:
             self.children.append(text)
+
+        self.rows = rows
 
     def __repr__(self):
         return "<Textarea>"
@@ -32,6 +34,9 @@ class Textarea(Element):
             output.append(" style=\"")
             output.append(self.style)
             output.append("\"")
+
+        if self.rows:
+            output.append(" rows=\"" + str(self.rows) + "\"")
 
         if self.attrs:
             for k in self.attrs.keys():
