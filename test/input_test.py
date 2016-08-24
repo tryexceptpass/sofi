@@ -24,7 +24,10 @@ def test_size_small():
     assert(str(Input('color', size="small")) == "<input type=\"color\" class=\"form-control input-sm\"></input>")
 
 def test_help_text():
-    assert(str(Input('text', helptext="help me")) == "<input type=\"text\" class=\"form-control\" aria-describedby=\"helpBlock\"></input><span id=\"helpBlock\" class=\"help-block\">help me</span>")
+    assert(str(Input('text', helptext="help me")) == "<input type=\"text\" class=\"form-control\" aria-describedby=\"helpblock\"></input><span id=\"helpblock\" class=\"help-block\">help me</span>")
+
+def test_help_text_with_id():
+    assert(str(Input('text', ident='456', helptext="help me")) == "<input type=\"text\" id=\"456\" class=\"form-control\" aria-describedby=\"456-helpblock\"></input><span id=\"456-helpblock\" class=\"help-block\">help me</span>")
 
 def test_custom_class_ident_style_and_attrs():
     assert(str(Input("text", cl='abclass', ident='123', style="font-size:0.9em;", attrs={"data-test": 'abc'}))

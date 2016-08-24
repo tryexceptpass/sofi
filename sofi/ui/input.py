@@ -61,13 +61,13 @@ class Input(Element):
             for k in self.attrs.keys():
                 output.append(' ' + k + '="' + self.attrs[k] + '"')
 
-        helpid = "helpBlock"
+        helpid = "helpblock"
         if self.ident:
             helpid = self.ident + "-" + helpid
 
         if self.helptext:
             output.append(" aria-describedby=\"")
-            output.append("helpBlock")
+            output.append(helpid)
             output.append("\"")
 
         output.append(">")
