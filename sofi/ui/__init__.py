@@ -53,3 +53,6 @@ from .label import Label
 from .textarea import Textarea
 from .input import Input
 from .image import Image
+from .jumbotron import Jumbotron
+from .well import Well
+from .fontawesome import FontAwesomeIcon
