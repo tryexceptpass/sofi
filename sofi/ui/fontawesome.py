@@ -1,34 +1,35 @@
 from .element import Element
 
-class Jumbotron(Element):
-    """Implements the Bootstrap Jumbotron <div class="jumbotron">"""
+class FontAwesomeIcon(Element):
+    """Implements Font Awesome Icons"""
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, icon=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
-            self.children.append(text)
+        self.icon = icon
 
     def __repr__(self):
-        return "<Jumbotron>"
+        return "<FontAwesomeIcon(icon='" + self.icon + "')>"
 
     def __str__(self):
-        output = [ "<div" ]
+        output = [ "<i" ]
 
         if self.ident:
             output.append(" id=\"")
             output.append(self.ident)
             output.append("\"")
 
-        classes = []
-        classes.append("jumbotron")
+        classes = ["fa"]
 
-        if self.cl:
+        if self.icon:
+            classes.append("fa-"+self.icon)
+
+        if self.cl:            
             classes.append(self.cl)
-
-        output.append(' class="')
+            
+        output.append(" class=\"")
         output.append(" ".join(classes))
-        output.append('"')
+        output.append("\"")
 
         if self.style:
             output.append(" style=\"")
@@ -44,7 +45,6 @@ class Jumbotron(Element):
         for child in self.children:
             output.append(str(child))
 
-        output.append("</div>")
+        output.append("</i>")
 
         return "".join(output)
-
