@@ -9,23 +9,74 @@ from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerPr
 
 class Sofi(object):
     def __init__(self):
-        self.processor = SofiEventProcessor()
-        self.server = SofiEventServer(processor=self.processor)
+        self.interface = SofiEventProcessor()
+        self.server = SofiEventServer(processor=self.interface)
 
     def start(self, autobrowse=True):
-        ### Start the application
+        """Start the application"""
 
         self.server.start(autobrowse)
 
     def register(self, event, callback, selector=None):
-        ### Register event callback
+        """Register event callback"""
 
-        self.processor.register(event, callback, selector)
+        self.interface.register(event, callback, selector)
 
     def unregister(self, event, callback, selector=None):
-        ### Register event callback
+        """Register event callback"""
 
-        self.processor.unregister(event, callback, selector)
+        self.interface.unregister(event, callback, selector)
+
+    def load(self, html):
+        """Initialize the UI. This will replace the document <html> tag contents with the supplied html."""
+
+        self.interface.dispatch({ 'name': 'init', 'html': html })
+
+    def append(self, selector, html):
+        """Append the given html to all elements matching this selector"""
+
+        self.interface.dispatch({ 'name': 'append', 'selector': selector, 'html': html })
+
+    def remove(self, selector):
+        """Remove the elements matching this selector."""
+
+        self.interface.dispatch({ 'name': 'remove', 'selector': selector })
+
+    def replace(self, selector, html):
+        """Replace the contents all elements matching this selector with the given html."""
+
+        self.interface.dispatch({ 'name': 'replace', 'selector': selector, 'html': html })
+
+    def addclass(self, selector, cl):
+        """Add the given class from all elements matching this selector."""
+
+        self.interface.dispatch({ 'name': 'addclass', 'selector': selector, 'cl': cl })
+
+    def removeclass(self, selector, cl):
+        """Remove the given class from all elements matching this selector."""
+
+        self.interface.dispatch({ 'name': 'removeclass', 'selector': selector, 'cl': cl })
+
+    def text(self, selector, text):
+        """Set the text for elements matching the selector."""
+
+        self.interface.dispatch({ 'name': 'text', 'selector': selector, 'text': text })
+
+    def attr(self, selector, attr, value):
+        """Set the attribute for elements matching this selector."""
+
+        self.interface.dispatch({ 'name': 'attr', 'selector': selector, 'attr': attr, 'value': value })
+
+    def style(self, selector, style, value, priority=None):
+        """Set the style for elements matching this selector. The priority field can be set to "important" to force the style."""
+
+        self.interface.dispatch({ 'name': 'style', 'selector': selector, 'style': style, 'value': value, 'priority': priority })
+
+    def property(self, selector, property, value):
+        """Set the property for elements matching this selector. Properties are special attributes like 'checked' or 'value'."""
+
+        self.interface.dispatch({ 'name': 'attr', 'selector': selector, 'property': property, 'value': value })
+
 
 class SofiEventProcessor(object):
     """Event handler providing hooks for callback functions"""
@@ -91,18 +142,12 @@ class SofiEventProcessor(object):
                 if key in self.handlers[eventtype]:
                     for handler in self.handlers[eventtype][key]:
                         if callable(handler):
-                            command = yield from handler(event, self)
-
-                            if command:
-                                self.dispatch(command)
+                            yield from handler(event)
 
             # Check for global handler
             for handler in self.handlers[eventtype]['_']:
                 if callable(handler):
-                    command = yield from handler(event, self)
-
-                    if command:
-                        self.dispatch(command)
+                    yield from handler(event)
 
 
 class SofiEventProtocol(WebSocketServerProtocol):

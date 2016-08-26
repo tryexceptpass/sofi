@@ -1,10 +1,9 @@
 from sofi.app import Sofi
-from sofi import Container, View, Row, Column
-from sofi import Panel, Paragraph
+from sofi.ui import Container, View, Row, Column
+from sofi.ui import Panel, Paragraph
 
 import asyncio
 import json
-import time
 
 import tweepy
 from datetime import datetime
@@ -23,7 +22,7 @@ api = tweepy.API(auth)
 dateformat = "%a %b %d %H:%M:%S %z %Y"
 
 @asyncio.coroutine
-def main(event, interface):
+def main(event):
     print("MAIN")
     v = View()
     c = Container()
@@ -40,32 +39,11 @@ def main(event, interface):
 
     v.addelement(c)
 
-    return { 'name': 'init', 'html': str(v) }
+    app.load(str(v))
 
-@asyncio.coroutine
-def load(event, interface):
-    print("LOADED")
-
-    yield from asyncio.sleep(5)
-
-    for i in range(1, 5):
-        interface.dispatch({'name': 'style', 'selector': '#fiddle', 'style': 'font-size', 'value': str(i*2) + 'em', 'priority': 'important'})
-        yield from asyncio.sleep(1)
-
-    yield from asyncio.sleep(5)
-
-    interface.dispatch({'name': 'remove', 'selector': '#fiddle'})
-
-    msg = 'SWEET!!!'
-    for i in range(8):
-        interface.dispatch({ 'name': 'text', 'selector': 'h2', 'text': msg[:i]})
-        yield from asyncio.sleep(1)
-
-    return
 
 
 app = Sofi()
 app.register('init', main)
-app.register('load', load)
 
 app.start()

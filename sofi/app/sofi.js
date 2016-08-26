@@ -44,7 +44,12 @@ function init() {
             d3.selectAll(command.selector).attr(command.attr, command.value)
         }
         else if (command.name == "style") {
-            d3.selectAll(command.selector).style(command.style, command.value, command.priority)
+            if (command.priority) {
+                d3.selectAll(command.selector).style(command.style, command.value, command.priority)
+            }
+            else {
+                d3.selectAll(command.selector).style(command.style, command.value)    
+            }
         }
         else if (command.name == "property") {
             d3.selectAll(command.selector).property(command.property, command.value)

@@ -11,7 +11,7 @@ import time
 import logging
 
 @asyncio.coroutine
-def main(event, interface):
+def oninit(event):
     logging.info("MAIN")
     v = View()
 
@@ -82,10 +82,10 @@ def main(event, interface):
 
     v.addelement(c)
 
-    return { 'name': 'init', 'html': str(v) }
+    app.load(str(v))
 
 @asyncio.coroutine
-def load(event, interface):
+def onload(event):
     logging.info("LOADED")
 
     app.register('click', buttonclicked, selector='button')
@@ -93,27 +93,28 @@ def load(event, interface):
     yield from asyncio.sleep(5)
 
     for i in range(1, 5):
-        interface.dispatch({'name': 'style', 'selector': '#fiddle', 'style': 'font-size', 'value': str(i*2) + 'em', 'priority': 'important'})
+        app.style("#fiddle", 'font-size', str(i*2) + "em", 'important')
+
         yield from asyncio.sleep(1)
 
     yield from asyncio.sleep(5)
 
-    interface.dispatch({'name': 'remove', 'selector': '#fiddle'})
+    app.remove("#fiddle")
 
     msg = 'SWEET!!!'
     for i in range(8):
-        interface.dispatch({ 'name': 'text', 'selector': 'h2', 'text': msg[:i]})
+        app.text("h2", msg[:i])
         yield from asyncio.sleep(1)
 
     app.unregister('click', buttonclicked, selector='button')
     return
 
 @asyncio.coroutine
-def clicked(event, interface):
+def clicked(event):
     logging.info("CLICKED!")
 
 @asyncio.coroutine
-def buttonclicked(event, interface):
+def buttonclicked(event):
     if ('id' in event['event_object']['target']):
         logging.info("BUTTON " + event['event_object']['target']['id'] + " CLICKED!")
     else:
@@ -122,8 +123,8 @@ def buttonclicked(event, interface):
 logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
 
 app = Sofi()
-app.register('init', main)
-app.register('load', load)
-#app.register('click', clicked)
+app.register('init', oninit)
+app.register('load', onload)
+# app.register('click', clicked)
 
-app.start(False)
+app.start()
