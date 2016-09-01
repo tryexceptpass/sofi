@@ -169,6 +169,7 @@ class SofiEventProtocol(WebSocketServerProtocol):
 
             if 'event' in body:
                 yield from self.processor.process(self, body)
+                return
 
     def onClose(self, wasClean, code, reason):
         logging.info("WebSocket connection closed: {}".format(reason))
