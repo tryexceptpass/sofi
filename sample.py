@@ -127,4 +127,4 @@ app.register('init', oninit)
 app.register('load', onload)
 # app.register('click', clicked)
 
-app.start(False)
+app.start()
