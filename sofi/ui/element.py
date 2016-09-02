@@ -31,7 +31,7 @@ class Element(object):
 
         for name, as_html in attributes:
             # Grab the value of the `name` attribute from `self`
-            value = getattr(self, name)
+            value = getattr(self, name, None)
             if value:
                 output.append('{}="{}"'.format(as_html, value))
 
