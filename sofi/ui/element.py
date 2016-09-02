@@ -12,7 +12,7 @@ class Element(object):
 
         self.children = list()
 
-    def _element_attributes(self, attributes):
+    def _attrs_to_string(self, attributes):
         """
         A shortcut for generating all the tag attributes (id, class, etc) 
         given a list of (attr_name_in_self, attr_name_in_html) pairs.
@@ -23,7 +23,7 @@ class Element(object):
         ...         ('cl', 'class'),
         ...         ('ident', 'id')]
 
-        >>> e._element_attributes(attributes)
+        >>> e._attrs_to_string(attributes)
         'class="container" id="foo"'
 
         """
