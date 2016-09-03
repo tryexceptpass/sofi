@@ -1,5 +1,7 @@
 from .element import Element
 
+from base64 import b64encode
+
 class Image(Element):
     """Implements the <img> tag"""
 
@@ -18,6 +20,28 @@ class Image(Element):
         self.height = height
         self.alt = alt
         self.responsive = responsive
+
+    def datauri(self, path, type=None):
+        """Use a data URI to embed the image in the given path by base64 encoding it. Supports png, jpg and gif formats."""
+
+        media = None
+        ext = path[-3:]
+
+        if ext == "png":
+            media = "image/png"
+        elif ext == "jpg":
+            media = "image/jpg"
+        elif ext == "gif":
+            media = "image/gif"
+        else:
+            raise ValueError("Unknown image format")
+
+        encoded = None
+        with open(path, "rb") as img:
+            encoded = b64encode(img.read()).decode('utf-8')
+
+        if encoded:
+            self.src = "data:" + media + ";base64," + encoded
 
     def __repr__(self):
         return "<Image(src='" + self.src + "')>"

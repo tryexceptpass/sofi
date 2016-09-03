@@ -1,6 +1,6 @@
 from sofi.app import Sofi
 from sofi.ui import Container, View, Row, Panel, Column
-from sofi.ui import Paragraph, Heading, Anchor
+from sofi.ui import Paragraph, Heading, Anchor, Image
 from sofi.ui import Navbar, Dropdown, DropdownItem
 from sofi.ui import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
 
@@ -9,6 +9,7 @@ import json
 import time
 
 import logging
+import os
 
 @asyncio.coroutine
 def oninit(event):
@@ -99,7 +100,10 @@ def onload(event):
 
     yield from asyncio.sleep(5)
 
-    app.remove("#fiddle")
+    img = Image()
+    img.datauri(os.path.join(os.path.dirname(__file__), 'test', 'test.png'))
+
+    app.replace("#fiddle", str(img))
 
     msg = 'SWEET!!!'
     for i in range(8):
