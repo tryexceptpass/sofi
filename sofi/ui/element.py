@@ -35,10 +35,15 @@ class Element(object):
         output = []
 
         for name, as_html in attributes:
-            # Grab the value of the `name` attribute from `self`
-            value = getattr(self, name, None)
-            if value:
-                output.append('{}="{}"'.format(as_html, value))
+            if as_html is None:
+                # This is an attribute with no value
+                # e.g. <input type="text" name="name" value="" disabled>
+                output.append(name)
+            else:
+                # Grab the value of the `name` attribute from `self`
+                value = getattr(self, name, None)
+                if value:
+                    output.append('{}="{}"'.format(as_html, value))
 
         return ' '.join(output)
 

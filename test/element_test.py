@@ -25,6 +25,17 @@ def test_attrs_to_string_default_arguments():
     assert e._attrs_to_string() == should_be
 
 
+def test_attrs_to_string_attribute_with_no_value():
+    attributes = [
+            ('cl', 'class'),
+            ('ident', 'id'),
+            ('disabled', None),
+            ]
+    e = Element(cl='container', ident='foo')
+    should_be = 'class="container" id="foo" disabled'
+    assert e._attrs_to_string(attributes) == should_be
+
+
 def test_attrs_to_string_with_nonexistent_attribute():
     attributes = [
             ('cl', 'class'),
