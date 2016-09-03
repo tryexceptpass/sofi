@@ -26,6 +26,8 @@ class Element(object):
         >>> e._attrs_to_string(attributes)
         'class="container" id="foo"'
 
+        If no arguments are given, `attributes` defaults to 
+        `[('cl','class'), ('ident', 'id')]`.
         """
         if attributes is None:
             attributes=[('cl','class'), ('ident', 'id')]
