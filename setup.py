@@ -5,7 +5,7 @@ setup(
     author_email = "tryexceptpass@users.noreply.github.com",
 
     name = "sofi",
-    version = "0.1.1",
+    version = "0.1.4",
 
     description = "GUI layer for Python based on WebSockets Bootstrap and D3.js",
     long_description="Sofi is a Python 3 system that will generate the necessary HTML and JavaScript code typically needed to produce a single-page application and serve it up through WebSockets.\n\nThe webpage functions as a dumb user interface layer on top of your python code by exposing a simple command and event system that allows for communications back and forth with the python logic. The UI itself is generated using Bootstrap components, and enabled by D3.js for processing events and DOM changes.",
@@ -14,7 +14,8 @@ setup(
 
     packages = find_packages(),
     package_data = {
-            'sofi': ['app/main.html', 'app/sofi.js']
+            'sofi': ['app/main.html', 'app/sofi.js'],
+            'test': ['test.png']
     },
 
     install_requires = [ 'autobahn' ],
