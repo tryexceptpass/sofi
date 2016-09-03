@@ -28,6 +28,10 @@ class Element(object):
 
         If no arguments are given, `attributes` defaults to 
         `[('cl','class'), ('ident', 'id')]`.
+
+        If `attributes` contains a pair of ("some_name", None), `some_name`
+        will be taken as an attribute with no value and will be appended
+        directly to the output string.
         """
         if attributes is None:
             attributes=[('cl','class'), ('ident', 'id')]
