@@ -40,7 +40,7 @@ class Navbar(Element):
         if type(self.children[-1]) != UnorderedList:
             self.children.append(UnorderedList(cl="nav navbar-nav"))
 
-        dropdown.isnavbaritem(True)
+        dropdown.navbaritem = True
         self.children[-1].addelement(dropdown)
 
     def __repr__(self):

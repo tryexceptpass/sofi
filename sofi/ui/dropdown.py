@@ -3,15 +3,12 @@ from .element import Element
 class Dropdown(Element):
     """Implements a Bootstrap dropdown tag"""
 
-    def __init__(self, text, dropup=False, align='left', cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text, dropup=False, align='left', navbaritem=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
         self.dropup = dropup
         self.align = align
-        self.navbaritem = False
-
-    def isnavbaritem(self, navbaritem):
         self.navbaritem = navbaritem
 
     def __repr__(self):
