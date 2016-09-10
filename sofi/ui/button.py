@@ -45,7 +45,7 @@ class Button(Element):
         if self.cl:
             classes.append(self.cl)
         output.append(" ".join(classes))
-        output.append('"')
+        output.append('" type="button"')
 
         if self.style:
             output.append(' style="')

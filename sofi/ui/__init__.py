@@ -48,7 +48,7 @@ from .buttontoolbar import ButtonToolbar
 from .buttondropdown import ButtonDropdown
 from .panel import Panel
 from .div import Div
-from .span import Span
+from .span import Span, CaretSpan
 from .label import Label
 from .textarea import Textarea
 from .input import Input

@@ -1,4 +1,10 @@
 from .element import Element
+from .listitem import ListItem
+from .button import Button
+from .div import Div
+from .anchor import Anchor
+from .span import CaretSpan
+from .unorderedlist import UnorderedList
 
 class Dropdown(Element):
     """Implements a Bootstrap dropdown tag"""
@@ -17,76 +23,42 @@ class Dropdown(Element):
     def __str__(self):
         output = []
 
-        if self.navbaritem:
-            output.append("<li")
-        else:
-            output.append("<div")
-
+        ident = None
         if self.ident:
-            output.append(' id="')
-            output.append(self.ident)
-            output.append('-dropdown"')
+            ident = self.ident + "-dropdown"
 
-        output.append(' class="')
-        if self.dropup:
-            output.append('dropup')
-        else:
-            output.append('dropdown')
+        cl = "dropup" if self.dropup else "dropdown"
 
         if self.cl:
-            output.append(' ')
-            output.append(self.cl)
-        output.append('"')
+            cl += " " + self.cl
 
-        if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
-
-        if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
-
-        output.append('>')
-
+        btn = None
         if self.navbaritem:
-            output.append('<a href="#" ')
+            btn = ListItem(cl=cl, ident=ident, style=self.style, attrs=self.attrs)
+            a = Anchor(self.text + " ", cl="dropdown-toggle", ident=self.ident, attrs={"role": "button",
+                                                                                 "data-toggle": "dropdown",
+                                                                                 "aria-haspopup": "true",
+                                                                                 "aria-expanded": "false"})
+            a.addelement(CaretSpan())
+            btn.addelement(a)
         else:
-            output.append('<button ')
+            btn = Div(cl=cl, ident=ident, style=self.style, attrs=self.attrs)
+            b = Button(self.text + " ", cl="dropdown-toggle", ident=self.ident, attrs={"data-toggle": "dropdown"})
+            b.addelement(CaretSpan())
+            btn.addelement(b)
 
-        if self.ident:
-            output.append('id="')
-            output.append(self.ident)
-            output.append('"')
 
-        if self.navbaritem:
-            output.append('class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">')
-        else:
-            output.append('class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">')
+        output.append(str(btn))
 
-        output.append(self.text)
-        output.append(' <span class="caret"></span>')
-
-        if self.navbaritem:
-            output.append('</a>')
-        else:
-            output.append('</button>')
-
-        output.append('<ul class="dropdown-menu')
-
+        cl = "dropdown-menu"
         if self.align == 'right':
-            output.append(' dropdown-menu-right')
+            cl = cl + " dropdown-menu-right"
 
-        output.append('">')
+        ul = UnorderedList(cl=cl)
 
         for child in self.children:
-            output.append(str(child))
+            ul.addelement(child)
 
-        output.append("</ul>")
+        btn.addelement(ul)
 
-        if self.navbaritem:
-            output.append("</li>")
-        else:
-            output.append("</div>")
-
-        return "".join(output)
+        return str(btn)

@@ -42,3 +42,14 @@ class Span(Element):
         output.append("</span>")
 
         return "".join(output)
+
+class CaretSpan(Span):
+    """Implements a span that contains a caret icon, useful in dropdowns and other similar situations"""
+
+    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+        if cl:
+            cl = cl + " caret"
+        else:
+            cl = "caret"
+
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
