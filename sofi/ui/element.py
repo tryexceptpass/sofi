@@ -10,11 +10,11 @@ class Element(object):
         self.style = style
         self.attrs = attrs
 
-        self.children = list()
+        self._children = list()
 
     def _attrs_to_string(self, attributes=None):
         """
-        A shortcut for generating all the tag attributes (id, class, etc) 
+        A shortcut for generating all the tag attributes (id, class, etc)
         given a list of (attr_name_in_self, attr_name_in_html) pairs.
 
         >>> e = Element(cl='container', ident='foo')
@@ -26,13 +26,14 @@ class Element(object):
         >>> e._attrs_to_string(attributes)
         'class="container" id="foo"'
 
-        If no arguments are given, `attributes` defaults to 
+        If no arguments are given, `attributes` defaults to
         `[('cl','class'), ('ident', 'id')]`.
 
         If `attributes` contains a pair of ("some_name", None), `some_name`
         will be taken as an attribute with no value and will be appended
         directly to the output string.
         """
+        
         if attributes is None:
             attributes=[('cl','class'), ('ident', 'id')]
 
@@ -61,4 +62,4 @@ class Element(object):
         """Add a child element to this tag"""
 
         if item is not None:
-            self.children.append(item)
+            self._children.append(item)
