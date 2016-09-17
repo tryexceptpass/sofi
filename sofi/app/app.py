@@ -1,5 +1,6 @@
 import asyncio
 import os
+import signal
 
 import json
 import webbrowser
@@ -205,10 +206,15 @@ class SofiEventServer(object):
             self.loop.run_forever()
 
         except KeyboardInterrupt:
-            pass
+            logging.info("Keyboard Interrupt received.")
+            self.server.close()
 
         finally:
-            self.server.close()
+            asyncio.gather(*asyncio.Task.all_tasks()).cancel()
+            self.loop.stop()
+            logging.info("Cancelling pending tasks...")
+            self.loop.run_forever()
+            logging.info("Stopping Server...")
             self.loop.close()
 
     def __repr__(self):
