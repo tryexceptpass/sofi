@@ -33,7 +33,7 @@ class TableFooter(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</tfoot>")

@@ -7,7 +7,7 @@ class Underlined(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text:
-            self.children.append(text)
+            self._children.append(text)
 
     def __repr__(self):
         return "<Underlined>"
@@ -36,7 +36,7 @@ class Underlined(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</u>")

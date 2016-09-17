@@ -10,7 +10,7 @@ class Anchor(Element):
         self.href = href
 
         if text:
-            self.children.append(text)
+            self._children.append(text)
 
     def __repr__(self):
         return "<Anchor(href='" + self.href + "')>"
@@ -43,7 +43,7 @@ class Anchor(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</a>")

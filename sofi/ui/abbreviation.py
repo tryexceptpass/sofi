@@ -10,7 +10,7 @@ class Abbreviation(Element):
         self.initialism = initialism
 
         if text:
-            self.children.append(text)
+            self._children.append(text)
 
     def __repr__(self):
         return "<Abbreviation(title='" + self.title + "',initialism=" + str(self.initialism) + ")>"
@@ -44,7 +44,7 @@ class Abbreviation(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</abbr>")

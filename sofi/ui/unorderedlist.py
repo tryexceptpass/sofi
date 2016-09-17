@@ -11,7 +11,7 @@ class UnorderedList(Element):
         self.inline = inline
 
         if text:
-            self.children.append(text)
+            self._children.append(text)
 
     def __repr__(self):
         return "<UnorderedList(unstyled=" + str(self.unstyled) + ",inline=" + str(self.inline) + ")>"
@@ -49,7 +49,7 @@ class UnorderedList(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</ul>")

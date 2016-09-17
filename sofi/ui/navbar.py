@@ -15,33 +15,33 @@ class Navbar(Element):
         self.static = static
 
     def addlink(self, text, href="#", active=False):
-        if len(self.children) == 0:
-            self.children.append(UnorderedList(cl="nav navbar-nav"))
+        if len(self._children) == 0:
+            self._children.append(UnorderedList(cl="nav navbar-nav"))
 
-        if type(self.children[-1]) != UnorderedList:
-            self.children.append(UnorderedList(cl="nav navbar-nav"))
+        if type(self._children[-1]) != UnorderedList:
+            self._children.append(UnorderedList(cl="nav navbar-nav"))
 
         if active:
-            self.children[-1].addelement(NavbarItem(text, href, cl='active'))
+            self._children[-1].addelement(NavbarItem(text, href, cl='active'))
         else:
-            self.children[-1].addelement(NavbarItem(text, href))
+            self._children[-1].addelement(NavbarItem(text, href))
 
-        return self.children[-1]
+        return self._children[-1]
 
     def addtext(self, text):
-        self.children.append(NavbarItem(text))
+        self._children.append(NavbarItem(text))
 
-        return self.children[-1]
+        return self._children[-1]
 
     def adddropdown(self, dropdown):
-        if len(self.children) == 0:
-            self.children.append(UnorderedList(cl="nav navbar-nav"))
+        if len(self._children) == 0:
+            self._children.append(UnorderedList(cl="nav navbar-nav"))
 
-        if type(self.children[-1]) != UnorderedList:
-            self.children.append(UnorderedList(cl="nav navbar-nav"))
+        if type(self._children[-1]) != UnorderedList:
+            self._children.append(UnorderedList(cl="nav navbar-nav"))
 
         dropdown.navbaritem = True
-        self.children[-1].addelement(dropdown)
+        self._children[-1].addelement(dropdown)
 
     def __repr__(self):
         return "<Navbar(inverse=" + str(self.inverse) + ",fixed=" + str(self.fixed) + ",static=" + str(self.static) + ")>"
@@ -94,7 +94,7 @@ class Navbar(Element):
 
         output.append('<div class="collapse navbar-collapse" id="sofi-navbar-collapse" aria-expanded="false">')
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append('</div>')

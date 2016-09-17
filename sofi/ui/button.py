@@ -59,7 +59,7 @@ class Button(Element):
         output.append('>')
         output.append(self.text)
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</button>")

@@ -57,7 +57,7 @@ class ButtonDropdown(Element):
         ul = UnorderedList(cl="dropdown-menu")
         grp.addelement(ul)
 
-        for child in self.children:
+        for child in self._children:
             if type(child) == DropdownItem:
                 ul.addelement(child)
             else:

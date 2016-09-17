@@ -9,7 +9,7 @@ class Blockquote(Element):
         self.reverse = reverse
 
         if text:
-            self.children.append(text)
+            self._children.append(text)
 
     def __repr__(self):
         return "<Blockquote(reverse=" + str(self.reverse) + ")>"
@@ -43,7 +43,7 @@ class Blockquote(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</blockquote>")

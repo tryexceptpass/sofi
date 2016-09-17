@@ -39,7 +39,7 @@ class ListItem(Element):
         if self.text:
             output.append(self.text)
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</li>")

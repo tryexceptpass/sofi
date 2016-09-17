@@ -82,7 +82,7 @@ class Panel(Element):
             output.append('"')
         output.append(' class="panel-body">')
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append('</div>')

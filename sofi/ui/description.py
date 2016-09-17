@@ -10,7 +10,7 @@ class Description(Element):
         self.horizontal = horizontal
 
         if text:
-            self.children.append(text)
+            self._children.append(text)
 
     def __repr__(self):
         return "<Description(horizontal=" + self.horizontal + ")>"
@@ -44,7 +44,7 @@ class Description(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</dl>")

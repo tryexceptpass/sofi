@@ -54,7 +54,7 @@ class ButtonGroup(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             if self.justified and type(child) == Button:
                 bgrp = ButtonGroup()
                 bgrp.addelement(child)

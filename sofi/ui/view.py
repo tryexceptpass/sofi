@@ -7,7 +7,7 @@ class View(Element):
     def __init__(self, bscss="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
                        bsjs="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",
                        jquery="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"):
-        self.children = list()
+        self._children = list()
 
         self.bootstrapcss = bscss
         self.bootstrapjs = bsjs
@@ -20,7 +20,7 @@ class View(Element):
         head = [ "<link href=\"", self.bootstrapcss, "\" rel=\"stylesheet\">" ]
         body = []
 
-        for child in self.children:
+        for child in self._children:
             if type(child) == Navbar:
                 if child.fixed == "top":
                     head.append('<style>/* Added to make room for the navbar at top */\nbody { padding-top: 70px; }\n</style>')

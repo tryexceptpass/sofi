@@ -9,7 +9,7 @@ class Heading(Element):
         self.size = size
 
         if text:
-            self.children.append(text)
+            self._children.append(text)
 
     def __repr__(self):
         return "<Heading(size=" + str(self.size) + ")>"
@@ -38,7 +38,7 @@ class Heading(Element):
 
         output.append(">")
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         output.append("</h")

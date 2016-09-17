@@ -56,7 +56,7 @@ class Dropdown(Element):
 
         ul = UnorderedList(cl=cl)
 
-        for child in self.children:
+        for child in self._children:
             ul.addelement(child)
 
         btn.addelement(ul)

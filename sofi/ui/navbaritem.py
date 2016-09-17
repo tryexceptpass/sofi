@@ -58,7 +58,7 @@ class NavbarItem(Element):
         else:
             output.append(str(Anchor(self.text, self.href)))
 
-        for child in self.children:
+        for child in self._children:
             output.append(str(child))
 
         if self.href is None:
