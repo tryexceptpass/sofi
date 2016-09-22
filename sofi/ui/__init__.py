@@ -53,3 +53,4 @@ from .label import Label
 from .textarea import Textarea
 from .input import Input
 from .image import Image
+from .fontawesomeicon import FontAwesomeIcon

@@ -28,7 +28,7 @@ import json
 import asyncio
 
 @asyncio.coroutine
-def onload(event, interface):
+def onload(event):
     # Every page is built on top of a View object, which contains the <head> and <body> tags that are filled in by the other objects
     v = View()
 
