@@ -57,7 +57,9 @@ class Button(Element):
                 output.append(' ' + k + '="' + self.attrs[k] + '"')
 
         output.append('>')
-        output.append(self.text)
+
+        if self.text:
+            output.append(self.text)
 
         for child in self._children:
             output.append(str(child))

@@ -56,3 +56,5 @@ from .image import Image
 from .fontawesomeicon import FontAwesomeIcon
 from .jumbotron import Jumbotron
 from .well import Well
+from .alert import Alert
+from .alertlink import AlertLink
