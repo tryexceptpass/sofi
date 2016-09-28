@@ -58,3 +58,4 @@ from .jumbotron import Jumbotron
 from .well import Well
 from .alert import Alert
 from .alertlink import AlertLink
+from .pageheader import PageHeader
