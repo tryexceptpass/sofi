@@ -24,8 +24,6 @@ class DropdownItem(Element):
             output.append('"')
 
         cls = []
-        if self.cl:
-            cls.append(self.cl)
 
         if self.header:
             cls.append("dropdown-header")
@@ -33,6 +31,9 @@ class DropdownItem(Element):
             cls.append("divider")
         elif self.disabled:
             cls.append("disabled")
+            
+        if self.cl:
+            cls.append(self.cl)
 
         if len(cls) > 0:
             output.append(' class="')

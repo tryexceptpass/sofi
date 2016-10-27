@@ -6,6 +6,8 @@ from .anchor import Anchor
 from .span import CaretSpan
 from .unorderedlist import UnorderedList
 
+from collections import OrderedDict
+
 class Dropdown(Element):
     """Implements a Bootstrap dropdown tag"""
 
@@ -35,10 +37,14 @@ class Dropdown(Element):
         btn = None
         if self.navbaritem:
             btn = ListItem(cl=cl, ident=ident, style=self.style, attrs=self.attrs)
-            a = Anchor(self.text + " ", cl="dropdown-toggle", ident=self.ident, attrs={"role": "button",
-                                                                                 "data-toggle": "dropdown",
-                                                                                 "aria-haspopup": "true",
-                                                                                 "aria-expanded": "false"})
+
+            attrs = OrderedDict()
+            attrs["role"] = "button"
+            attrs["data-toggle"] = "dropdown"
+            attrs["aria-haspopup"] = "true"
+            attrs["aria-expanded"] = "false"
+
+            a = Anchor(self.text + " ", cl="dropdown-toggle", ident=self.ident, attrs=attrs)
             a.addelement(CaretSpan())
             btn.addelement(a)
         else:
