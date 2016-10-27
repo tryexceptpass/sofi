@@ -60,3 +60,4 @@ from .alert import Alert
 from .alertlink import AlertLink
 from .pageheader import PageHeader
 from .listgroup import ListGroup
+from .formgroup import FormGroup
