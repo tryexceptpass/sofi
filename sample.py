@@ -11,8 +11,8 @@ import time
 import logging
 import os
 
-@asyncio.coroutine
-def oninit(event):
+
+async def oninit(event):
     logging.info("MAIN")
     v = View()
 
@@ -85,20 +85,20 @@ def oninit(event):
 
     app.load(str(v))
 
-@asyncio.coroutine
-def onload(event):
+
+async def onload(event):
     logging.info("LOADED")
 
     app.register('click', buttonclicked, selector='button')
 
-    yield from asyncio.sleep(5)
+    await asyncio.sleep(5)
 
     for i in range(1, 5):
         app.style("#fiddle", 'font-size', str(i*2) + "em", 'important')
 
-        yield from asyncio.sleep(1)
+        await asyncio.sleep(1)
 
-    yield from asyncio.sleep(5)
+    await asyncio.sleep(5)
 
     img = Image()
     img.datauri(os.path.join(os.path.dirname(__file__), 'test', 'test.png'))
@@ -108,21 +108,21 @@ def onload(event):
     msg = 'SWEET!!!'
     for i in range(8):
         app.text("h2", msg[:i])
-        yield from asyncio.sleep(1)
+        await asyncio.sleep(1)
 
     app.unregister('click', buttonclicked, selector='button')
-    return
 
-@asyncio.coroutine
-def clicked(event):
+
+async def clicked(event):
     logging.info("CLICKED!")
 
-@asyncio.coroutine
-def buttonclicked(event):
+
+async def buttonclicked(event):
     if ('id' in event['event_object']['target']):
         logging.info("BUTTON " + event['event_object']['target']['id'] + " CLICKED!")
     else:
         logging.info("BUTTON " + event['event_object']['target']['innerText'] + " CLICKED!")
+
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
 

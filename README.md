@@ -27,8 +27,8 @@ from sofi.ui import Container, Paragraph, Heading, View
 import json
 import asyncio
 
-@asyncio.coroutine
-def onload(event):
+
+async def onload(event):
     # Every page is built on top of a View object, which contains the <head> and <body> tags that are filled in by the other objects
     v = View()
 

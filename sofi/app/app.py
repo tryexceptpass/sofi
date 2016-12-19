@@ -130,8 +130,7 @@ class SofiEventProcessor(object):
     def dispatch(self, command):
         self.protocol.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
 
-    @asyncio.coroutine
-    def process(self, protocol, event):
+    async def process(self, protocol, event):
         self.protocol = protocol
         eventtype = event['event']
 
@@ -143,12 +142,12 @@ class SofiEventProcessor(object):
                 if key in self.handlers[eventtype]:
                     for handler in self.handlers[eventtype][key]:
                         if callable(handler):
-                            yield from handler(event)
+                            await handler(event)
 
             # Check for global handler
             for handler in self.handlers[eventtype]['_']:
                 if callable(handler):
-                    yield from handler(event)
+                    await handler(event)
 
 
 class SofiEventProtocol(WebSocketServerProtocol):
@@ -160,8 +159,7 @@ class SofiEventProtocol(WebSocketServerProtocol):
     def onOpen(self):
         logging.info("WebSocket connection open")
 
-    @asyncio.coroutine
-    def onMessage(self, payload, isBinary):
+    async def onMessage(self, payload, isBinary):
         if isBinary:
             logging.info("Binary message received: {} bytes".format(len(payload)))
         else:
@@ -169,7 +167,7 @@ class SofiEventProtocol(WebSocketServerProtocol):
             body = json.loads(payload.decode('utf-8'))
 
             if 'event' in body:
-                yield from self.processor.process(self, body)
+                await self.processor.process(self, body)
                 return
 
     def onClose(self, wasClean, code, reason):

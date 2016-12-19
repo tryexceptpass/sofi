@@ -21,8 +21,8 @@ api = tweepy.API(auth)
 # Tue Jun 07 23:05:55 +0000 2016
 dateformat = "%a %b %d %H:%M:%S %z %Y"
 
-@asyncio.coroutine
-def main(event):
+
+async def main(event):
     print("MAIN")
     v = View()
     c = Container()
@@ -40,7 +40,6 @@ def main(event):
     v.addelement(c)
 
     app.load(str(v))
-
 
 
 app = Sofi()
