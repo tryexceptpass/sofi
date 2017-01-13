@@ -122,7 +122,9 @@ class SofiEventProcessor(object):
         if selector is None:
             self.handlers[event]['_'].remove(callback)
         else:
-            self.handlers[event].pop(str(id(callback)))
+            handler_list = self.handlers[event].get(str(id(callback)), [])
+            if callback in handler_list:
+                handler_list.remove(callback)
 
         if event not in ('init', 'load', 'close'):
             self.dispatch({ 'name': 'unsubscribe', 'event': event, 'selector': selector, 'key': str(id(callback)) })
