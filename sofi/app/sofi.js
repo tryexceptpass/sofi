@@ -57,8 +57,9 @@ function init() {
         else if (command.name == "subscribe") {
             var key = command.key
             d3.selectAll(command.selector).on(command.event + "." + key, function(d,i) {
+                var eventTarget = d3.event.target || d3.event.srcElement;
                 socket.send(JSON.stringify({ "event": d3.event.type,
-                                             "element": d3.event.srcElement.id,
+                                             "element": eventTarget.id,
                                              "event_object": getProperties(d3.event),
                                              "d": d,
                                              "i": i,
