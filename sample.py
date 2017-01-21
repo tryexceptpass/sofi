@@ -83,7 +83,7 @@ async def oninit(event):
 
     v.addelement(c)
 
-    app.load(str(v))
+    app.load(str(v), event['client'])
 
 
 async def onload(event):
@@ -94,7 +94,7 @@ async def onload(event):
     await asyncio.sleep(5)
 
     for i in range(1, 5):
-        app.style("#fiddle", 'font-size', str(i*2) + "em", 'important')
+        app.style("#fiddle", 'font-size', str(i*2) + "em", 'important', event['client'])
 
         await asyncio.sleep(1)
 
@@ -103,14 +103,14 @@ async def onload(event):
     img = Image()
     img.datauri(os.path.join(os.path.dirname(__file__), 'test', 'test.png'))
 
-    app.replace("#fiddle", str(img))
+    app.replace("#fiddle", str(img), event['client'])
 
     msg = 'SWEET!!!'
     for i in range(8):
-        app.text("h2", msg[:i])
+        app.text("h2", msg[:i], event['client'])
         await asyncio.sleep(1)
 
-    app.unregister('click', buttonclicked, selector='button')
+    # app.unregister('click', buttonclicked, selector='button')
 
 
 async def clicked(event):
@@ -131,4 +131,4 @@ app.register('init', oninit)
 app.register('load', onload)
 # app.register('click', clicked)
 
-app.start()
+app.start(False)

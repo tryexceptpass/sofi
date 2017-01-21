@@ -8,7 +8,7 @@ import logging
 
 from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
 
-class Sofi(object):
+class Sofi():
     def __init__(self):
         self.interface = SofiEventProcessor()
         self.server = SofiEventServer(processor=self.interface)
@@ -28,58 +28,88 @@ class Sofi(object):
 
         self.interface.unregister(event, callback, selector)
 
-    def load(self, html):
+    def load(self, html, client=None):
         """Initialize the UI. This will replace the document <html> tag contents with the supplied html."""
 
-        self.interface.dispatch({ 'name': 'init', 'html': html })
+        if client is None:
+            client = self.interface
 
-    def append(self, selector, html):
+        client.dispatch({ 'name': 'init', 'html': html })
+
+    def append(self, selector, html, client=None):
         """Append the given html to all elements matching this selector"""
 
-        self.interface.dispatch({ 'name': 'append', 'selector': selector, 'html': html })
+        if client is None:
+            client = self.interface
 
-    def remove(self, selector):
+        client.dispatch({ 'name': 'append', 'selector': selector, 'html': html })
+
+    def remove(self, selector, client=None):
         """Remove the elements matching this selector."""
 
-        self.interface.dispatch({ 'name': 'remove', 'selector': selector })
+        if client is None:
+            client = self.interface
 
-    def replace(self, selector, html):
+        client.dispatch({ 'name': 'remove', 'selector': selector })
+
+    def replace(self, selector, html, client=None):
         """Replace the contents all elements matching this selector with the given html."""
 
-        self.interface.dispatch({ 'name': 'replace', 'selector': selector, 'html': html })
+        if client is None:
+            client = self.interface
 
-    def addclass(self, selector, cl):
+        client.dispatch({ 'name': 'replace', 'selector': selector, 'html': html })
+
+    def addclass(self, selector, cl, client=None):
         """Add the given class from all elements matching this selector."""
 
-        self.interface.dispatch({ 'name': 'addclass', 'selector': selector, 'cl': cl })
+        if client is None:
+            client = self.interface
 
-    def removeclass(self, selector, cl):
+        client.dispatch({ 'name': 'addclass', 'selector': selector, 'cl': cl })
+
+    def removeclass(self, selector, cl, client=None):
         """Remove the given class from all elements matching this selector."""
 
-        self.interface.dispatch({ 'name': 'removeclass', 'selector': selector, 'cl': cl })
+        if client is None:
+            client = self.interface
 
-    def text(self, selector, text):
+        client.dispatch({ 'name': 'removeclass', 'selector': selector, 'cl': cl })
+
+    def text(self, selector, text, client=None):
         """Set the text for elements matching the selector."""
 
-        self.interface.dispatch({ 'name': 'text', 'selector': selector, 'text': text })
+        if client is None:
+            client = self.interface
 
-    def attr(self, selector, attr, value):
+        client.dispatch({ 'name': 'text', 'selector': selector, 'text': text })
+
+    def attr(self, selector, attr, value, client=None):
         """Set the attribute for elements matching this selector."""
 
-        self.interface.dispatch({ 'name': 'attr', 'selector': selector, 'attr': attr, 'value': value })
+        if client is None:
+            client = self.interface
 
-    def style(self, selector, style, value, priority=None):
+        client.dispatch({ 'name': 'attr', 'selector': selector, 'attr': attr, 'value': value })
+
+    def style(self, selector, style, value, priority=None, client=None):
         """Set the style for elements matching this selector. The priority field can be set to "important" to force the style."""
 
-        self.interface.dispatch({ 'name': 'style', 'selector': selector, 'style': style, 'value': value, 'priority': priority })
+        if client is None:
+            client = self.interface
 
-    def property(self, selector, property, value):
+        client.dispatch({ 'name': 'style', 'selector': selector, 'style': style, 'value': value, 'priority': priority })
+
+    def property(self, selector, property, value, client=None):
         """Set the property for elements matching this selector. Properties are special attributes like 'checked' or 'value'."""
 
-        self.interface.dispatch({ 'name': 'attr', 'selector': selector, 'property': property, 'value': value })
+        if client is None:
+            client = self.interface
+
+        client.dispatch({ 'name': 'attr', 'selector': selector, 'property': property, 'value': value })
 
 
-class SofiEventProcessor(object):
+class SofiEventProcessor():
     """Event handler providing hooks for callback functions"""
 
     handlers = { 'init': { '_': [] },
@@ -130,11 +160,12 @@ class SofiEventProcessor(object):
             self.dispatch({ 'name': 'unsubscribe', 'event': event, 'selector': selector, 'key': str(id(callback)) })
 
     def dispatch(self, command):
-        self.protocol.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
+        self.protocol.dispatch(command)
 
     async def process(self, protocol, event):
         self.protocol = protocol
         eventtype = event['event']
+        event['client'] = protocol
 
         if eventtype in self.handlers:
             # Check for local handler
@@ -176,8 +207,11 @@ class SofiEventProtocol(WebSocketServerProtocol):
         logging.info("WebSocket connection closed: {}".format(reason))
         exit(0)
 
+    def dispatch(self, command):
+        self.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
 
-class SofiEventServer(object):
+
+class SofiEventServer():
     """Websocket event server"""
 
     def __init__(self, hostname=u"127.0.0.1", port=9000, processor=None):
@@ -218,7 +252,7 @@ class SofiEventServer(object):
             self.loop.close()
 
     def __repr__(self):
-        return "<EventServer(%s, %s)>" % (self.hostname, self.port)
+        return "<SofiEventServer(%s, %s)>" % (self.hostname, self.port)
 
     def __str__(self):
         return repr(self)
