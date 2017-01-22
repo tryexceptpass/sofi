@@ -135,7 +135,7 @@ class Sofi():
 
         # If we didn't know of this event, add it to the handler mappings
         if event not in self.handlers:
-            self.handlers[event] = {'_': list()}
+            self.handlers[event] = {'_': set()}
 
         capture = False
         if selector is None:
