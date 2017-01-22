@@ -37,10 +37,10 @@ async def oninit(event):
     tb = ButtonToolbar()
     bgrp = ButtonGroup()
     btnDe = Button("Default")
-    btnP = Button("Primary", "primary", ident='clickme')
+    btnP = Button("Primary", "primary", ident='primary')
     btnI = Button("Info", "info")
     bgrp2 = ButtonGroup()
-    btnS = Button("Success", "success")
+    btnS = Button("Success", "success", ident='secondary')
     btnW = Button("Warning", "warning")
     btnDa = Button("Danger", "danger")
 
@@ -83,18 +83,20 @@ async def oninit(event):
 
     v.addelement(c)
 
-    app.load(str(v))
+    app.load(str(v), event['client'])
 
 
 async def onload(event):
     logging.info("LOADED")
 
-    app.register('click', buttonclicked, selector='button')
+    app.register('click', buttonclicked, selector='#primary', client=event['client'])
+    app.register('click', buttonclicked, selector='#secondary', client=event['client'])
+    app.register('click', buttonclicked, selector='#secondary', client=event['client'])
 
     await asyncio.sleep(5)
 
     for i in range(1, 5):
-        app.style("#fiddle", 'font-size', str(i*2) + "em", 'important')
+        app.style("#fiddle", 'font-size', str(i*2) + "em", 'important', event['client'])
 
         await asyncio.sleep(1)
 
@@ -103,14 +105,12 @@ async def onload(event):
     img = Image()
     img.datauri(os.path.join(os.path.dirname(__file__), 'test', 'test.png'))
 
-    app.replace("#fiddle", str(img))
+    app.replace("#fiddle", str(img), event['client'])
 
     msg = 'SWEET!!!'
     for i in range(8):
-        app.text("h2", msg[:i])
+        app.text("h2", msg[:i], event['client'])
         await asyncio.sleep(1)
-
-    app.unregister('click', buttonclicked, selector='button')
 
 
 async def clicked(event):
@@ -123,10 +123,12 @@ async def buttonclicked(event):
     else:
         logging.info("BUTTON " + event['event_object']['target']['innerText'] + " CLICKED!")
 
+    app.unregister('click', buttonclicked, selector='#' + event['event_object']['target']['id'], client=event['client'])
+
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
 
-app = Sofi()
+app = Sofi(singleclient=False)
 app.register('init', oninit)
 app.register('load', onload)
 # app.register('click', clicked)

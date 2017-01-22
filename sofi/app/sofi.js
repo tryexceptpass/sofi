@@ -1,4 +1,3 @@
-
 var SOCKET_URL = "ws://127.0.0.1:9000"
 var socket
 
@@ -48,7 +47,7 @@ function init() {
                 d3.selectAll(command.selector).style(command.style, command.value, command.priority)
             }
             else {
-                d3.selectAll(command.selector).style(command.style, command.value)    
+                d3.selectAll(command.selector).style(command.style, command.value)
             }
         }
         else if (command.name == "property") {
