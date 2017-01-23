@@ -14,7 +14,7 @@ import os
 
 async def oninit(event):
     logging.info("MAIN")
-    v = View()
+    v = View("Sample Sofi Widget Application")
 
     n = Navbar(brand="SOFI", fixed='top')
     n.addlink("LINK 1")
@@ -128,7 +128,7 @@ async def buttonclicked(event):
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
 
-app = Sofi(singleclient=False)
+app = Sofi(singleclient=True)
 app.register('init', oninit)
 app.register('load', onload)
 # app.register('click', clicked)
