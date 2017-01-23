@@ -105,8 +105,8 @@ class Sofi():
             # Automatically open the browser if requested
             if autobrowse:
                 path = os.path.dirname(os.path.realpath(__file__))
-                webbrowser.open('file:///' + os.path.join(path, 'main.html'))
-                # subprocess.Popen(['./browser', '--url=file:///' + os.path.join(path, 'main.html')])
+                # webbrowser.open('file:///' + os.path.join(path, 'main.html'))
+                subprocess.Popen(['./browser', '--url=file:///' + os.path.join(path, 'main.html')])
 
             # Start listening for connections
             self.loop.run_forever()
