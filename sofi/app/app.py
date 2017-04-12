@@ -6,7 +6,8 @@ import json
 import webbrowser
 import logging
 
-from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol, ConnectionDeny
+from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
+from autobahn.websocket.types import ConnectionDeny
 
 
 class SofiEventProtocol(WebSocketServerProtocol):
