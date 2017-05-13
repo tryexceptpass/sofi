@@ -134,3 +134,4 @@ app.register('load', onload)
 # app.register('click', clicked)
 
 app.start()
+# app.start(browser=False)

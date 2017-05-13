@@ -1,5 +1,5 @@
 import asyncio
-import os
+import os, sys
 import subprocess
 
 import json
@@ -96,17 +96,48 @@ class Sofi():
         # Create the loop server
         self.server = self.loop.create_server(factory, address, port)
 
-    def start(self, autobrowse=True):
+    def start(self, desktop=True, browser=True):
         """Start the application"""
 
         self.loop.run_until_complete(self.server)
 
         try:
             # Automatically open the browser if requested
-            if autobrowse:
-                path = os.path.dirname(os.path.realpath(__file__))
-                # webbrowser.open('file:///' + os.path.join(path, 'main.html'))
-                subprocess.Popen(['./browser', '--url=file:///' + os.path.join(path, 'main.html')])
+            if desktop:
+                if browser:
+                    # path = os.path.dirname(os.path.realpath(__file__))
+                    if getattr(sys, 'frozen', False):
+                        # we are running in a bundle
+                        path = sys._MEIPASS
+                        webbrowser.open('file:///' + os.path.join(path, 'sofi/app/main.html'))
+                    else:
+                        # we are running in a normal Python environment
+                        path = os.path.dirname(os.path.realpath(__file__))
+                        webbrowser.open('file:///' + os.path.join(path, 'main.html'))
+                else:
+                    if getattr(sys, 'frozen', False):
+                        # we are running in a bundle
+                        path = sys._MEIPASS
+                        if sys.platform == 'linux':
+                            pass
+                        elif sys.platform == 'windows':
+                            pass
+                        else:
+                            # Assume Mac?
+                            subprocess.Popen([os.path.join(path, 'browser.app/Contents/MacOS/cefsimple'),
+                                              '--url=file://' + os.path.join(path, 'sofi/app/main.html')])
+                    else:
+                        # we are running in a normal Python environment
+                        path = os.path.dirname(os.path.realpath(__file__))
+                        if sys.platform == 'linux':
+                            pass
+                        elif sys.platform == 'windows':
+                            pass
+                        else:
+                            # Assume Mac?
+                            subprocess.Popen([os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
+                                              '--url=file:///' + os.path.join(path, 'main.html')])
+
 
             # Start listening for connections
             self.loop.run_forever()
