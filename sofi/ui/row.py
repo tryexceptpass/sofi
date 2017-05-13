@@ -1,10 +1,18 @@
 from .element import Element
+from .column import Column
 
 class Row(Element):
     """Implements row layout with format <div class=\"row\">"""
 
     def __init__(self, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+    def newcolumn(self, item, **kwargs):
+        c = Column(**kwargs)
+        c.addelement(item)
+        self.addelement(c)
+
+        return c
 
     def __repr__(self):
         return "<Row>"

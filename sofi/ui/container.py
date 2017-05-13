@@ -15,6 +15,8 @@ class Container(Element):
         r.addelement(element)
         self.addelement(r)
 
+        return r
+
     def __repr__(self):
         return "<Container(fluid=" + str(self.fluid) + ")>"
 

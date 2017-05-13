@@ -5,16 +5,19 @@ from .fontawesomeicon import FontAwesomeIcon
 class View(Element):
     """Main object representing a webpage"""
 
-    def __init__(self, title=None,
+    def __init__(self, title=None, cl=None, style=None,
                        bscss="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css",
                        bsjs="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js",
                        jquery="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"):
         self._children = list()
-        
+
         if title is None:
             self.title = "Sofi"
         else:
             self.title = title
+
+        self.cl = cl
+        self.style = style
 
         self.bootstrapcss = bscss
         self.bootstrapjs = bsjs
@@ -40,7 +43,16 @@ class View(Element):
         output = []
         output.append('<head>')
         output.extend(head)
-        output.append('</head><body>')
+        output.append('</head><body')
+        if self.cl:
+            output.append(" class=\"")
+            output.append(self.cl)
+            output.append("\"")
+        if self.style:
+            output.append(" style=\"")
+            output.append(self.style)
+            output.append("\"")
+        output.append(">")
         output.extend(body)
         output.append("</body>")
 
