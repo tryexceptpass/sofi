@@ -20,6 +20,8 @@ class TableHead(Element):
 
         self.addelement(tr)
 
+        return tr
+
     def __repr__(self):
         return "<TableHead>"
 

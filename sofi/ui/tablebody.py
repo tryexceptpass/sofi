@@ -19,6 +19,8 @@ class TableBody(Element):
 
         self.addelement(tr)
 
+        return tr
+
     def __repr__(self):
         return "<TableBody>"
 
