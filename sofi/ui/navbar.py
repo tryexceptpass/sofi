@@ -14,7 +14,7 @@ class Navbar(Element):
         self.fixed = fixed
         self.static = static
 
-    def addlink(self, text, href="#", active=False):
+    def addlink(self, text, href="#", active=False, ident=None):
         if len(self._children) == 0:
             self._children.append(UnorderedList(cl="nav navbar-nav"))
 
@@ -22,9 +22,9 @@ class Navbar(Element):
             self._children.append(UnorderedList(cl="nav navbar-nav"))
 
         if active:
-            self._children[-1].addelement(NavbarItem(text, href, cl='active'))
+            self._children[-1].addelement(NavbarItem(text, href, cl='active', ident=ident))
         else:
-            self._children[-1].addelement(NavbarItem(text, href))
+            self._children[-1].addelement(NavbarItem(text, href, ident=ident))
 
         return self._children[-1]
 

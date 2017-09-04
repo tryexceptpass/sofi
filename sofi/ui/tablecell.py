@@ -1,20 +1,25 @@
 from .element import Element
 
 class TableCell(Element):
-    """Implements <td> tag"""
+    """Implements <td> and <th> tag"""
 
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, head=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text:
             self._children.append(text)
 
+        self.head = head
+
     def __repr__(self):
-        return "<TableCell>"
+        return "<TableCell(head=" + self.head + ")>"
 
     def __str__(self):
-        output = [ "<td" ]
+        if self.head:
+            output = [ "<th" ]
+        else:
+            output = [ "<td" ]
 
         if self.ident:
             output.append(" id=\"")

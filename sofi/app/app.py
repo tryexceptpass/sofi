@@ -123,7 +123,6 @@ class Sofi():
                         elif sys.platform == 'windows':
                             pass
                         else:
-                            # Assume Mac?
                             subprocess.Popen([os.path.join(path, 'browser.app/Contents/MacOS/cefsimple'),
                                               '--url=file://' + os.path.join(path, 'sofi/app/main.html')])
                     else:
@@ -134,7 +133,6 @@ class Sofi():
                         elif sys.platform == 'windows':
                             pass
                         else:
-                            # Assume Mac?
                             subprocess.Popen([os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
                                               '--url=file:///' + os.path.join(path, 'main.html')])
 
