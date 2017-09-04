@@ -1,10 +1,25 @@
 from .element import Element
+from .tablerow import TableRow
+from .tablecell import TableCell
 
 class TableBody(Element):
     """Implements the <tbody> tag"""
 
     def __init__(self, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+    def addrow(self, *args, **kwargs):
+        tr = TableRow(**kwargs)
+
+        for item in args:
+            if isinstance(item, Element):
+                tr.addelement(item)
+            else:
+                tr.addelement(TableCell(item))
+
+        self.addelement(tr)
+
+        return tr
 
     def __repr__(self):
         return "<TableBody>"
