@@ -6,7 +6,8 @@ import json
 import webbrowser
 import logging
 
-from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol, ConnectionDeny
+from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
+from autobahn.websocket.types import ConnectionDeny
 
 
 class SofiEventProtocol(WebSocketServerProtocol):
@@ -123,6 +124,7 @@ class Sofi():
                         elif sys.platform == 'windows':
                             pass
                         else:
+                            # Assume Mac
                             subprocess.Popen([os.path.join(path, 'browser.app/Contents/MacOS/cefsimple'),
                                               '--url=file://' + os.path.join(path, 'sofi/app/main.html')])
                     else:
@@ -133,6 +135,7 @@ class Sofi():
                         elif sys.platform == 'windows':
                             pass
                         else:
+                            # Assume Mac
                             subprocess.Popen([os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
                                               '--url=file:///' + os.path.join(path, 'main.html')])
 
