@@ -6,8 +6,11 @@ import json
 import webbrowser
 import logging
 
+from sofi.ui import Element
+
 from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
 from autobahn.websocket.types import ConnectionDeny
+from threading import Thread
 
 
 class SofiEventProtocol(WebSocketServerProtocol):
@@ -51,6 +54,8 @@ class SofiEventProtocol(WebSocketServerProtocol):
         if self.app.singleclient and self.app.clients[0] == self:
             # TODO: This should probably be cleaner
             exit(0)
+        else:
+            del(self.app.clients[self.app.clients.index(self)])
 
     def dispatch(self, command):
         """Send a command to the client / UI layer"""
@@ -60,11 +65,13 @@ class SofiEventProtocol(WebSocketServerProtocol):
 
 class Sofi():
 
-    def __init__(self, singleclient=True, hostname="127.0.0.1", address="0.0.0.0", port=9000, protocol=SofiEventProtocol):
+    def __init__(self, singleclient=True, background=False, hostname="127.0.0.1", address="0.0.0.0", port=9000, protocol=SofiEventProtocol):
         # General application configuration info
         self.hostname = hostname
         self.address = address
         self.port = port
+        self.background = background
+        self.thread = None
 
         # Protocol class that will manage messaging
         self.protocol = protocol
@@ -87,65 +94,46 @@ class Sofi():
         self.clients = list()
         self.singleclient = singleclient
 
-        # Create the factory that generates protocols to handle socket communications
-        factory = WebSocketServerFactory("ws://" + hostname + ":" + str(port))
-        factory.protocol = protocol
 
-        # Create the Asyncio event loop
-        self.loop = asyncio.get_event_loop()
+        if self.background:
+            # Make a new asyncio event loop
+            self.loop = asyncio.new_event_loop()
+
+            # Create the factory that generates protocols to handle socket communications
+            self.factory = WebSocketServerFactory("ws://" + hostname + ":" + str(port), loop=self.loop)
+            self.factory.protocol = protocol
+
+            # Make a background thread that sets up the loop
+            self.thread = Thread(target=self.__start_background_loop)
+
+        else:
+            # Create the factory that generates protocols to handle socket communications
+            self.factory = WebSocketServerFactory("ws://" + hostname + ":" + str(port))
+            self.factory.protocol = protocol
+
+            # Get the current asyncio event loop
+            self.loop = asyncio.get_event_loop()
+
+            # Create the loop server
+            self.server = self.loop.create_server(self.factory, address, port)
+            self.loop.run_until_complete(self.server)
+
+    def __start_background_loop(self):
+        # Set event loop
+        asyncio.set_event_loop(self.loop)
 
         # Create the loop server
-        self.server = self.loop.create_server(factory, address, port)
-
-    def start(self, desktop=True, browser=True):
-        """Start the application"""
-
+        self.server = self.loop.create_server(self.factory, self.address, self.port)
         self.loop.run_until_complete(self.server)
 
         try:
-            # Automatically open the browser if requested
-            if desktop:
-                if browser:
-                    # path = os.path.dirname(os.path.realpath(__file__))
-                    if getattr(sys, 'frozen', False):
-                        # we are running in a bundle
-                        path = sys._MEIPASS
-                        webbrowser.open('file:///' + os.path.join(path, 'sofi/app/main.html'))
-                    else:
-                        # we are running in a normal Python environment
-                        path = os.path.dirname(os.path.realpath(__file__))
-                        webbrowser.open('file:///' + os.path.join(path, 'main.html'))
-                else:
-                    if getattr(sys, 'frozen', False):
-                        # we are running in a bundle
-                        path = sys._MEIPASS
-                        if sys.platform == 'linux':
-                            pass
-                        elif sys.platform == 'windows':
-                            pass
-                        else:
-                            # Assume Mac
-                            subprocess.Popen([os.path.join(path, 'browser.app/Contents/MacOS/cefsimple'),
-                                              '--url=file://' + os.path.join(path, 'sofi/app/main.html')])
-                    else:
-                        # we are running in a normal Python environment
-                        path = os.path.dirname(os.path.realpath(__file__))
-                        if sys.platform == 'linux':
-                            pass
-                        elif sys.platform == 'windows':
-                            pass
-                        else:
-                            # Assume Mac
-                            subprocess.Popen([os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
-                                              '--url=file:///' + os.path.join(path, 'main.html')])
-
-
-            # Start listening for connections
+            logging.info("Starting background server")
             self.loop.run_forever()
 
         except KeyboardInterrupt:
             logging.info("Keyboard Interrupt received.")
 
+        finally:
             # Tell any clients that we're closing
             for client in self.clients:
                 client.sendClose()
@@ -153,7 +141,6 @@ class Sofi():
 
             self.server.close()
 
-        finally:
             # Gather any remaining tasks so we can cancel them
             asyncio.gather(*asyncio.Task.all_tasks()).cancel()
             self.loop.stop()
@@ -163,6 +150,74 @@ class Sofi():
 
             logging.info("Stopping Server...")
             self.loop.close()
+
+    def start(self, desktop=True, browser=True):
+        """Start the application"""
+
+        # Automatically open the browser if requested
+        if desktop:
+            if browser:
+                # path = os.path.dirname(os.path.realpath(__file__))
+                if getattr(sys, 'frozen', False):
+                    # we are running in a bundle
+                    path = sys._MEIPASS
+                    webbrowser.open('file:///' + os.path.join(path, 'sofi/app/main.html'))
+                else:
+                    # we are running in a normal Python environment
+                    path = os.path.dirname(os.path.realpath(__file__))
+                    webbrowser.open('file:///' + os.path.join(path, 'main.html'))
+            else:
+                if getattr(sys, 'frozen', False):
+                    # we are running in a bundle
+                    path = sys._MEIPASS
+                    if sys.platform == 'linux':
+                        pass
+                    elif sys.platform == 'windows':
+                        pass
+                    else:
+                        # Assume Mac
+                        subprocess.Popen([os.path.join(path, 'browser.app/Contents/MacOS/cefsimple'),
+                        '--url=file://' + os.path.join(path, 'sofi/app/main.html')])
+                else:
+                    # we are running in a normal Python environment
+                    path = os.path.dirname(os.path.realpath(__file__))
+                    if sys.platform == 'linux':
+                        pass
+                    elif sys.platform == 'windows':
+                        pass
+                    else:
+                        # Assume Mac
+                        subprocess.Popen([os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
+                        '--url=file:///' + os.path.join(path, 'main.html')])
+
+        if self.background:
+            self.thread.start()
+
+        else:
+            try:
+                # Start listening for connections
+                self.loop.run_forever()
+
+            except KeyboardInterrupt:
+                logging.info("Keyboard Interrupt received.")
+
+                # Tell any clients that we're closing
+                for client in self.clients:
+                    client.sendClose()
+                    pass
+
+                self.server.close()
+
+            finally:
+                # Gather any remaining tasks so we can cancel them
+                asyncio.gather(*asyncio.Task.all_tasks()).cancel()
+                self.loop.stop()
+
+                logging.info("Cancelling pending tasks...")
+                self.loop.run_forever()
+
+                logging.info("Stopping Server...")
+                self.loop.close()
 
     def register(self, event, callback, selector=None, client=None):
         """Register an event callback"""
@@ -211,13 +266,16 @@ class Sofi():
             # Tell the UI layer to unsubscribe from this event
             client.dispatch({'name': 'unsubscribe', 'event': event, 'selector': selector, 'key': str(id(callback)) + selector})
 
-    def dispatch(self, command):
+    def dispatch(self, command, client=None):
         """Send a command to the UI layer. Only use in singleclient mode"""
 
         if self.singleclient:
             self.clients[0].dispatch(command)
         else:
-            raise NotImplementedError("Using Sofi.dispatch with more than one client can have unintended consequences and is not supported")
+            if client is None:
+                raise NotImplementedError("Using Sofi.dispatch with more than one client can have unintended consequences and is not supported")
+            else:
+                client.dispatch(command)
 
     async def process(self, protocol, event):
         """Process a new event"""
@@ -246,6 +304,9 @@ class Sofi():
         if client is None:
             client = self.clients[0]
 
+        if isinstance(html, Element):
+            html = str(html)
+
         client.dispatch({'name': 'init', 'html': html})
 
     def append(self, selector, html, client=None):
@@ -253,6 +314,9 @@ class Sofi():
 
         if client is None:
             client = self.clients[0]
+
+        if isinstance(html, Element):
+            html = str(html)
 
         client.dispatch({'name': 'append', 'selector': selector, 'html': html})
 
@@ -269,6 +333,9 @@ class Sofi():
 
         if client is None:
             client = self.clients[0]
+
+        if isinstance(html, Element):
+            html = str(html)
 
         client.dispatch({'name': 'replace', 'selector': selector, 'html': html})
 
