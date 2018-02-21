@@ -1,0 +1,7 @@
+theme: readthedocs
+
+site_name: Sofi
+repo_url: https://github.com/tryexceptpass/sofi
+
+pages:
+    - Overview: index.md
