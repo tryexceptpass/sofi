@@ -1,4 +1,3 @@
-var SOCKET_URL = "ws://127.0.0.1:9000"
 var socket
 
 function init() {

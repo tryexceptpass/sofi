@@ -1,5 +1,7 @@
 import asyncio
-import os, sys
+import os
+import sys
+import shutil
 import subprocess
 
 import json
@@ -93,7 +95,6 @@ class Sofi():
         # Client management
         self.clients = list()
         self.singleclient = singleclient
-
 
         if self.background:
             # Make a new asyncio event loop
@@ -189,6 +190,16 @@ class Sofi():
                         # Assume Mac
                         subprocess.Popen([os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
                         '--url=file:///' + os.path.join(path, 'main.html')])
+
+        with open(os.path.join(path, '_sofi.js'), 'rb') as source:
+            jsfile = os.path.join(path, 'sofi.js')
+
+            if os.path.exists(jsfile):
+                os.remove(jsfile)
+
+            with open(jsfile, 'wb') as f:
+                f.write(bytes('var SOCKET_URL = "ws://' + self.hostname + ":" + str(self.port) + '"\n', 'utf-8'))
+                shutil.copyfileobj(source, f)
 
         if self.background:
             self.thread.start()

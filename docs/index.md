@@ -1,3 +1,4 @@
+# Sofi
 Sofi is a **Python 3** package designed to alleviate development of cross-platform GUIs by leveraging existing technologies for rendering interfaces while keeping all of the logic in Python.
 
 It boils down to designing a communications protocol to implement across different interface mechanisms, and using Python to direct those systems on what to display to the user, while relaying their events and inputs back to Python. The communication layer uses JSON over WebSockets, two technologies that are easy to integrate into almost any system, especially the web. Python is the glue logic for rendering engines, not the rendering engine itself.
