@@ -155,22 +155,24 @@ class Sofi():
     def start(self, desktop=True, browser=True):
         """Start the application"""
 
+        if getattr(sys, 'frozen', False):
+            # we are running in a bundle
+            path = sys._MEIPASS
+        else:
+            path = os.path.dirname(os.path.realpath(__file__))
+
         # Automatically open the browser if requested
         if desktop:
             if browser:
-                # path = os.path.dirname(os.path.realpath(__file__))
                 if getattr(sys, 'frozen', False):
                     # we are running in a bundle
-                    path = sys._MEIPASS
                     webbrowser.open('file:///' + os.path.join(path, 'sofi/app/main.html'))
                 else:
                     # we are running in a normal Python environment
-                    path = os.path.dirname(os.path.realpath(__file__))
                     webbrowser.open('file:///' + os.path.join(path, 'main.html'))
             else:
                 if getattr(sys, 'frozen', False):
                     # we are running in a bundle
-                    path = sys._MEIPASS
                     if sys.platform == 'linux':
                         pass
                     elif sys.platform == 'windows':
@@ -181,7 +183,6 @@ class Sofi():
                         '--url=file://' + os.path.join(path, 'sofi/app/main.html')])
                 else:
                     # we are running in a normal Python environment
-                    path = os.path.dirname(os.path.realpath(__file__))
                     if sys.platform == 'linux':
                         pass
                     elif sys.platform == 'windows':
