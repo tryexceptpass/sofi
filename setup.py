@@ -14,11 +14,11 @@ setup(
 
     packages=find_packages(),
     package_data={
-        'sofi': ['app/main.html', 'app/sofi.js'],
+        'sofi': ['app/main.html', 'app/_sofi.js'],
         'test': ['test.png']
     },
 
-    install_requires=['autobahn'],
+    install_requires=['websockets'],
     python_requires='>=3.6',
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'hypothesis'],
