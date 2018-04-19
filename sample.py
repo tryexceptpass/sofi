@@ -13,7 +13,7 @@ import os
 
 
 async def oninit(event):
-    logging.info("MAIN")
+    logging.info("INIT")
     v = View("Sample Sofi Widget Application")
 
     n = Navbar(brand="SOFI", fixed='top')
@@ -131,7 +131,6 @@ logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(messag
 app = Sofi(singleclient=True)
 app.register('init', oninit)
 app.register('load', onload)
-# app.register('click', clicked)
 
 app.start()
 # app.start(browser=False)

@@ -1,1 +1,1 @@
-autobahn==0.13.0
+websockets==4.0.1

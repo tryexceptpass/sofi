@@ -10,74 +10,19 @@ import logging
 
 from sofi.ui import Element
 
-from autobahn.asyncio.websocket import WebSocketServerFactory, WebSocketServerProtocol
-from autobahn.websocket.types import ConnectionDeny
+import websockets
 from threading import Thread
-
-
-class SofiEventProtocol(WebSocketServerProtocol):
-    """WebSocket / UI event handler instantiated for each connection"""
-
-    def onConnect(self, request):
-        """Triggered when a new WebSocket client (UI layer) attempts to connect"""
-
-        logging.info("Client connecting: %s" % request.peer)
-
-        if self.app.singleclient and len(self.app.clients) == 1:
-            logging.info("Running in Single client mode - extra connection request rejected")
-            raise ConnectionDeny(403)
-
-        self.app.clients.append(self)
-
-    def onOpen(self):
-        """Triggered when a connection is established"""
-
-        logging.info("WebSocket connection open")
-
-    async def onMessage(self, payload, isBinary):
-        """Called whenever a new message is received"""
-
-        if isBinary:
-            logging.info("Binary message received: {} bytes".format(len(payload)))
-        else:
-            logging.info("Text message received: {}".format(payload.decode('utf-8')))
-            body = json.loads(payload.decode('utf-8'))
-
-            if 'event' in body:
-                await self.app.process(self, body)
-                return
-
-    def onClose(self, wasClean, code, reason):
-        """Called when the client closes the connection"""
-
-        logging.info("WebSocket connection closed: {}".format(reason))
-
-        # Exit the application if only listening to one client
-        if self.app.singleclient and self.app.clients[0] == self:
-            # TODO: This should probably be cleaner
-            exit(0)
-        else:
-            del(self.app.clients[self.app.clients.index(self)])
-
-    def dispatch(self, command):
-        """Send a command to the client / UI layer"""
-
-        self.sendMessage(bytes(json.dumps(command), 'utf-8'), False)
 
 
 class Sofi():
 
-    def __init__(self, singleclient=True, background=False, hostname="127.0.0.1", address="0.0.0.0", port=9000, protocol=SofiEventProtocol):
+    def __init__(self, singleclient=True, background=False, hostname="127.0.0.1", address="0.0.0.0", port=9000):
         # General application configuration info
         self.hostname = hostname
         self.address = address
         self.port = port
         self.background = background
         self.thread = None
-
-        # Protocol class that will manage messaging
-        self.protocol = protocol
-        protocol.app = self
 
         # Event handlers
         self.handlers = {
@@ -100,35 +45,24 @@ class Sofi():
             # Make a new asyncio event loop
             self.loop = asyncio.new_event_loop()
 
-            # Create the factory that generates protocols to handle socket communications
-            self.factory = WebSocketServerFactory("ws://" + hostname + ":" + str(port), loop=self.loop)
-            self.factory.protocol = protocol
-
             # Make a background thread that sets up the loop
-            self.thread = Thread(target=self.__start_background_loop)
+            self.thread = Thread(target=self.__run_loop)
 
         else:
-            # Create the factory that generates protocols to handle socket communications
-            self.factory = WebSocketServerFactory("ws://" + hostname + ":" + str(port))
-            self.factory.protocol = protocol
-
             # Get the current asyncio event loop
             self.loop = asyncio.get_event_loop()
 
-            # Create the loop server
-            self.server = self.loop.create_server(self.factory, address, port)
-            self.loop.run_until_complete(self.server)
-
-    def __start_background_loop(self):
+    def __run_loop(self):
         # Set event loop
-        asyncio.set_event_loop(self.loop)
+        if self.background:
+            logging.info("Running in background")
+            asyncio.set_event_loop(self.loop)
 
         # Create the loop server
-        self.server = self.loop.create_server(self.factory, self.address, self.port)
-        self.loop.run_until_complete(self.server)
+        self.server = self.loop.run_until_complete(websockets.serve(self.handler, self.hostname, self.port))
 
         try:
-            logging.info("Starting background server")
+            logging.info("Starting server")
             self.loop.run_forever()
 
         except KeyboardInterrupt:
@@ -136,11 +70,8 @@ class Sofi():
 
         finally:
             # Tell any clients that we're closing
-            for client in self.clients:
-                client.sendClose()
-                pass
-
             self.server.close()
+            self.loop.run_until_complete(asyncio.sleep(0.1))
 
             # Gather any remaining tasks so we can cancel them
             asyncio.gather(*asyncio.Task.all_tasks()).cancel()
@@ -151,6 +82,43 @@ class Sofi():
 
             logging.info("Stopping Server...")
             self.loop.close()
+
+    async def handler(self, websocket, path):
+        """Called whenever a new message is received"""
+
+        if self.singleclient and len(self.clients) == 1:
+            websocket.close(reason="Only one client allowed in single-client mode.")
+
+        self.clients.append(websocket)
+        logging.info(f"New client connected from {websocket.remote_address}")
+
+        async for msg in websocket:
+            try:
+                logging.info(f"Message received: {msg}")
+                body = json.loads(msg)
+
+                if 'event' in body:
+                    await self.process(websocket, body)
+
+            except Exception as e:
+                logging.exception(f"Exception when handling message {msg} from client {websocket.remote_address}")
+
+        self.clients.remove(websocket)
+
+    def dispatch(self, command, client=None):
+        """Send a command to the UI layer"""
+
+        command = json.dumps(command)
+        if self.singleclient:
+            # asyncio.gather(self.clients[0].send(command), loop=self.loop)
+            asyncio.run_coroutine_threadsafe(self.clients[0].send(command), self.loop)
+
+        else:
+            if client is None:
+                asyncio.run_coroutine_threadsafe(asyncio.gather(*[c.send(command) for c in self.clients], loop=self.loop))
+            else:
+                # asyncio.gather(client.send(command), loop=self.loop)
+                asyncio.run_coroutine_threadsafe(client.send(command), self.loop)
 
     def start(self, desktop=True, browser=True):
         """Start the application"""
@@ -199,37 +167,14 @@ class Sofi():
                 os.remove(jsfile)
 
             with open(jsfile, 'wb') as f:
-                f.write(bytes('var SOCKET_URL = "ws://' + self.hostname + ":" + str(self.port) + '"\n', 'utf-8'))
+                f.write(bytes('var SOCKET_URL = "ws://' + self.hostname + ":" + str(self.port) + '/"\n', 'utf-8'))
                 shutil.copyfileobj(source, f)
 
         if self.background:
             self.thread.start()
 
         else:
-            try:
-                # Start listening for connections
-                self.loop.run_forever()
-
-            except KeyboardInterrupt:
-                logging.info("Keyboard Interrupt received.")
-
-                # Tell any clients that we're closing
-                for client in self.clients:
-                    client.sendClose()
-                    pass
-
-                self.server.close()
-
-            finally:
-                # Gather any remaining tasks so we can cancel them
-                asyncio.gather(*asyncio.Task.all_tasks()).cancel()
-                self.loop.stop()
-
-                logging.info("Cancelling pending tasks...")
-                self.loop.run_forever()
-
-                logging.info("Stopping Server...")
-                self.loop.close()
+            self.__run_loop()
 
     def register(self, event, callback, selector=None, client=None):
         """Register an event callback"""
@@ -252,11 +197,8 @@ class Sofi():
         self.handlers[event][key].add(callback)
 
         if event not in ('init', 'load', 'close') and len(self.handlers[event].keys()) > 1:
-            if self.singleclient or client is None:
-                client = self.clients[0]
-
             # Tell the UI layer to subscribe to this event
-            client.dispatch({'name': 'subscribe', 'event': event, 'selector': selector, 'capture': capture, 'key': str(id(callback)) + selector})
+            self.dispatch({'name': 'subscribe', 'event': event, 'selector': selector, 'capture': capture, 'key': str(id(callback)) + selector}, client)
 
     def unregister(self, event, callback, selector=None, client=None):
         """Remove an event callback"""
@@ -272,28 +214,14 @@ class Sofi():
                 handler_list.remove(callback)
 
         if event not in ('init', 'load', 'close'):
-            if self.singleclient or client is None:
-                client = self.clients[0]
-
             # Tell the UI layer to unsubscribe from this event
-            client.dispatch({'name': 'unsubscribe', 'event': event, 'selector': selector, 'key': str(id(callback)) + selector})
+            self.dispatch({'name': 'unsubscribe', 'event': event, 'selector': selector, 'key': str(id(callback)) + selector}, client)
 
-    def dispatch(self, command, client=None):
-        """Send a command to the UI layer. Only use in singleclient mode"""
-
-        if self.singleclient:
-            self.clients[0].dispatch(command)
-        else:
-            if client is None:
-                raise NotImplementedError("Using Sofi.dispatch with more than one client can have unintended consequences and is not supported")
-            else:
-                client.dispatch(command)
-
-    async def process(self, protocol, event):
+    async def process(self, client, event):
         """Process a new event"""
 
         eventtype = event['event']
-        event['client'] = protocol
+        event['client'] = client
 
         if eventtype in self.handlers:
             # Check for local handler
@@ -313,88 +241,58 @@ class Sofi():
     def load(self, html, client=None):
         """Initialize the UI. This will replace the document <html> tag contents with the supplied html."""
 
-        if client is None:
-            client = self.clients[0]
-
         if isinstance(html, Element):
             html = str(html)
 
-        client.dispatch({'name': 'init', 'html': html})
+        self.dispatch({'name': 'init', 'html': html}, client)
 
     def append(self, selector, html, client=None):
         """Append the given html to all elements matching this selector"""
 
-        if client is None:
-            client = self.clients[0]
-
         if isinstance(html, Element):
             html = str(html)
 
-        client.dispatch({'name': 'append', 'selector': selector, 'html': html})
+        self.dispatch({'name': 'append', 'selector': selector, 'html': html}, client)
 
     def remove(self, selector, client=None):
         """Remove the elements matching this selector."""
 
-        if client is None:
-            client = self.clients[0]
-
-        client.dispatch({'name': 'remove', 'selector': selector})
+        self.dispatch({'name': 'remove', 'selector': selector}, client)
 
     def replace(self, selector, html, client=None):
         """Replace the contents all elements matching this selector with the given html."""
 
-        if client is None:
-            client = self.clients[0]
-
         if isinstance(html, Element):
             html = str(html)
 
-        client.dispatch({'name': 'replace', 'selector': selector, 'html': html})
+        self.dispatch({'name': 'replace', 'selector': selector, 'html': html}, client)
 
     def addclass(self, selector, cl, client=None):
         """Add the given class from all elements matching this selector."""
 
-        if client is None:
-            client = self.clients[0]
-
-        client.dispatch({'name': 'addclass', 'selector': selector, 'cl': cl})
+        self.dispatch({'name': 'addclass', 'selector': selector, 'cl': cl}, client)
 
     def removeclass(self, selector, cl, client=None):
         """Remove the given class from all elements matching this selector."""
 
-        if client is None:
-            client = self.clients[0]
-
-        client.dispatch({'name': 'removeclass', 'selector': selector, 'cl': cl})
+        self.dispatch({'name': 'removeclass', 'selector': selector, 'cl': cl}, client)
 
     def text(self, selector, text, client=None):
         """Set the text for elements matching the selector."""
 
-        if client is None:
-            client = self.clients[0]
-
-        client.dispatch({'name': 'text', 'selector': selector, 'text': text})
+        self.dispatch({'name': 'text', 'selector': selector, 'text': text}, client)
 
     def attr(self, selector, attr, value, client=None):
         """Set the attribute for elements matching this selector."""
 
-        if client is None:
-            client = self.clients[0]
-
-        client.dispatch({'name': 'attr', 'selector': selector, 'attr': attr, 'value': value})
+        self.dispatch({'name': 'attr', 'selector': selector, 'attr': attr, 'value': value}, client)
 
     def style(self, selector, style, value, priority=None, client=None):
         """Set the style for elements matching this selector. The priority field can be set to "important" to force the style."""
 
-        if client is None:
-            client = self.clients[0]
+        self.dispatch({'name': 'style', 'selector': selector, 'style': style, 'value': value, 'priority': priority}, client)
 
-        client.dispatch({'name': 'style', 'selector': selector, 'style': style, 'value': value, 'priority': priority})
-
-    def property(self, selector, property, value, client=None):
+    def prop(self, selector, property, value, client=None):
         """Set the property for elements matching this selector. Properties are special attributes like 'checked' or 'value'."""
 
-        if client is None:
-            client = self.clients[0]
-
-        client.dispatch({'name': 'attr', 'selector': selector, 'property': property, 'value': value})
+        self.dispatch({'name': 'attr', 'selector': selector, 'property': property, 'value': value}, client)
