@@ -59,7 +59,7 @@ class Sofi():
             asyncio.set_event_loop(self.loop)
 
         # Create the loop server
-        self.server = self.loop.run_until_complete(websockets.serve(self.handler, self.hostname, self.port))
+        self.server = self.loop.run_until_complete(websockets.serve(self.handler, self.address, self.port))
 
         try:
             logging.info("Starting server")
