@@ -1,14 +1,22 @@
 from setuptools import setup, find_packages
+from os import path
+
+
+# Get the long description from the README file
+with open(path.join('.', 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 
 setup(
     author="tryexceptpass",
     author_email="cmedina@tryexceptpass.org",
 
     name="sofi",
-    version="0.3.2",
+    version="0.3.4",
 
     description="Desktop and Web GUI framework based on WebSockets",
-    long_description="Sofi is a Python 3 WebSocket server and protocol that works with clients to generate GUI applications. For websites, it generates the necessary HTML and JavaScript needed to produce a single-page application with event listeners. In conjunction with sofi-unity3d, it can drive the Unity3D game engine.",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
 
     url="https://github.com/tryexceptpass/sofi",
 
@@ -32,7 +40,17 @@ setup(
                  'Topic :: Multimedia :: Graphics',
                  'Topic :: Software Development :: User Interfaces',
 
+                 'Programming Language :: Python :: 3.6',
+
                  'Development Status :: 4 - Beta',
                  ],
-    keywords=['websockets', 'javascript', 'bootstrap', 'gui', 'unity3d']
+    keywords='websockets javascript bootstrap gui unity3d desktop html',
+
+    project_urls={
+        'Bug Reports': 'https://github.com/tryexceptpass/sofi/issues',
+        'Chat': 'https://gitter.im/try-except-pass/sofi',
+        'Say Thanks!': 'https://saythanks.io/to/tryexceptpass',
+        'Source': 'https://github.com/tryexceptpass/sofi',
+        'Documentation': 'http://sofi-websocket-framework.readthedocs.io/en/latest/',
+    },
 )
