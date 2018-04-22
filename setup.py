@@ -12,7 +12,7 @@ setup(
     author_email="cmedina@tryexceptpass.org",
 
     name="sofi",
-    version="0.3.4",
+    version="0.3.6",
 
     description="Desktop and Web GUI framework based on WebSockets",
     long_description=long_description,
