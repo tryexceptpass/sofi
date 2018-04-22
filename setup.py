@@ -47,10 +47,9 @@ setup(
     keywords='websockets javascript bootstrap gui unity3d desktop html',
 
     project_urls={
-        'Bug Reports': 'https://github.com/tryexceptpass/sofi/issues',
-        'Chat': 'https://gitter.im/try-except-pass/sofi',
+        'Gitter Chat': 'https://gitter.im/try-except-pass/sofi',
         'Say Thanks!': 'https://saythanks.io/to/tryexceptpass',
         'Source': 'https://github.com/tryexceptpass/sofi',
-        'Documentation': 'http://sofi-websocket-framework.readthedocs.io/en/latest/',
+        'Documentation': 'http://sofi-gui-framework.readthedocs.io/en/latest/',
     },
 )
