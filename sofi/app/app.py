@@ -231,12 +231,12 @@ class Sofi():
                 if key in self.handlers[eventtype]:
                     for handler in list(self.handlers[eventtype][key]):
                         if callable(handler):
-                            await handler(event)
+                            asyncio.run_coroutine_threadsafe(handler(event), self.loop)
 
             # Check for global handler
             for handler in list(self.handlers[eventtype]['_']):
                 if callable(handler):
-                    await handler(event)
+                    asyncio.run_coroutine_threadsafe(handler(event), self.loop)
 
     def load(self, html, client=None):
         """Initialize the UI. This will replace the document <html> tag contents with the supplied html."""
