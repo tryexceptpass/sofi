@@ -12,7 +12,7 @@ setup(
     author_email="cmedina@tryexceptpass.org",
 
     name="sofi",
-    version="0.3.7",
+    version="0.3.8",
 
     description="Desktop and Web GUI framework based on WebSockets",
     long_description=long_description,
@@ -40,6 +40,7 @@ setup(
                  'Topic :: Multimedia :: Graphics',
                  'Topic :: Software Development :: User Interfaces',
 
+                 'Programming Language :: Python :: 3 :: Only',
                  'Programming Language :: Python :: 3.6',
 
                  'Development Status :: 4 - Beta',
