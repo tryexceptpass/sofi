@@ -36,10 +36,24 @@ function init() {
             d3.selectAll(command.selector).classed(command.cl, false)
         }
         else if (command.name == "text") {
-            d3.selectAll(command.selector).text(command.text)
+            if (command.text == null) {
+                var resp = {'event': 'response', 'request_id': command.request_id, 'text': d3.select(command.selector).text()}
+                console.log(resp)
+                socket.send(JSON.stringify(resp))
+            }
+            else {
+                d3.selectAll(command.selector).text(command.text)
+            }
         }
         else if (command.name == "attr") {
-            d3.selectAll(command.selector).attr(command.attr, command.value)
+            if (command.text == null) {
+                var resp = {'event': 'response', 'request_id': command.request_id, 'attr': d3.select(command.selector).attr(command.attr)}
+                console.log(resp)
+                socket.send(JSON.stringify(resp))
+            }
+            else {
+                d3.selectAll(command.selector).attr(command.attr, command.value)
+            }
         }
         else if (command.name == "style") {
             if (command.priority) {
@@ -50,7 +64,14 @@ function init() {
             }
         }
         else if (command.name == "property") {
-            d3.selectAll(command.selector).property(command.property, command.value)
+            if (command.text == null) {
+                var resp = {'event': 'response', 'request_id': command.request_id, 'prop': d3.select(command.selector).property(command.property)}
+                console.log(resp)
+                socket.send(JSON.stringify(resp))
+            }
+            else {
+                d3.selectAll(command.selector).property(command.property, command.value)
+            }
         }
         else if (command.name == "subscribe") {
             var key = command.key

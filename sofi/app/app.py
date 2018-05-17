@@ -7,6 +7,7 @@ import subprocess
 import json
 import webbrowser
 import logging
+import time
 
 from sofi.ui import Element
 
@@ -36,6 +37,8 @@ class Sofi():
             'keyup': {'_': set()},
             'keypress': {'_': set()}
         }
+
+        self.requests = {}
 
         # Client management
         self.clients = list()
@@ -94,7 +97,7 @@ class Sofi():
 
         async for msg in websocket:
             try:
-                logging.info(f"Message received: {msg}")
+                logging.debug(f"Message received: {msg}")
                 body = json.loads(msg)
 
                 if 'event' in body:
@@ -108,7 +111,11 @@ class Sofi():
     def dispatch(self, command, client=None):
         """Send a command to the UI layer"""
 
+        if 'request_id' in command:
+            self.requests[command['request_id']] = None
+
         command = json.dumps(command)
+
         if self.singleclient:
             # asyncio.gather(self.clients[0].send(command), loop=self.loop)
             asyncio.run_coroutine_threadsafe(self.clients[0].send(command), self.loop)
@@ -223,6 +230,12 @@ class Sofi():
         eventtype = event['event']
         event['client'] = client
 
+        if eventtype == 'response':
+            # We receive a response to a specific property, attr or text request
+            if 'request_id' in event:
+                self.requests[event['request_id']] = event
+                return
+
         if eventtype in self.handlers:
             # Check for local handler
             if 'key' in event:
@@ -237,6 +250,19 @@ class Sofi():
             for handler in list(self.handlers[eventtype]['_']):
                 if callable(handler):
                     asyncio.run_coroutine_threadsafe(handler(event), self.loop)
+
+    async def _waitforresponse(self, request_id, item):
+        """Wait for a response to a specific request"""
+
+        while self.requests[request_id] is None:
+            await asyncio.sleep(0.01)
+
+        resp = self.requests[request_id]
+        del self.requests[request_id]
+
+        logging.debug(f"Response received: {resp}")
+
+        return resp.get(item, None)
 
     def load(self, html, client=None):
         """Initialize the UI. This will replace the document <html> tag contents with the supplied html."""
@@ -277,12 +303,27 @@ class Sofi():
 
         self.dispatch({'name': 'removeclass', 'selector': selector, 'cl': cl}, client)
 
-    def text(self, selector, text, client=None):
+    async def gettext(self, selector, client=None):
+        """Get the text for elements matching the selector."""
+
+        logging.info("TEXT")
+        request_id = time.time()
+        self.dispatch({'name': 'text', 'request_id': request_id, 'selector': selector, 'text': None}, client)
+        return await self._waitforresponse(request_id, 'text')
+
+    def settext(self, selector, text, client=None):
         """Set the text for elements matching the selector."""
 
         self.dispatch({'name': 'text', 'selector': selector, 'text': text}, client)
 
-    def attr(self, selector, attr, value, client=None):
+    async def getattribute(self, selector, attr, client=None):
+        """Get the attribute for elements matching this selector."""
+
+        request_id = time.time()
+        self.dispatch({'name': 'attr', 'request_id': request_id, 'selector': selector, 'attr': attr, 'value': None}, client)
+        return await self._waitforresponse(request_id, 'attr')
+
+    def setattribute(self, selector, attr, value, client=None):
         """Set the attribute for elements matching this selector."""
 
         self.dispatch({'name': 'attr', 'selector': selector, 'attr': attr, 'value': value}, client)
@@ -292,7 +333,14 @@ class Sofi():
 
         self.dispatch({'name': 'style', 'selector': selector, 'style': style, 'value': value, 'priority': priority}, client)
 
-    def prop(self, selector, property, value, client=None):
+    async def getproperty(self, selector, property, client=None):
+        """Get the property for elements matching this selector. Properties are special attributes like 'checked' or 'value'."""
+
+        request_id = time.time()
+        self.dispatch({'name': 'property', 'request_id': request_id, 'selector': selector, 'property': property, 'value': None}, client)
+        return await self._waitforresponse(request_id, 'prop')
+
+    def setproperty(self, selector, property, value, client=None):
         """Set the property for elements matching this selector. Properties are special attributes like 'checked' or 'value'."""
 
-        self.dispatch({'name': 'attr', 'selector': selector, 'property': property, 'value': value}, client)
+        self.dispatch({'name': 'property', 'selector': selector, 'property': property, 'value': value}, client)

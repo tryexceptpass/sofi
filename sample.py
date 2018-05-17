@@ -95,6 +95,12 @@ async def onload(event):
 
     await asyncio.sleep(5)
 
+    text = await app.gettext('#primary', event['client'])
+    attr = await app.getattribute('#primary', 'class', event['client'])
+    prop = await app.getproperty('#primary', 'type', event['client'])
+
+    logging.info(f"TEXT {text}, ATTR {attr}, PROP {prop}")
+
     for i in range(1, 5):
         app.style("#fiddle", 'font-size', str(i*2) + "em", 'important', event['client'])
 
@@ -109,7 +115,7 @@ async def onload(event):
 
     msg = 'SWEET!!!'
     for i in range(8):
-        app.text("h2", msg[:i], event['client'])
+        app.set_text("h2", msg[:i], event['client'])
         await asyncio.sleep(1)
 
 
@@ -132,5 +138,5 @@ app = Sofi(singleclient=True)
 app.register('init', oninit)
 app.register('load', onload)
 
+# app.start()
 app.start()
-# app.start(browser=False)
