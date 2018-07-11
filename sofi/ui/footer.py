@@ -14,7 +14,7 @@ class Footer(Element):
         return "<Footer>"
 
     def __str__(self):
-        output = [ "<footer" ]
+        output = ["<footer"]
 
         if self.ident:
             output.append(" id=\"")

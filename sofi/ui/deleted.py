@@ -14,7 +14,7 @@ class Deleted(Element):
         return "<Deleted>"
 
     def __str__(self):
-        output = [ "<del" ]
+        output = ["<del"]
 
         if self.ident:
             output.append(" id=\"")

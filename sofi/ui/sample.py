@@ -14,7 +14,7 @@ class Sample(Element):
         return "<Sample>"
 
     def __str__(self):
-        output = [ "<samp" ]
+        output = ["<samp"]
 
         if self.ident:
             output.append(" id=\"")

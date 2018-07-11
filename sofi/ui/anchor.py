@@ -1,13 +1,18 @@
 from .element import Element
+from .badge import Badge
 
 class Anchor(Element):
     """Implements the <a> tag"""
 
 
-    def __init__(self, text=None, href="#", cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, href="#", badgecontext=None, cl=None, ident=None, style=None, attrs=None):
+        if badgecontext is not None and badgecontext not in Badge.CONTEXTS:
+            raise ValueError(f"Unknown badge context: {badgecontext}")
+
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.href = href
+        self.badgecontext = badgecontext
 
         if text:
             self._children.append(text)
@@ -16,35 +21,33 @@ class Anchor(Element):
         return "<Anchor(href='" + self.href + "')>"
 
     def __str__(self):
-        output = [ "<a" ]
+        output = ["<a"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f'id="{self.ident}" ')
+
+        classes = []
+
+        if self.badgecontext:
+            classes.append(f'badge {Badge.CONTEXTS[self.badgecontext]}')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            classes.append(self.cl)
 
-        output.append(' href="')
-        output.append(self.href)
-        output.append('"')
+        if len(classes) > 0:
+            output.append(f' class="{" ".join(classes)}"')
+
+        output.append(f' href="{self.href}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</a>")
 

@@ -3,7 +3,7 @@ from .anchor import Anchor
 from .heading import Heading
 from .paragraph import Paragraph
 
-ITEMSEVS = { 'danger':  'list-group-item-danger',
+ITEMSEVS = {'danger':  'list-group-item-danger',
              'success': 'list-group-item-success',
              'info':    'list-group-item-info',
              'warning': 'list-group-item-warning',
@@ -49,10 +49,10 @@ class ListGroup(Element):
         return "<ListGroup(linkify=" + str(self.linkify) + ")>"
 
     def __str__(self):
-        output = [ "<ul" ]
+        output = ["<ul"]
 
         if self.linkify:
-            output = [ "<div" ]
+            output = ["<div"]
 
         if self.ident:
             output.append(" id=\"")

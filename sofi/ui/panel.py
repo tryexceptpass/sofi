@@ -5,7 +5,7 @@ from .table import Table
 class Panel(Element):
     """Implements a Bootstrap panel"""
 
-    SEVERITIES = { 'danger':  'panel-danger',
+    SEVERITIES = {'danger':  'panel-danger',
                    'success': 'panel-success',
                    'info':    'panel-info',
                    'warning': 'panel-warning',
@@ -66,7 +66,7 @@ class Panel(Element):
             output.append(self.ident)
             output.append('"')
 
-        classes = [ "panel" ]
+        classes = ["panel"]
         output.append(' class="')
         if self.severity:
             classes.append(Panel.SEVERITIES[self.severity])

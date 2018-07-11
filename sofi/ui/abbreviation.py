@@ -16,7 +16,7 @@ class Abbreviation(Element):
         return "<Abbreviation(title='" + self.title + "',initialism=" + str(self.initialism) + ")>"
 
     def __str__(self):
-        output = [ "<abbr title=\"", self.title, "\"" ]
+        output = ["<abbr title=\"", self.title, "\""]
 
         if self.ident:
             output.append(" id=\"")

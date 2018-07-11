@@ -13,7 +13,7 @@ class Div(Element):
         return "<Div>"
 
     def __str__(self):
-        output = [ "<div" ]
+        output = ["<div"]
 
         if self.ident:
             output.append(" id=\"")

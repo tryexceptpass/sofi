@@ -16,7 +16,7 @@ class Textarea(Element):
         return "<Textarea>"
 
     def __str__(self):
-        output = [ "<textarea" ]
+        output = ["<textarea"]
 
         if self.ident:
             output.append(" id=\"")

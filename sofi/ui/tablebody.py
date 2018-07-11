@@ -25,7 +25,7 @@ class TableBody(Element):
         return "<TableBody>"
 
     def __str__(self):
-        output = [ "<tbody" ]
+        output = ["<tbody"]
 
         if self.ident:
             output.append(" id=\"")

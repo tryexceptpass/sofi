@@ -14,7 +14,7 @@ class Mark(Element):
         return "<Mark>"
 
     def __str__(self):
-        output = [ "<mark" ]
+        output = ["<mark"]
 
         if self.ident:
             output.append(" id=\"")

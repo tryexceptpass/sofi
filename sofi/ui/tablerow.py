@@ -14,7 +14,7 @@ class TableRow(Element):
         return "<TableRow>"
 
     def __str__(self):
-        output = [ "<tr" ]
+        output = ["<tr"]
 
         if self.ident:
             output.append(" id=\"")

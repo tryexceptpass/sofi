@@ -16,7 +16,7 @@ class DropdownItem(Element):
         return '<DropdownItem(text="' + self.text + '",disabled=' + self.disabled + ',header=' + self.header + ',divider=' + self.divider + ')>'
 
     def __str__(self):
-        output = [ '<li' ]
+        output = ['<li']
 
         if self.ident:
             output.append(' id="')

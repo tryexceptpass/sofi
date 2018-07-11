@@ -14,7 +14,7 @@ class OrderedList(Element):
         return "<OrderedList>"
 
     def __str__(self):
-        output = [ "<ol" ]
+        output = ["<ol"]
 
         if self.ident:
             output.append(" id=\"")

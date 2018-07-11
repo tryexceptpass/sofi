@@ -13,7 +13,7 @@ class ListItem(Element):
         return "<ListItem>"
 
     def __str__(self):
-        output = [ "<li" ]
+        output = ["<li"]
 
         if self.ident:
             output.append(" id=\"")

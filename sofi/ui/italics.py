@@ -14,7 +14,7 @@ class Italics(Element):
         return "<Italics>"
 
     def __str__(self):
-        output = [ "<em" ]
+        output = ["<em"]
 
         if self.ident:
             output.append(" id=\"")

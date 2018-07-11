@@ -14,7 +14,7 @@ class DescriptionTerm(Element):
         return "<DescriptionTerm>"
 
     def __str__(self):
-        output = [ "<dt" ]
+        output = ["<dt"]
 
         if self.ident:
             output.append(" id=\"")

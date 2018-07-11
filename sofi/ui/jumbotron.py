@@ -1,9 +1,10 @@
 from .element import Element
 
+
 class Jumbotron(Element):
     """Implements the Bootstrap Jumbotron <div class="jumbotron">"""
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, fluid=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text:
@@ -13,37 +14,37 @@ class Jumbotron(Element):
         return "<Jumbotron>"
 
     def __str__(self):
-        output = [ "<div" ]
+        output = ['<div']
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
-        classes = []
-        classes.append("jumbotron")
+        classes = ['jumbotron']
 
         if self.cl:
             classes.append(self.cl)
 
-        output.append(' class="')
-        output.append(" ".join(classes))
-        output.append('"')
+        if self.fluid:
+            classes.append('jumbotron-fluid')
+
+        output.append(f' class="{" ".join(classes)}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
-        output.append(">")
+        if self.fluid:
+            output.append('><div class="container">')
+        else:
+            output.append('>')
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
-        output.append("</div>")
+        if self.fluid:
+            output.append('</div></div>')
+        else:
+            output.append("</div>")
 
         return "".join(output)

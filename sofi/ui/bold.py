@@ -14,7 +14,7 @@ class Bold(Element):
         return "<Bold>"
 
     def __str__(self):
-        output = [ "<strong" ]
+        output = ["<strong"]
 
         if self.ident:
             output.append(" id=\"")

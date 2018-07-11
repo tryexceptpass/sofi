@@ -26,7 +26,7 @@ class TableHead(Element):
         return "<TableHead>"
 
     def __str__(self):
-        output = [ "<thead" ]
+        output = ["<thead"]
 
         if self.ident:
             output.append(" id=\"")

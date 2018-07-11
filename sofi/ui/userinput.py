@@ -14,7 +14,7 @@ class UserInput(Element):
         return "<UserInput>"
 
     def __str__(self):
-        output = [ "<kbd" ]
+        output = ["<kbd"]
 
         if self.ident:
             output.append(" id=\"")

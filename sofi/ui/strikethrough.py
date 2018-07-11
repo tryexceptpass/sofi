@@ -13,7 +13,7 @@ class Strikethrough(Element):
         return "<Strikethrough>"
 
     def __str__(self):
-        output = [ "<s" ]
+        output = ["<s"]
 
         if self.ident:
             output.append(" id=\"")

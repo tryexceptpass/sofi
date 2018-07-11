@@ -13,7 +13,7 @@ class Form(Element):
         return "<Form(inline=" + self.inline + ",horizontal=" + self.horizontal + ")>"
 
     def __str__(self):
-        output = [ "<form" ]
+        output = ["<form"]
 
         if self.ident:
             output.append(" id=\"")

@@ -14,7 +14,7 @@ class Code(Element):
         return "<Code>"
 
     def __str__(self):
-        output = [ "<code" ]
+        output = ["<code"]
 
         if self.ident:
             output.append(" id=\"")

@@ -1,22 +1,44 @@
 from .element import Element
 from .span import Span
 
+
 class Badge(Element):
     """Implement Boostrap Badge <span class="badge">"""
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    CONTEXTS = {
+        'primary': 'badge-primary',
+        'secondary': 'badge-secondary',
+        'success': 'badge-success',
+        'danger': 'badge-danger',
+        'warning': 'badge-warning',
+        'info': 'badge-info',
+        'light': 'badge-light',
+        'dark': 'badge-dark',
+    }
+
+    def __init__(self, text=None, context=None, pill=False, cl=None, ident=None, style=None, attrs=None):
+        if context is not None and context not in Badge.CONTEXTS:
+            raise ValueError(f"Unknown badge context: {context}")
+
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
+        self.pill = pill
+        self.context = context
 
     def __repr__(self):
-        return "<Badge(text='" + self.text + "')>"
+        return f'<Badge(text="{self.text}")>'
 
     def __str__(self):
-        badge_cl = "badge"
+        classes = ["badge"]
+
+        if self.pill:
+            classes.append('badge-pill')
+
+        if self.context:
+            classes.append(Badge.CONTEXTS[self.context])
 
         if self.cl:
-            badge_cl = badge_cl + " " + self.cl
+            classes.append(self.cl)
 
-        return str(Span(text=self.text, cl=badge_cl, ident=self.ident,
-                        style=self.style, attrs=self.attrs))
+        return str(Span(text=self.text, cl=" ".join(classes), ident=self.ident, style=self.style, attrs=self.attrs))

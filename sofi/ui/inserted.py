@@ -14,7 +14,7 @@ class Inserted(Element):
         return "<Inserted>"
 
     def __str__(self):
-        output = [ "<ins" ]
+        output = ["<ins"]
 
         if self.ident:
             output.append(" id=\"")

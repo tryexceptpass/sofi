@@ -4,9 +4,9 @@ from .span import Span
 class Input(Element):
     """Implements <input> tag"""
 
-    _TYPES = [ "text", "password", "datetime", "datetime-local", "date", "month", "time", "week", "number", "email", "url", "search", "tel", "color" ]
+    _TYPES = ["text", "password", "datetime", "datetime-local", "date", "month", "time", "week", "number", "email", "url", "search", "tel", "color"]
 
-    _SIZES = { "large": "input-lg",
+    _SIZES = {"large": "input-lg",
                "small": "input-sm"
              }
 
@@ -26,7 +26,7 @@ class Input(Element):
         return "<Input(type='" + self.inputtype + "')>"
 
     def __str__(self):
-        output = [ "<input type=\"", self.inputtype, "\"" ]
+        output = ["<input type=\"", self.inputtype, "\""]
 
         if self.ident:
             output.append(" id=\"")
@@ -35,7 +35,7 @@ class Input(Element):
 
         output.append(" class=\"")
 
-        cl = [ "form-control" ]
+        cl = ["form-control"]
 
         if self.size and self.size in self._SIZES:
             cl.append(self._SIZES[self.size])

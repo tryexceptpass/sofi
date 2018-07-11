@@ -13,7 +13,7 @@ class Well(Div):
         return "<Well(text='" + self.text + "')>"
 
     def __str__(self):
-        classes = [ "well" ]
+        classes = ["well"]
 
         if self.size:
             if self.size == "large" or self.size == "lg":

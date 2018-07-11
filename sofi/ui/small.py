@@ -13,7 +13,7 @@ class Small(Element):
         return "<Small>"
 
     def __str__(self):
-        output = [ "<small" ]
+        output = ["<small"]
 
         if self.ident:
             output.append(" id=\"")

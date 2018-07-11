@@ -1,57 +1,58 @@
 from .element import Element
 
+
 class Column(Element):
     """Implements the column layout <div class=\"col-\"> where size, count and offset
     attributes are used to create the class name, i.e.: col-md-4 or col-offset-md-4"""
 
-    def __init__(self, size='md', count=4, offset=0, cl=None, ident=None, style=None, attrs=None):
+    VERTICAL_ALIGNMENT = {'start': 'align-items-start', 'center': 'align-items-center', 'end': 'align-items-end'}
+
+    def __init__(self, size='md', count=4, offset=0, valign=None, order=None, cl=None, ident=None, style=None, attrs=None):
+        if valign is not None and valign not in Column.VERTICAL_ALIGNMENT:
+            raise ValueError(f"Unknown vertical alignment: {valign}")
+
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.size = size
         self.count = count
         self.offset = offset
+        self.valign = valign
+        self.order = order
 
     def __repr__(self):
-        return "<Column(size='" + self.size + "',count='" + str(self.count) + "',offset=" + str(self.offset) + ")>"
+        return f'<Column(size={self.size},count={self.count},offset={self.offset})>'
 
     def __str__(self):
-        output = [ "<div " ]
+        output = ["<div "]
 
         if self.ident:
-            output.append("id=\"")
-            output.append(self.ident)
-            output.append("\" ")
+            output.append(f'id="{self.ident}" ')
 
-        output.append("class=\"col-")
-        output.append(str(self.size))
-        output.append("-")
-        output.append(str(self.count))
+        output.append(f'class="col-{self.size}-{self.count}')
 
         if self.offset > 0:
-            output.append(" col-")
-            output.append(self.size)
-            output.append("-offset-")
-            output.append(str(self.offset))
+            output.append(f' col-{self.size}-offset-{self.offset}')
 
         if self.cl:
-            output.append(" ")
-            output.append(self.cl)
+            output.append(f" {self.cl}")
 
-        output.append("\"")
+        if self.order:
+            output.append(f' order-{self.order}')
+
+        if self.valign:
+            output.append(f' {Column.VERTICAL_ALIGNMENT[self.valign]}')
+
+        output.append('"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</div>")
 

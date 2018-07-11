@@ -14,7 +14,7 @@ class BasicBlock(Element):
         return "<BasicBlock>"
 
     def __str__(self):
-        output = [ "<pre" ]
+        output = ["<pre"]
 
         if self.ident:
             output.append(" id=\"")

@@ -47,7 +47,7 @@ class Navbar(Element):
         return "<Navbar(inverse=" + str(self.inverse) + ",fixed=" + str(self.fixed) + ",static=" + str(self.static) + ")>"
 
     def __str__(self):
-        output = ['<nav class="' ]
+        output = ['<nav class="']
         classes = ['navbar']
 
         if self.inverse:

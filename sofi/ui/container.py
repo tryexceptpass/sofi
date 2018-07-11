@@ -1,6 +1,7 @@
 from .element import Element
 from .row import Row
 
+
 class Container(Element):
     """Implements a container tag of form <div class=\"container\"> or
     <div class=\"container-fluid\">"""
@@ -18,40 +19,33 @@ class Container(Element):
         return r
 
     def __repr__(self):
-        return "<Container(fluid=" + str(self.fluid) + ")>"
+        return f"<Container(fluid={self.fluid})>"
 
     def __str__(self):
-        output = [ "<div " ]
+        output = ["<div "]
 
         if self.ident:
-            output.append("id=\"")
-            output.append(self.ident)
-            output.append("\" ")
+            output.append(f'id="{self.ident}" ')
 
-        output.append("class=\"container")
+        output.append('class="container')
 
         if self.fluid:
             output.append("-fluid")
 
         if self.cl:
-            output.append(" ")
-            output.append(self.cl)
+            output.append(f" {self.cl}")
 
-        output.append("\"")
+        output.append('"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</div>")
 

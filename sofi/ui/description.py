@@ -16,7 +16,7 @@ class Description(Element):
         return "<Description(horizontal=" + self.horizontal + ")>"
 
     def __str__(self):
-        output = [ "<dl" ]
+        output = ["<dl"]
 
         if self.ident:
             output.append(" id=\"")

@@ -13,7 +13,7 @@ class Span(Element):
         return "<Span>"
 
     def __str__(self):
-        output = [ "<span" ]
+        output = ["<span"]
 
         if self.ident:
             output.append(" id=\"")

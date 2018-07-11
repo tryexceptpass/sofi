@@ -10,34 +10,27 @@ class ButtonToolbar(Element):
         return "<ButtonToolbar()>"
 
     def __str__(self):
-        output = [ "<div " ]
+        output = ["<div "]
 
         if self.ident:
-            output.append('id="')
-            output.append(self.ident)
-            output.append('" ')
+            output.append(f'id="{self.ident}" ')
 
         output.append('class="btn-toolbar')
 
         if self.cl:
-            output.append(" ")
-            output.append(self.cl)
+            output.append(f' {self.cl})
 
         output.append('" role="toolbar"')
 
         if self.style:
-            output.append(' style="')
-            output.append(self.style)
-            output.append('"')
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</div>")
 

@@ -13,7 +13,7 @@ class Underlined(Element):
         return "<Underlined>"
 
     def __str__(self):
-        output = [ "<u" ]
+        output = ["<u"]
 
         if self.ident:
             output.append(" id=\"")

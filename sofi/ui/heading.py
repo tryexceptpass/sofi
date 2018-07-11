@@ -15,7 +15,7 @@ class Heading(Element):
         return "<Heading(size=" + str(self.size) + ")>"
 
     def __str__(self):
-        output = [ "<h", str(self.size) ]
+        output = ["<h", str(self.size)]
 
         if self.ident:
             output.append(" id=\"")

@@ -17,9 +17,9 @@ class TableCell(Element):
 
     def __str__(self):
         if self.head:
-            output = [ "<th" ]
+            output = ["<th"]
         else:
-            output = [ "<td" ]
+            output = ["<td"]
 
         if self.ident:
             output.append(" id=\"")

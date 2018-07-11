@@ -14,7 +14,7 @@ class Address(Element):
         return "<Address()>"
 
     def __str__(self):
-        output = [ "<address" ]
+        output = ["<address"]
 
         if self.ident:
             output.append(" id=\"")

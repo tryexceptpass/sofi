@@ -4,7 +4,7 @@ from .span import Span
 class Label(Element):
     """Implements a Bootstrap Label <span class="label"> tag"""
 
-    SEVERITIES = { 'danger':  'label-danger',
+    SEVERITIES = {'danger':  'label-danger',
                    'success': 'label-success',
                    'info':    'label-info',
                    'warning': 'label-warning',
@@ -23,7 +23,7 @@ class Label(Element):
 
     def __str__(self):
 
-        classes = [ "label" ]
+        classes = ["label"]
 
         if self.severity:
             classes.append(Label.SEVERITIES[self.severity])

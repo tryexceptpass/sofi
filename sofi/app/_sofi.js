@@ -5,7 +5,7 @@ function init() {
 
     socket.onopen = function(event) {
         console.log("Connected to websocket server at " + SOCKET_URL)
-        socket.send(JSON.stringify({ "event": "init" }))
+        socket.send(JSON.stringify({"event": "init"}))
     }
 
     socket.onmessage = function(event) {
@@ -77,7 +77,7 @@ function init() {
             var key = command.key
             d3.selectAll(command.selector).on(command.event + "." + key, function(d,i) {
                 var eventTarget = d3.event.target || d3.event.srcElement;
-                socket.send(JSON.stringify({ "event": d3.event.type,
+                socket.send(JSON.stringify({"event": d3.event.type,
                                              "element": eventTarget.id,
                                              "event_object": getProperties(d3.event),
                                              "d": d,
@@ -111,7 +111,7 @@ function getProperties(obj) {
         propType = typeof obj[p]
         if (propType == "object") {
             if (obj[p] instanceof HTMLElement) {
-                newObj[p] = { }
+                newObj[p] = {}
                 newObj[p]['innerText'] = obj[p].innerText
                 newObj[p]['outterText'] = obj[p].outterText
                 newObj[p]['innerHTML'] = obj[p].innerHTML
@@ -137,7 +137,7 @@ function getProperties(obj) {
 }
 
 function load() {
-    socket.send(JSON.stringify({ "event": "load" }))
+    socket.send(JSON.stringify({"event": "load"}))
 }
 
 window.onload = function(event) {

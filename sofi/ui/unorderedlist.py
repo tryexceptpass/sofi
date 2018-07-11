@@ -17,7 +17,7 @@ class UnorderedList(Element):
         return "<UnorderedList(unstyled=" + str(self.unstyled) + ",inline=" + str(self.inline) + ")>"
 
     def __str__(self):
-        output = [ "<ul" ]
+        output = ["<ul"]
 
         if self.ident:
             output.append(" id=\"")

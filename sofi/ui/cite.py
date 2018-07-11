@@ -14,7 +14,7 @@ class Cite(Element):
         return "<Cite>"
 
     def __str__(self):
-        output = [ "<cite" ]
+        output = ["<cite"]
 
         if self.ident:
             output.append(" id=\"")

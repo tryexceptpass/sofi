@@ -14,7 +14,7 @@ class Variable(Element):
         return "<Variable>"
 
     def __str__(self):
-        output = [ "<var" ]
+        output = ["<var"]
 
         if self.ident:
             output.append(" id=\"")

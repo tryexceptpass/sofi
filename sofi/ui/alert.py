@@ -1,15 +1,26 @@
 from .element import Element
+from .anchor import Anchor
+from .heading import Heading
+
 
 class Alert(Element):
     """Implements the <div class="alert"> tag"""
 
-    SEVERITIES = { 'danger':  'alert-danger',
-                   'success': 'alert-success',
-                   'info':    'alert-info',
-                   'warning': 'alert-warning'
-                 }
+    SEVERITIES = {
+        'danger':    'alert-danger',
+        'success':   'alert-success',
+        'info':      'alert-info',
+        'warning':   'alert-warning',
+        'light':     'alert-light',
+        'dark':      'alert-dark',
+        'primary':   'alert-primary',
+        'secondary': 'alert-secondary'
+    }
 
     def __init__(self, text=None, severity=None, closebtn=False, cl=None, ident=None, style=None, attrs=None):
+        if severity is not None and severity not in Alert.SEVERITIES:
+            raise ValueError(f"Unknown severity: {severity}")
+
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
@@ -17,18 +28,15 @@ class Alert(Element):
         self.closebtn = closebtn
 
     def __repr__(self):
-        return "<Alert(text='" + self.text + "')>"
+        return f'<Alert(text="{self.text}")>'
 
     def __str__(self):
-        output = [ "<div" ]
+        output = ["<div"]
 
         if self.ident:
-            output.append(' id="')
-            output.append(self.ident)
-            output.append('"')
+            output.append(f'id="{self.ident}" ')
 
-        classes = [ "alert" ]
-        output.append(' class="')
+        classes = ["alert"]
 
         if self.severity:
             classes.append(Alert.SEVERITIES[self.severity])
@@ -37,31 +45,33 @@ class Alert(Element):
         if self.cl:
             classes.append(self.cl)
 
-        output.append(" ".join(classes))
-        output.append('"')
+        output.append(f' class="{" ".join(classes)}"')
 
         if self.style:
-            output.append(' style="')
-            output.append(self.style)
-            output.append('"')
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
-        output.append(' role="alert"')
-        output.append('>')
+        output.append(' role="alert">')
 
         if self.closebtn:
-            output.append('<button type="button" class="close"')
-            output.append(' data-dismiss="alert" aria-label="Close">')
-            output.append('<span aria-hidden="true">&times;</span>')
-            output.append('</button>')
+            output.append(
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                '<span aria-hidden="true">&times;</span>'
+                '</button>'
+            )
 
         if self.text:
             output.append(self.text)
 
         for child in self._children:
+            if isinstance(child, Anchor) and not 'alert-link' in child.cl:
+                child.cl += "alert-link" if len(child.cl) == 0 else " alert-link"
+
+            elif isinstance(child, Heading):
+                child.cl += "alert-heading" if len(child.cl) == 0 else " alert-heading"
+
             output.append(str(child))
 
         output.append("</div>")

@@ -22,7 +22,7 @@ class FontAwesomeIcon(Element):
 
     def __str__(self):
 
-        output = [ "<i" ]
+        output = ["<i"]
 
         if self.ident:
             output.append(" id=\"")

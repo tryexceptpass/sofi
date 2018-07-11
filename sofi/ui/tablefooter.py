@@ -10,7 +10,7 @@ class TableFooter(Element):
         return "<TableFooter>"
 
     def __str__(self):
-        output = [ "<tfoot" ]
+        output = ["<tfoot"]
 
         if self.ident:
             output.append(" id=\"")

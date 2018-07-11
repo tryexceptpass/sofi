@@ -10,7 +10,7 @@ class FormGroup(Div):
         return "<FormGroup>"
 
     def __str__(self):
-        output = [ "<div" ]
+        output = ["<div"]
 
         if self.ident:
             output.append(" id=\"")

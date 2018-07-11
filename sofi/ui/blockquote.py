@@ -15,7 +15,7 @@ class Blockquote(Element):
         return "<Blockquote(reverse=" + str(self.reverse) + ")>"
 
     def __str__(self):
-        output = [ "<blockquote" ]
+        output = ["<blockquote"]
 
         if self.ident:
             output.append(" id=\"")

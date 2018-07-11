@@ -17,7 +17,7 @@ class PageHeader(Element):
 
     def __str__(self):
 
-        classes = [ "page-header" ]
+        classes = ["page-header"]
         if self.cl:
             classes.append(self.cl)
 
