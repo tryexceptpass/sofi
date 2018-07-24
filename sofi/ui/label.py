@@ -1,16 +1,18 @@
 from .element import Element
 from .span import Span
 
+
 class Label(Element):
     """Implements a Bootstrap Label <span class="label"> tag"""
 
-    SEVERITIES = {'danger':  'label-danger',
-                   'success': 'label-success',
-                   'info':    'label-info',
-                   'warning': 'label-warning',
-                   'primary': 'label-primary',
-                   'default': 'label-default'
-                 }
+    SEVERITIES = {
+        'danger': 'label-danger',
+        'success': 'label-success',
+        'info': 'label-info',
+        'warning': 'label-warning',
+        'primary': 'label-primary',
+        'default': 'label-default'
+    }
 
     def __init__(self, text=None, severity=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
@@ -33,5 +35,4 @@ class Label(Element):
         if self.cl:
             classes.append(self.cl)
 
-        return str(Span(text=self.text, cl=" ".join(classes), ident=self.ident,
-                    style=self.style, attrs=self.attrs))
+        return str(Span(text=self.text, cl=" ".join(classes), ident=self.ident, style=self.style, attrs=self.attrs))

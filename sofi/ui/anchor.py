@@ -1,9 +1,9 @@
 from .element import Element
 from .badge import Badge
 
-class Anchor(Element):
-    """Implements the <a> tag"""
 
+class Anchor(Element):
+    """Implements the <a> tag."""
 
     def __init__(self, text=None, href="#", badgecontext=None, cl=None, ident=None, style=None, attrs=None):
         if badgecontext is not None and badgecontext not in Badge.CONTEXTS:

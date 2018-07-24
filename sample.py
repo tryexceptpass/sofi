@@ -1,41 +1,41 @@
 from sofi.app import Sofi
-from sofi.ui import Container, View, Row, Panel, Column
+from sofi.ui import Container, View, Row, Card, Column
 from sofi.ui import Paragraph, Heading, Anchor, Image
 from sofi.ui import Navbar, Dropdown, DropdownItem
-from sofi.ui import Button, ButtonGroup, ButtonToolbar, ButtonDropdown
+from sofi.ui import Button, ButtonGroup, ButtonToolbar
 
 import asyncio
-import json
-import time
 
 import logging
 import os
 
 
 async def oninit(event):
+    """Initialize the View."""
+
     logging.info("INIT")
     v = View("Sample Sofi Widget Application")
 
-    n = Navbar(brand="SOFI", fixed='top')
+    n = Navbar(brand="SOFI", dark=True, right=True, cl='mb-2')
     n.addlink("LINK 1")
-    n.addlink("LINK 2")
-    n.addtext("Just some Text with a " + str(Anchor("link", cl='navbar-link')))
     n.addlink("LINK 2", active=True)
+    n.addtext("Just some Text with a " + str(Anchor("link")))
+    n.addlink("LINK 3", disabled=True)
 
-    b = Dropdown("Dropdown", align='right')
-    b.addelement(DropdownItem('Item Header', header=True))
-    b.addelement(DropdownItem('Item 1'))
-    b.addelement(DropdownItem('Item 2', disabled=True))
-    b.addelement(DropdownItem('', divider=True))
-    b.addelement(DropdownItem('Item 3'))
-
-    n.adddropdown(b)
+    # b = Dropdown("Dropdown", align='right')
+    # b.addelement(DropdownItem('Item Header', header=True))
+    # b.addelement(DropdownItem('Item 1'))
+    # b.addelement(DropdownItem('Item 2', disabled=True))
+    # b.addelement(DropdownItem('', divider=True))
+    # b.addelement(DropdownItem('Item 3'))
+    #
+    # n.adddropdown(b)
 
     v.addelement(n)
 
     c = Container()
     tb = ButtonToolbar()
-    bgrp = ButtonGroup()
+    bgrp = ButtonGroup(cl='mr-2')
     btnDe = Button("Default")
     btnP = Button("Primary", "primary", ident='primary')
     btnI = Button("Info", "info")
@@ -59,7 +59,7 @@ async def oninit(event):
     c.newrow(Heading(2, "Dude!"))
     c.newrow(Paragraph("Where's My Car?", ident="fiddle"))
 
-    bd = ButtonDropdown('A Dropdown', size='xs', dropup=True, split=True, severity="success")
+    bd = Dropdown('A Dropdown', split=True, dropdirection='right', severity='success')
     bd.addelement(DropdownItem('Item Header', header=True))
     bd.addelement(DropdownItem('Item 1'))
     bd.addelement(DropdownItem('Item 2', disabled=True))
@@ -69,13 +69,16 @@ async def oninit(event):
 
     r = Row()
     col = Column(count=3)
-    p = Panel("Panel 1")
-    col.addelement(p)
+    card = Card('Card 1', title='123', footer='f', subtitle='sub', text='TEXT', severity='secondary')
+    col.addelement(card)
     r.addelement(col)
 
     col = Column(count=3)
-    p = Panel("Panel 2", 'danger')
-    col.addelement(p)
+    card = Card("Card 2", text='TEXT')
+    img = Image()
+    img.datauri(os.path.join(os.path.dirname(__file__), 'test', 'test.png'))
+    card.setimage(img)
+    col.addelement(card)
     r.addelement(col)
 
     c.newrow(Paragraph())
@@ -102,8 +105,7 @@ async def onload(event):
     logging.info(f"TEXT {text}, ATTR {attr}, PROP {prop}")
 
     for i in range(1, 5):
-        app.style("#fiddle", 'font-size', str(i*2) + "em", 'important', event['client'])
-
+        app.style("#fiddle", 'font-size', str(i * 2) + "em", 'important', event['client'])
         await asyncio.sleep(1)
 
     await asyncio.sleep(5)
@@ -134,9 +136,9 @@ async def buttonclicked(event):
 
 logging.basicConfig(format="%(asctime)s [%(levelname)s] - %(funcName)s: %(message)s", level=logging.INFO)
 
-app = Sofi(singleclient=True)
+app = Sofi(singleclient=False)
 app.register('init', oninit)
 app.register('load', onload)
 
 # app.start()
-app.start()
+app.start(desktop=False)

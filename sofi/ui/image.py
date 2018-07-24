@@ -2,17 +2,18 @@ from .element import Element
 
 from base64 import b64encode
 
+
 class Image(Element):
     """Implements the <img> tag"""
 
     VARIETIES = {
-        'rounded':  'img-rounded',
-        'circle':  'img-circle',
+        'rounded': 'img-rounded',
+        'circle': 'img-circle',
         'thumbnail': 'img-thumbnail',
     }
 
     def __init__(self, src=None, variety=None, width=None, height=None, alt=None, responsive=False, caption=None, captionalign=None, cl=None, ident=None, style=None, attrs=None):
-        if variety not in Image.VARIETIES:
+        if variety is not None and variety not in Image.VARIETIES:
             raise ValueError(f"Unknown variety: {variety}")
 
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
@@ -60,7 +61,7 @@ class Image(Element):
         output.append("<img")
 
         if self.src:
-            output.append(f'src="{self.src}" ')
+            output.append(f' src="{self.src}" ')
 
         if self.ident:
             output.append(f' id="{self.ident}"')
@@ -77,7 +78,7 @@ class Image(Element):
             classes.append(self.cl)
 
         if len(classes) > 0:
-            output.append(f' class="{" ".join(classes)}"'
+            output.append(f' class="{" ".join(classes)}"')
 
         if self.alt:
             output.append(f' alt="{self.alt}"')

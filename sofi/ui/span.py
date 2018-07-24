@@ -1,5 +1,6 @@
 from .element import Element
 
+
 class Span(Element):
     """Implements <span> tag"""
 
@@ -42,6 +43,7 @@ class Span(Element):
         output.append("</span>")
 
         return "".join(output)
+
 
 class CaretSpan(Span):
     """Implements a span that contains a caret icon, useful in dropdowns and other similar situations"""

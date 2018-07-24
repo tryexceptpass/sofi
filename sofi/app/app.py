@@ -154,8 +154,10 @@ class Sofi():
                         pass
                     else:
                         # Assume Mac
-                        subprocess.Popen([os.path.join(path, 'browser.app/Contents/MacOS/cefsimple'),
-                        '--url=file://' + os.path.join(path, 'sofi/app/main.html')])
+                        subprocess.Popen([
+                            os.path.join(path, 'browser.app/Contents/MacOS/cefsimple'),
+                            '--url=file://' + os.path.join(path, 'sofi/app/main.html')
+                        ])
                 else:
                     # we are running in a normal Python environment
                     if sys.platform == 'linux':
@@ -164,8 +166,10 @@ class Sofi():
                         pass
                     else:
                         # Assume Mac
-                        subprocess.Popen([os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
-                        '--url=file:///' + os.path.join(path, 'main.html')])
+                        subprocess.Popen([
+                            os.path.join(path, '../../browser.app/Contents/MacOS/cefsimple'),
+                            '--url=file:///' + os.path.join(path, 'main.html')
+                        ])
 
         with open(os.path.join(path, '_sofi.js'), 'rb') as source:
             jsfile = os.path.join(path, 'sofi.js')

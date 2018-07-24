@@ -1,19 +1,19 @@
 from .element import Element
 from .anchor import Anchor
-from .heading import Heading
+from .text import Heading
 
 
 class Alert(Element):
-    """Implements the <div class="alert"> tag"""
+    """Implements the <div class="alert"> tag."""
 
     SEVERITIES = {
-        'danger':    'alert-danger',
-        'success':   'alert-success',
-        'info':      'alert-info',
-        'warning':   'alert-warning',
-        'light':     'alert-light',
-        'dark':      'alert-dark',
-        'primary':   'alert-primary',
+        'danger': 'alert-danger',
+        'success': 'alert-success',
+        'info': 'alert-info',
+        'warning': 'alert-warning',
+        'light': 'alert-light',
+        'dark': 'alert-dark',
+        'primary': 'alert-primary',
         'secondary': 'alert-secondary'
     }
 
@@ -66,7 +66,7 @@ class Alert(Element):
             output.append(self.text)
 
         for child in self._children:
-            if isinstance(child, Anchor) and not 'alert-link' in child.cl:
+            if isinstance(child, Anchor) and 'alert-link' not in child.cl:
                 child.cl += "alert-link" if len(child.cl) == 0 else " alert-link"
 
             elif isinstance(child, Heading):

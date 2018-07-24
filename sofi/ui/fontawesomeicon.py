@@ -1,5 +1,6 @@
 from .element import Element
 
+
 class FontAwesomeIcon(Element):
     """Implements a Font Awesome Icons"""
 

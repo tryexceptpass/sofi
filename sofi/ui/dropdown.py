@@ -1,14 +1,10 @@
 import secrets
 
 from .element import Element
-from .listitem import ListItem
-from .button import Button
+from .lists import ListItem
+from .button import Button, ButtonGroup
 from .div import Div
 from .anchor import Anchor
-from .span import CaretSpan
-from .unorderedlist import UnorderedList
-
-from collections import OrderedDict
 
 
 class Dropdown(Element):
@@ -23,13 +19,13 @@ class Dropdown(Element):
 
     def __init__(self, text, severity=None, dropdirection='down', split=False, align='left', size=None, asnavitem=False,
                  asbtngrp=False, offset=None, reference=None, cl=None, ident=None, style=None, attrs=None):
-        if dropdirection is not None and dropdirection is not in Dropdown.DIRECTIONS:
+        if dropdirection is not None and dropdirection not in Dropdown.DIRECTIONS:
             raise ValueError(f"Unknown direction: {dropdirection}")
 
-        if size is not None and size is not in Button.SIZES:
+        if size is not None and size not in Button.SIZES:
             raise ValueError(f"Unknown size: {size}")
 
-        if align is not in ('left', 'right'):
+        if align not in ('left', 'right'):
             raise ValueError(f"Unknown alignment: {align}")
 
         super().__init__(cl=cl, ident=secrets.token_hex(8) if ident is None else ident, style=style, attrs=attrs)
@@ -73,7 +69,7 @@ class Dropdown(Element):
                 attrs=self.attrs
             )
 
-            attrs['role'] = 'button'
+            btnattrs['role'] = 'button'
             wrapper.addelement(Anchor(
                 cl='nav-link dropdown-toggle',
                 href='#',
@@ -84,7 +80,7 @@ class Dropdown(Element):
         elif self.split:
             # Split Button
             wrapper = ButtonGroup(
-                ident=f'{self-ident}-dropdown',
+                ident=f'{self.ident}-dropdown',
                 cl=' '.join(wrappercl),
                 style=self.style,
                 attrs=self.attrs
@@ -130,7 +126,6 @@ class Dropdown(Element):
                 attrs=btnattrs
             ))
 
-
         if self.align == 'left':
             menucl = 'dropdown-menu'
 
@@ -148,3 +143,68 @@ class Dropdown(Element):
                 wrapper.addelement(child)
 
         return str(wrapper)
+
+
+class DropdownItem(Element):
+    """Implements an item from a Dropdown list"""
+
+    def __init__(self, text=None, disabled=False, header=False, divider=False, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+        self.text = text
+        self.disabled = disabled
+        self.header = header
+        self.divider = divider
+
+    def __repr__(self):
+        return '<DropdownItem(text="' + self.text + '",disabled=' + self.disabled + ',header=' + self.header + ',divider=' + self.divider + ')>'
+
+    def __str__(self):
+        if self.divider:
+            output = ['<div']
+        elif self.header:
+            output = ['<h6']
+        else:
+            output = ['<a href="#"']
+
+        if self.ident:
+            output.append(f' id="{self.ident}"')
+
+        cls = []
+
+        if self.header:
+            cls.append("dropdown-header")
+        elif self.divider:
+            cls.append("dropdown-divider")
+        elif self.disabled:
+            cls.append("dropdown-item disabled")
+        else:
+            cls.append('dropdown-item')
+
+        if self.cl:
+            cls.append(self.cl)
+
+        if len(cls) > 0:
+            output.append(f' class="{" ".join(cls)}"')
+
+        if self.style:
+            output.append(f' style="{self.style}"')
+
+        if self.attrs:
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
+
+        output.append('>')
+
+        if self.text:
+            output.append(str(self.text))
+
+        output.extend([str(child) for child in self._children])
+
+        if self.divider:
+            output.append('</div>')
+        elif self.header:
+            output.append('</h6>')
+        else:
+            output.append('</a>')
+
+        return "".join(output)

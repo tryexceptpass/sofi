@@ -1,5 +1,5 @@
-from .element import Element
 from .div import Div
+
 
 class Well(Div):
     """Implements the Bootstrap Well <div class="well">"""
@@ -10,7 +10,7 @@ class Well(Div):
         self.size = size
 
     def __repr__(self):
-        return "<Well(text='" + self.text + "')>"
+        return f'<Well(text="{self.text}")>'
 
     def __str__(self):
         classes = ["well"]

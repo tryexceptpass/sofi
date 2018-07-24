@@ -1,5 +1,6 @@
 from .element import Element
 
+
 class Div(Element):
     """Implements <div> tag"""
 

@@ -70,3 +70,245 @@ class Table(Element):
             return "<div class=\"table-responsive\">" + "".join(output) + "</div>"
         else:
             return "".join(output)
+
+
+class TableBody(Element):
+    """Implements the <tbody> tag"""
+
+    def __init__(self, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+    def addrow(self, *args, **kwargs):
+        tr = TableRow(**kwargs)
+
+        for item in args:
+            if isinstance(item, Element):
+                tr.addelement(item)
+            else:
+                tr.addelement(TableCell(item))
+
+        self.addelement(tr)
+
+        return tr
+
+    def __repr__(self):
+        return "<TableBody>"
+
+    def __str__(self):
+        output = ["<tbody"]
+
+        if self.ident:
+            output.append(" id=\"")
+            output.append(self.ident)
+            output.append("\"")
+
+        if self.cl:
+            output.append(" class=\"")
+            output.append(self.cl)
+            output.append("\"")
+
+        if self.style:
+            output.append(" style=\"")
+            output.append(self.style)
+            output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
+        output.append(">")
+
+        for child in self._children:
+            output.append(str(child))
+
+        output.append("</tbody>")
+
+        return "".join(output)
+
+
+class TableCell(Element):
+    """Implements <td> and <th> tag"""
+
+    def __init__(self, text=None, head=False, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+        if text:
+            self._children.append(text)
+
+        self.head = head
+
+    def __repr__(self):
+        return "<TableCell(head=" + self.head + ")>"
+
+    def __str__(self):
+        if self.head:
+            output = ["<th"]
+        else:
+            output = ["<td"]
+
+        if self.ident:
+            output.append(" id=\"")
+            output.append(self.ident)
+            output.append("\"")
+
+        if self.cl:
+            output.append(" class=\"")
+            output.append(self.cl)
+            output.append("\"")
+
+        if self.style:
+            output.append(" style=\"")
+            output.append(self.style)
+            output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
+        output.append(">")
+
+        for child in self._children:
+            output.append(str(child))
+
+        output.append("</td>")
+
+        return "".join(output)
+
+
+class TableFooter(Element):
+    """Implements the <tfoot> tag"""
+
+    def __init__(self, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+    def __repr__(self):
+        return "<TableFooter>"
+
+    def __str__(self):
+        output = ["<tfoot"]
+
+        if self.ident:
+            output.append(" id=\"")
+            output.append(self.ident)
+            output.append("\"")
+
+        if self.cl:
+            output.append(" class=\"")
+            output.append(self.cl)
+            output.append("\"")
+
+        if self.style:
+            output.append(" style=\"")
+            output.append(self.style)
+            output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
+        output.append(">")
+
+        for child in self._children:
+            output.append(str(child))
+
+        output.append("</tfoot>")
+
+        return "".join(output)
+
+
+class TableHead(Element):
+    """Implements the <thead> tag"""
+
+    def __init__(self, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+    def addrow(self, *args, **kwargs):
+        tr = TableRow(**kwargs)
+
+        for item in args:
+            if isinstance(item, Element):
+                tr.addelement(item)
+            else:
+                tr.addelement(TableCell(item, head=True))
+
+        self.addelement(tr)
+
+        return tr
+
+    def __repr__(self):
+        return "<TableHead>"
+
+    def __str__(self):
+        output = ["<thead"]
+
+        if self.ident:
+            output.append(" id=\"")
+            output.append(self.ident)
+            output.append("\"")
+
+        if self.cl:
+            output.append(" class=\"")
+            output.append(self.cl)
+            output.append("\"")
+
+        if self.style:
+            output.append(" style=\"")
+            output.append(self.style)
+            output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
+        output.append(">")
+
+        for child in self._children:
+            output.append(str(child))
+
+        output.append("</thead>")
+
+        return "".join(output)
+
+
+class TableRow(Element):
+    """Implements <tr> tag"""
+
+    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+        if text:
+            self._children.append(text)
+
+    def __repr__(self):
+        return "<TableRow>"
+
+    def __str__(self):
+        output = ["<tr"]
+
+        if self.ident:
+            output.append(" id=\"")
+            output.append(self.ident)
+            output.append("\"")
+
+        if self.cl:
+            output.append(" class=\"")
+            output.append(self.cl)
+            output.append("\"")
+
+        if self.style:
+            output.append(" style=\"")
+            output.append(self.style)
+            output.append("\"")
+
+        if self.attrs:
+            for k in self.attrs.keys():
+                output.append(' ' + k + '="' + self.attrs[k] + '"')
+
+        output.append(">")
+
+        for child in self._children:
+            output.append(str(child))
+
+        output.append("</tr>")
+
+        return "".join(output)
