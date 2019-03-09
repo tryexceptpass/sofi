@@ -61,3 +61,4 @@ from .alertlink import AlertLink
 from .pageheader import PageHeader
 from .listgroup import ListGroup
 from .formgroup import FormGroup
+from .progressbar import ProgressBar
