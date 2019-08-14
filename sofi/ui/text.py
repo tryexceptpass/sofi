@@ -10,7 +10,7 @@ class Underlined(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Underlined>"
@@ -46,7 +46,7 @@ class UserInput(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<UserInput>"
@@ -82,7 +82,7 @@ class Variable(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Variable>"
@@ -118,7 +118,7 @@ class Strikethrough(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Strikethrough>"
@@ -154,7 +154,7 @@ class Small(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Small>"
@@ -190,7 +190,7 @@ class Sample(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Sample>"
@@ -226,7 +226,7 @@ class Mark(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Mark>"
@@ -262,7 +262,7 @@ class Italics(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Italics>"
@@ -298,7 +298,7 @@ class Inserted(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Inserted>"
@@ -334,7 +334,7 @@ class Deleted(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Deleted>"
@@ -370,7 +370,7 @@ class Code(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Code>"
@@ -406,7 +406,7 @@ class Bold(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Bold>"
@@ -442,7 +442,7 @@ class Address(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Address()>"
@@ -481,7 +481,7 @@ class Abbreviation(Element):
         self.initialism = initialism
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Abbreviation(title='" + self.title + "',initialism=" + str(self.initialism) + ")>"
@@ -523,7 +523,7 @@ class Cite(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Cite>"
@@ -559,7 +559,7 @@ class CodeBlock(Element):
         self.scrollable = scrollable
 
         if text is not None:
-            self._children.append(html.escape(text))
+            self.addelement(html.escape(text))
 
     def __repr__(self):
         return "<CodeBlock>"
@@ -602,7 +602,7 @@ class Blockquote(Element):
         'right': 'text-right',
     }
 
-    def __init__(self, text=None, footer=None, alignment=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, footer=None, cite=None, alignment=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
         
         if alignment is not None and alignment not in ALIGNMENT:
@@ -612,10 +612,15 @@ class Blockquote(Element):
         self.reverse = reverse
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
         
-        if self.footer:
-            self._children.append(Footer(footer, cl='blockquote-footer'))
+        if footer is not None or cite is not None:
+            f = Footer(footer, cl='blockquote-footer')
+
+            if cite is not None:
+                f.addelement(Cite(cite))
+
+            self.addelement(Footer(footer, cl='blockquote-footer'))
 
     def settext(self, text):
         """Update blockquote text"""
@@ -680,7 +685,7 @@ class Footer(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Footer>"
@@ -719,10 +724,10 @@ class Heading(Element):
         self.display = display
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
         
         if secondary_text:
-            self._children.append(Small(secondary_text, cl='text-muted'))
+            self.addelement(Small(secondary_text, cl='text-muted'))
     
     def settext(self, text):
         """Update heading text"""
@@ -790,7 +795,7 @@ class Paragraph(Element):
         self.lead = lead
 
         if text is not None:
-            self._children.append(text)
+            self.addelement(text)
 
     def __repr__(self):
         return "<Paragraph>"

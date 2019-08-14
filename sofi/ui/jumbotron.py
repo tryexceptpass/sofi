@@ -7,8 +7,8 @@ class Jumbotron(Element):
     def __init__(self, text=None, fluid=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
-            self._children.append(text)
+        if text is not None:
+            self.addelement(text)
 
     def __repr__(self):
         return "<Jumbotron>"

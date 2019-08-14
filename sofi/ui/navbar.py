@@ -17,19 +17,19 @@ class Navbar(Element):
 
     def addlink(self, text, href=None, active=False, disabled=False, ident=None):
         item = NavbarItem(text, href, active=active, disabled=disabled, ident=ident)
-        self._children.append(item)
+        self.addelement(item)
 
         return item
 
     def addtext(self, text):
-        self._children.append(Span(text, cl='navbar-text'))
+        self.addelement(Span(text, cl='navbar-text'))
 
     # def adddropdown(self, dropdown):
     #     if len(self._children) == 0:
-    #         self._children.append(UnorderedList(cl="nav navbar-nav"))
+    #         self.addelement(UnorderedList(cl="nav navbar-nav"))
     #
     #     if type(self._children[-1]) != UnorderedList:
-    #         self._children.append(UnorderedList(cl="nav navbar-nav"))
+    #         self.addelement(UnorderedList(cl="nav navbar-nav"))
     #
     #     dropdown.navbaritem = True
     #     self._children[-1].addelement(dropdown)

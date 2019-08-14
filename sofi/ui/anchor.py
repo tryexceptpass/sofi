@@ -14,8 +14,8 @@ class Anchor(Element):
         self.href = href
         self.badgecontext = badgecontext
 
-        if text:
-            self._children.append(text)
+        if text is not None:
+            self.addelement(text)
 
     def __repr__(self):
         return "<Anchor(href='" + self.href + "')>"
