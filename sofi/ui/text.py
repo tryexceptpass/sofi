@@ -1,3 +1,5 @@
+import html
+
 from .element import Element
 
 
@@ -7,7 +9,7 @@ class Underlined(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -17,28 +19,20 @@ class Underlined(Element):
         output = ["<u"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</u>")
 
@@ -51,7 +45,7 @@ class UserInput(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -61,28 +55,20 @@ class UserInput(Element):
         output = ["<kbd"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</kbd>")
 
@@ -95,7 +81,7 @@ class Variable(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -105,28 +91,20 @@ class Variable(Element):
         output = ["<var"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</var>")
 
@@ -139,7 +117,7 @@ class Strikethrough(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -149,28 +127,20 @@ class Strikethrough(Element):
         output = ["<s"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</s>")
 
@@ -183,7 +153,7 @@ class Small(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -193,28 +163,20 @@ class Small(Element):
         output = ["<small"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</small>")
 
@@ -227,7 +189,7 @@ class Sample(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -237,28 +199,20 @@ class Sample(Element):
         output = ["<samp"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</samp>")
 
@@ -271,7 +225,7 @@ class Mark(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -281,28 +235,20 @@ class Mark(Element):
         output = ["<mark"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</mark>")
 
@@ -315,7 +261,7 @@ class Italics(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -325,28 +271,20 @@ class Italics(Element):
         output = ["<em"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</em>")
 
@@ -359,7 +297,7 @@ class Inserted(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -369,28 +307,20 @@ class Inserted(Element):
         output = ["<ins"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</ins>")
 
@@ -403,7 +333,7 @@ class Deleted(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -413,28 +343,20 @@ class Deleted(Element):
         output = ["<del"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</del>")
 
@@ -447,7 +369,7 @@ class Code(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -457,28 +379,20 @@ class Code(Element):
         output = ["<code"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</code>")
 
@@ -491,7 +405,7 @@ class Bold(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -501,28 +415,20 @@ class Bold(Element):
         output = ["<strong"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</strong>")
 
@@ -535,7 +441,7 @@ class Address(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -545,28 +451,20 @@ class Address(Element):
         output = ["<address"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</address>")
 
@@ -582,7 +480,7 @@ class Abbreviation(Element):
         self.title = title
         self.initialism = initialism
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -592,33 +490,26 @@ class Abbreviation(Element):
         output = ["<abbr title=\"", self.title, "\""]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
-        if self.cl or self.initialism:
-            output.append(" class=\"")
-            if self.initialism:
-                output.append("initialism")
-                if self.cl:
-                    output.append(" ")
-            if self.cl:
-                output.append(self.cl)
-            output.append("\"")
+        if self.initialism:
+            if self.cl is None:
+                self.cl = "initialism"
+            else:
+                self.cl = f"{self.cl} initialism"
+
+        if self.cl:
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</abbr>")
 
@@ -631,7 +522,7 @@ class Cite(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -641,74 +532,64 @@ class Cite(Element):
         output = ["<cite"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
-
-        output.append("</cite>")
+        output.extend([str(child) for child in self._children])
 
         return "".join(output)
 
 
-class BasicBlock(Element):
+class CodeBlock(Element):
     """Implements <pre> tag"""
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, scrollable=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
-            self._children.append(text)
+        self.scrollable = scrollable
+
+        if text is not None:
+            self._children.append(html.escape(text))
 
     def __repr__(self):
-        return "<BasicBlock>"
+        return "<CodeBlock>"
 
     def __str__(self):
         output = ["<pre"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
+
+        if self.scrollable:
+            if self.cl is None:
+                self.cl = "pre-scrollable"
+            else:
+                self.cl = f"{self.cl} pre-scrollable"
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
-        output.append(">")
+        output.append("><code>")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
-        output.append("</pre>")
+        output.append("</code></pre>")
 
         return "".join(output)
 
@@ -716,14 +597,49 @@ class BasicBlock(Element):
 class Blockquote(Element):
     """Implements the <blockquote> tag"""
 
-    def __init__(self, text=None, reverse=False, cl=None, ident=None, style=None, attrs=None):
-        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+    ALIGNMENT = {
+        'center': 'text-center',
+        'right': 'text-right',
+    }
 
+    def __init__(self, text=None, footer=None, alignment=None, cl=None, ident=None, style=None, attrs=None):
+        super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+        
+        if alignment is not None and alignment not in ALIGNMENT:
+            raise ValueError("Unknown blockquote alignment")
+        
+        self.alignment = alignment
         self.reverse = reverse
 
-        if text:
+        if text is not None:
             self._children.append(text)
+        
+        if self.footer:
+            self._children.append(Footer(footer, cl='blockquote-footer'))
 
+    def settext(self, text):
+        """Update blockquote text"""
+
+        for i, child in enumerate(self._children):
+            if isinstance(child, str):
+                if text is None:
+                    self._children.pop(i)
+                else:
+                    child = text
+                return
+    
+    def setfooter(self, text):
+        """Update the footer text"""
+
+        for i, child in enumerate(self._children):
+            if isinstance(child, Footer) and 'blockquote-footer' in child.cl:
+                for c in child._children:
+                    if isinstance(c, str):
+                        if text is None:
+                            self._children.pop(i)
+                        else:
+                            c = text
+                        return
     def __repr__(self):
         return "<Blockquote(reverse=" + str(self.reverse) + ")>"
 
@@ -731,33 +647,26 @@ class Blockquote(Element):
         output = ["<blockquote"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
-        if self.cl or self.reverse:
-            output.append(" class=\"")
-            if self.reverse:
-                output.append("blockquote-reverse")
-                if self.cl:
-                    output.append(" ")
+        if self.alignment:
             if self.cl:
-                output.append(self.cl)
-            output.append("\"")
+                self.cl = f'{self.cl} {Blockquote.ALIGNMENT[self.alignment]}'
+            else:
+                self.cl = Blockquote.ALIGNMENT
+
+        if self.cl:
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</blockquote>")
 
@@ -770,7 +679,7 @@ class Footer(Element):
     def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -780,28 +689,20 @@ class Footer(Element):
         output = ["<footer"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</footer>")
 
@@ -811,47 +712,71 @@ class Footer(Element):
 class Heading(Element):
     """Implements heading tags using size attribute: <h1>, <h2>, etc."""
 
-    def __init__(self, size=1, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, size=1, text=None, secondary_text=None, display=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.size = size
+        self.display = display
 
-        if text:
+        if text is not None:
             self._children.append(text)
+        
+        if secondary_text:
+            self._children.append(Small(secondary_text, cl='text-muted'))
+    
+    def settext(self, text):
+        """Update heading text"""
+
+        for i, child in enumerate(self._children):
+            if isinstance(child, str):
+                if text is None:
+                    self._children.pop(i)
+                else:
+                    child = text
+                return
+    
+    def setsecondarytext(self, text):
+        """Update the secondary text"""
+
+        for i, child in enumerate(self._children):
+            if isinstance(child, Small) and 'text-muted' in child.cl:
+                for c in child._children:
+                    if isinstance(c, str):
+                        if text is None:
+                            self._children.pop(i)
+                        else:
+                            c = text
+                        return
 
     def __repr__(self):
-        return "<Heading(size=" + str(self.size) + ")>"
+        return f"<Heading(size={self.size})>"
 
     def __str__(self):
         output = ["<h", str(self.size)]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
+
+        if self.display is not None:
+            if self.cl is None:
+                self.cl = "display-{self.display}"
+            else:
+                self.cl = f"{self.cl} display-{self.display}"
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
-        output.append("</h")
-        output.append(str(self.size))
-        output.append(">")
+        output.append(f"</h{self.size}>")
 
         return "".join(output)
 
@@ -859,10 +784,12 @@ class Heading(Element):
 class Paragraph(Element):
     """Implements <p> tag"""
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, lead=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
-        if text:
+        self.lead = lead
+
+        if text is not None:
             self._children.append(text)
 
     def __repr__(self):
@@ -873,6 +800,12 @@ class Paragraph(Element):
 
         if self.ident:
             output.append(f' id="{self.ident}" ')
+
+        if self.lead:
+            if self.cl is None:
+                self.cl = "lead"
+            else:
+                self.cl = f"{self.cl} lead"
 
         if self.cl:
             output.append(f' class="{self.cl}"')
