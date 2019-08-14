@@ -1,6 +1,5 @@
-[![Build Status](https://travis-ci.org/tryexceptpass/sofi.svg?branch=master)](https://travis-ci.org/tryexceptpass/sofi) [![Stories in Ready](https://badge.waffle.io/tryexceptpass/sofi.png?label=ready&title=Tasks%20Ready)](https://waffle.io/tryexceptpass/sofi) [![Join the chat at https://gitter.im/try-except-pass/sofi](https://badges.gitter.im/try-except-pass/sofi.svg)](https://gitter.im/try-except-pass/sofi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/tryexceptpass/sofi.svg?branch=master)](https://travis-ci.org/tryexceptpass/sofi) [![Join the chat at https://gitter.im/try-except-pass/sofi](https://badges.gitter.im/try-except-pass/sofi.svg)](https://gitter.im/try-except-pass/sofi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Documentation Status](https://readthedocs.org/projects/sofi-gui-framework/badge/?version=latest)](http://sofi-gui-framework.readthedocs.io/en/latest/?badge=latest)
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/tryexceptpass)
 
 ## Overview
 `sofi` is an OS agnostic UI module for Python.

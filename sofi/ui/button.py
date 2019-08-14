@@ -84,7 +84,7 @@ class Button(Element):
 
 
 class ButtonGroup(Element):
-    """Implements a button group <div class=\"btn-group\">"""
+    """Implements a button group <div class="btn-group">"""
 
     SIZES = {
         'large': 'btn-group-lg',
@@ -144,7 +144,7 @@ class ButtonGroup(Element):
 
 
 class ButtonToolbar(Element):
-    """Implements a button toolbar <div class=\"btn-toolbar\">"""
+    """Implements a button toolbar <div class="btn-toolbar">"""
 
     def __init__(self, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)

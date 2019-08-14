@@ -7,7 +7,7 @@ class View(Element):
     """Main object representing a webpage"""
 
     def __init__(self, title=None, cl=None, style=None):
-        self._children = list()
+        self._children = []
 
         if title is None:
             self.title = "Sofi"
@@ -18,77 +18,66 @@ class View(Element):
         self.style = style
 
         self.bootstrapcss = (
-            '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" '
-            'integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" '
+            '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" '
+            'integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" '
             'crossorigin="anonymous">'
         )
         self.fontawesomecss = (
-            '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" '
-            'integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" '
+            '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" '
+            'integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" '
             'crossorigin="anonymous">'
         )
         self.bootstrapjs = (
-            '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" '
-            'integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" '
+            '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" '
+            'integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" '
             'crossorigin="anonymous"></script>'
         )
         self.jquery = (
-            '<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" '
-            'integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" '
+            '<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" '
+            'integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" '
             'crossorigin="anonymous"></script>'
         )
         self.popperjs = (
-            '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" '
-            'integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" '
+            '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" '
+            'integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" '
             'crossorigin="anonymous"></script>'
         )
         self.viewport = '<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'
 
     def __repr__(self):
-        return "<View>"
+        return "<View()>"
 
     def __str__(self):
         head = [f'<title>{self.title}</title>{self.bootstrapcss}{self.viewport}']
         body = []
 
         for child in self._children:
-            if self.check_for_element_available(child, FontAwesomeIcon):
+            # If we included FontAwesomeIcons, add the necessary CSS
+            if self.haschild(child, FontAwesomeIcon):
                 head.append(self.fontawesomecss)
 
+            # If we're using a Navbar fixed to the top of the page, leave room for it in the body
             if type(child) == Navbar:
                 if child.fixed == "top":
-                    head.append('<style>/* Added to make room for the navbar at top */\nbody {padding-top: 70px; }\n</style>')
+                    head.append('<style>body{padding-top:70px}</style>')
 
             body.append(str(child))
 
-        output = []
-        output.append('<head>')
-        output.extend(head)
-        output.append('</head><body')
+        output = [f'<head>{head}</head><body']
+
         if self.cl:
             output.append(f' class="{self.cl}"')
+
         if self.style:
             output.append(f' style="{self.style}"')
-        output.append('>')
-        output.extend(body)
-        output.append(f"{self.jquery}{self.popperjs}{self.bootstrapjs}</body>")
+
+        output.append(f">{body}{self.jquery}{self.popperjs}{self.bootstrapjs}</body>")
 
         return "".join(output)
 
-    def check_for_element_available(self, child, element):
-        if type(child) == element:
-            return True
-        else:
-            for obj in child._children:
-                if not isinstance(obj, str):
-                    result = self.check_for_element_available(obj, element)
-                    if result:
-                        return True
-        return False
-
 
 class Row(Element):
-    """Implements row layout with format <div class=\"row\">"""
+    """Implements row layout with format <div class="row">"""
 
     ALIGNMENT = {
         'start': 'justify-content-start',
@@ -112,8 +101,11 @@ class Row(Element):
         self.valign = valign
 
     def newcolumn(self, item, **kwargs):
+        """Add a new Column to this Row"""
+
         c = Column(**kwargs)
         c.addelement(item)
+
         self.addelement(c)
 
         return c
@@ -146,20 +138,16 @@ class Row(Element):
         if self.attrs:
             output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
-        output.append(">")
-
-        output.extend([str(child) for child in self._children])
-
-        output.append("</div>")
+        output.append(f">{[str(child) for child in self._children]}</div>")
 
         return "".join(output)
 
 
 class Column(Element):
-    """Implements the column layout <div class=\"col-\"> where size, count and offset
+    """The column layout element <div class="col-"> where size, count and offset 
     attributes are used to create the class name, i.e.: col-md-4 or col-offset-md-4"""
 
-    VERTICAL_ALIGNMENT = {'start': 'align-items-start', 'center': 'align-items-center', 'end': 'align-items-end'}
+    VERTICAL_ALIGNMENT = {'start': 'align-self-start', 'center': 'align-self-center', 'end': 'align-self-end'}
 
     def __init__(self, size='md', count=4, offset=0, valign=None, order=None, cl=None, ident=None, style=None, attrs=None):
         if valign is not None and valign not in Column.VERTICAL_ALIGNMENT:
@@ -204,27 +192,29 @@ class Column(Element):
         if self.attrs:
             output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
-        output.append(">")
-
-        output.extend([str(child) for child in self._children])
-
-        output.append("</div>")
+        output.append(f">{[str(child) for child in self._children]}</div>")
 
         return "".join(output)
 
 
 class Container(Element):
-    """Implements a container tag of form <div class=\"container\"> or
-    <div class=\"container-fluid\">"""
+    """Implements a container tag of form <div class="container"> or <div class="container-fluid">"""
 
     def __init__(self, fluid=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.fluid = fluid
 
-    def newrow(self, element):
+    def newrow(self, element, with_column=True):
+        """Add a new Row to this Container"""
+
         r = Row()
-        r.addelement(element)
+
+        if with_column:
+            r.newcolumn(element)
+        else:
+            r.addelement(element)
+
         self.addelement(r)
 
         return r
@@ -254,10 +244,6 @@ class Container(Element):
         if self.attrs:
             output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
-        output.append(">")
-
-        output.extend([str(child) for child in self._children])
-
-        output.append("</div>")
+        output.append(f">{[str(child) for child in self._children]}</div>")
 
         return "".join(output)

@@ -41,7 +41,7 @@ class Sofi():
         self.requests = {}
 
         # Client management
-        self.clients = list()
+        self.clients = []
         self.singleclient = singleclient
 
         if self.background:

@@ -18,7 +18,7 @@ class ListGroup(Element):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.linkify = linkify
-        self.items = list()
+        self.items = []
 
     def additem(self, item, severity=None, disabled=False, heading=None):
         """Add a ListItem to the group which adjusts itself as needed for display based on ListGroup properties"""

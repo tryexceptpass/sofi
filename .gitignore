@@ -11,3 +11,6 @@ __pycache__/
 build/
 dist/
 sofi.egg-info/
+
+# Editors
+.vscode/
