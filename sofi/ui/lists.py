@@ -24,7 +24,7 @@ class ListGroup(Element):
         """Add a ListItem to the group which adjusts itself as needed for display based on ListGroup properties"""
 
         if item.cl:
-            item.cl = item.cl + " list-group-item"
+            item.cl = f"{item.cl} list-group-item"
         else:
             item.cl = "list-group-item"
 
@@ -34,10 +34,10 @@ class ListGroup(Element):
             else:
                 severity = ListGroup.ITEMSEVS['default']
 
-            item.cl = item.cl + " " + severity
+            item.cl = f"{item.cl} {severity}"
 
         if disabled:
-            item.cl = item.cl + " disabled"
+            item.cl = f"{item.cl} disabled"
 
         if heading:
             item.addelement(Heading(4, heading, cl='list-group-item-heading'))
@@ -47,33 +47,26 @@ class ListGroup(Element):
         self.items.append(item)
 
     def __repr__(self):
-        return "<ListGroup(linkify=" + str(self.linkify) + ")>"
+        return f"<ListGroup(linkify={self.linkify})>"
 
     def __str__(self):
-        output = ["<ul"]
-
-        if self.linkify:
-            output = ["<div"]
+        output = ["<div"] if self.linkify else ["<ul"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
-        output.append(" class=\"list-group")
+        output.append(' class="list-group')
+
         if self.cl:
-            output.append(" ")
-            output.append(self.cl)
-        output.append("\"")
+            output.append(f' {self.cl}')
+
+        output.append('"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
@@ -88,13 +81,9 @@ class ListGroup(Element):
             else:
                 output.append(str(item))
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
-        if self.linkify:
-            output.append("</div>")
-        else:
-            output.append("</ul>")
+        output.append("</div>" if self.linkify else "</ul>")
 
         return "".join(output)
 
@@ -102,10 +91,11 @@ class ListGroup(Element):
 class ListItem(Element):
     """Implements <li> tag"""
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, inline=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.text = text
+        self.inline = inline
 
     def __repr__(self):
         return "<ListItem>"
@@ -114,31 +104,29 @@ class ListItem(Element):
         output = ["<li"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
+
+        if self.inline:
+            if self.cl is None:
+                self.cl = 'list-inline-item'
+            else:
+                self.cl = f"{self.cl} list-inline-item"
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        if self.text:
+        if self.text is not None:
             output.append(self.text)
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</li>")
 
@@ -161,28 +149,20 @@ class OrderedList(Element):
         output = ["<ol"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</ol>")
 
@@ -208,38 +188,33 @@ class UnorderedList(Element):
         output = ["<ul"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
-        if self.cl or self.unstyled or self.inline:
-            output.append(" class=\"")
-            if self.unstyled:
-                output.append("list-unstyled")
-                if self.cl:
-                    output.append(" ")
-            elif self.inline:
-                output.append("list-inline")
-                if self.cl:
-                    output.append(" ")
-            if self.cl:
-                output.append(self.cl)
-            output.append("\"")
+        classes = []
+
+        if self.unstyled:
+            classes.append('list-unstyled')
+        
+        if self.inline:
+            classes.append('list-inline')
+
+        if self.cl:
+            classes.append(self.cl)
+
+        output.append(f' class="{" ".join(classes)}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
         for child in self._children:
-            output.append(str(child))
+            if isinstance(child, ListItem):
+                child.inline = True
 
-        output.append("</ul>")
+        output.extend([str(child) for child in self._children])
 
         return "".join(output)

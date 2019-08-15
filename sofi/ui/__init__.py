@@ -19,6 +19,6 @@ from .navbar import Navbar, NavbarItem
 from .span import Span, CaretSpan
 from .table import Table, TableHead, TableBody, TableFooter, TableRow, TableCell
 from .text import (Abbreviation, Address, Blockquote, Bold, Cite, Deleted, Footer, Heading, Inserted, Italics, Paragraph,
-                   Mark, Underlined, Small, Sample, Strikethrough, Code, Variable, UserInput, BasicBlock)
+                   Mark, Underlined, Small, Sample, Strikethrough, Code, Variable, UserInput, CodeBlock)
 from .view import Row, Column, Container, View
 from .well import Well

@@ -19,33 +19,26 @@ class Description(Element):
         output = ["<dl"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
-        if self.cl or self.horizontal:
-            output.append(" class=\"")
-            if self.horizontal:
-                output.append("dl-horizontal")
-                if self.cl:
-                    output.append(" ")
-            if self.cl:
-                output.append(self.cl)
-            output.append("\"")
+        if self.horizontal:
+            if self.cl is None:
+                self.cl = 'dl-horizontal'
+            else:
+                self.cl = f'{self.cl} dl-horizontal'
+
+        if self.cl:
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</dl>")
 
@@ -69,28 +62,20 @@ class DescriptionDefinition(Element):
         output = ["<dd"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</dd>")
 
@@ -101,8 +86,10 @@ class DescriptionTerm(Element):
     """Implements <dt> tag"""
 
 
-    def __init__(self, text=None, cl=None, ident=None, style=None, attrs=None):
+    def __init__(self, text=None, truncate=False, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
+
+        self.truncate = truncate
 
         if text is not None:
             self.addelement(text)
@@ -114,28 +101,26 @@ class DescriptionTerm(Element):
         output = ["<dt"]
 
         if self.ident:
-            output.append(" id=\"")
-            output.append(self.ident)
-            output.append("\"")
+            output.append(f' id="{self.ident}"')
+
+        if self.truncate:
+            if self.cl is None:
+                self.cl = 'text-truncate'
+            else:
+                self.cl = f'{self.cl} truncate'
 
         if self.cl:
-            output.append(" class=\"")
-            output.append(self.cl)
-            output.append("\"")
+            output.append(f' class="{self.cl}"')
 
         if self.style:
-            output.append(" style=\"")
-            output.append(self.style)
-            output.append("\"")
+            output.append(f' style="{self.style}"')
 
         if self.attrs:
-            for k in self.attrs.keys():
-                output.append(' ' + k + '="' + self.attrs[k] + '"')
+            output.extend([f' {k}="{v}"' for k, v in self.attrs.items()])
 
         output.append(">")
 
-        for child in self._children:
-            output.append(str(child))
+        output.extend([str(child) for child in self._children])
 
         output.append("</dt>")
 
