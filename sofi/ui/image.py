@@ -6,39 +6,36 @@ from base64 import b64encode
 class Image(Element):
     """Implements the <img> tag"""
 
-    VARIETIES = {
-        'rounded': 'img-rounded',
-        'circle': 'img-circle',
-        'thumbnail': 'img-thumbnail',
-    }
-
-    def __init__(self, src=None, variety=None, width=None, height=None, alt=None, responsive=False, caption=None, captionalign=None, cl=None, ident=None, style=None, attrs=None):
-        if variety is not None and variety not in Image.VARIETIES:
-            raise ValueError(f"Unknown variety: {variety}")
-
+    def __init__(self, src=None, width=None, height=None, alt=None, thumbnail=False, responsive=False, caption=None, captionalign=None, cl=None, ident=None, style=None, attrs=None):
         super().__init__(cl=cl, ident=ident, style=style, attrs=attrs)
 
         self.src = src
-        self.variety = variety
         self.width = width
         self.height = height
         self.alt = alt
+        self.thumbnail = thumbnail
         self.responsive = responsive
         self.caption = caption
         self.captionalign = captionalign
 
     def datauri(self, path, type=None):
-        """Use a data URI to embed the image in the given path by base64 encoding it. Supports png, jpg and gif formats."""
+        """Use a data URI to embed the image in the given path by base64 encoding it. Supports webp, png, jpg and gif formats."""
 
         media = None
         ext = path.split('.')[-1]
 
         if ext == "png":
             media = "image/png"
+            
         elif ext == "jpg" or ext == "jpeg":
             media = "image/jpg"
+
         elif ext == "gif":
             media = "image/gif"
+
+        elif ext == "webp":
+            media = "image/webp"
+
         else:
             raise ValueError("Unknown image format")
 
@@ -68,11 +65,11 @@ class Image(Element):
 
         classes = []
 
-        if self.variety:
-            classes.append(Image.VARIETIES[self.variety])
+        if self.thumbnail:
+            classes.append('img-thumbnail')
 
         if self.responsive:
-            classes.append("img-responsive")
+            classes.append("img-fluid")
 
         if self.cl:
             classes.append(self.cl)
@@ -104,3 +101,18 @@ class Image(Element):
                 output.append(f'<figcaption class="figure-caption>{self.caption}</figcaption></figure>')
 
         return "".join(output)
+
+
+class Picture(Image):
+    """Implements the <picture> tag"""
+
+    def __init__(self, srcset, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.srcset = srcset
+    
+    def __str__(self):
+        img = super().__str__()
+        sources = [f'<source srcset="{src}">' for src in self.srcset]
+
+        output = f"<picture>{''.join(sources)}{img}</picture>"
