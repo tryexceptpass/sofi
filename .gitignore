@@ -15,3 +15,6 @@ sofi.egg-info/
 
 # Editors
 .vscode/
+
+# Generated JS
+sofi/app/sofi.js
